@@ -1,0 +1,34 @@
+// container from input styles
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .box {
+    border-radius: 8px;
+    max-width: 3rem;
+    text-align: center;
+    padding: 0.5rem;
+    border: 2px solid var(--color-border);
+    outline: none;
+    font-size: 1rem;
+
+    &:focus {
+      border-color: var(--color-primary);
+    }
+
+    // Remove number input spinners (Chrome, Safari, Edge, Opera)
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    // Remove number input spinners (Firefox)
+    & {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+  }
+}

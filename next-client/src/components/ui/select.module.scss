@@ -1,0 +1,131 @@
+// container styles from input...
+
+// Custom Select wrapper
+.wrapper {
+  width: 100%;
+  background: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.display {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.6rem;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  transition: border-color 0.2s;
+
+  span {
+    font-family: var(--font-1);
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    flex: 1;
+    text-align: start;
+
+    &.placeholder {
+      color: var(--color-text);
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;
+
+    > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chevron {
+      color: var(--color-primary);
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+      user-select: none;
+
+      &.rotated {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &:hover:not(.disabled) {
+    border-color: var(--color-primary);
+  }
+
+  &.open {
+    border-color: var(--color-primary);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.disabled {
+    background-color: var(--color-border);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: -0;
+  background: white;
+  border: 2px solid var(--color-primary);
+  border-top: none;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  height: fit-content;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+// search box
+.search_container {
+  padding: 0.25rem;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.options_container {
+  max-height: 12rem;
+  overflow-y: auto;
+
+  >p{
+    padding: 0.5rem;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-family: var(--font-1);
+    font-size: 0.9rem;
+    color: var(--color-primary);
+    transition: background-color 0.15s;
+    gap: 0.5rem;
+
+    &:hover {
+      background-color: var(--color-border);
+    }
+
+    &.selected {
+      font-weight: 500;
+    }
+
+    span {
+      flex: 1;
+    }
+
+    // checkbox input
+    .option_checkbox {
+      width: fit-content;
+    }
+  }
+}

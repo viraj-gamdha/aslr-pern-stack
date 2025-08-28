@@ -1,0 +1,16 @@
+FROM node:22-alpine AS base
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files first (improves build caching)
+COPY package*.json ./
+
+# Ensure a clean and deterministic install
+RUN npm install
+
+# Copy the rest of the source code
+COPY . .
+
+# Start development server
+CMD ["npm", "run", "dev"]

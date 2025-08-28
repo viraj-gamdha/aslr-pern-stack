@@ -1,0 +1,45 @@
+.parent {
+  width: 100%;
+  position: relative;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow: hidden; /* Ensures the glow doesn't spill out */
+}
+
+.glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  padding: 5px;
+  background: linear-gradient(90deg, #3c399e, #6b68d7, #5739ac);
+  background-size: 200% 100%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: move-border 2s linear infinite;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+
+  >span{
+    font-family: var(--font-1);
+    color: var(--color-primary);
+    font-size: 0.8rem;
+  }
+}
+
+@keyframes move-border {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 200% 0%;
+  }
+}

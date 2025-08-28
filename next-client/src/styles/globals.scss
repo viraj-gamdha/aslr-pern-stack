@@ -1,0 +1,101 @@
+// Global styles
+
+/*
+Some Naming conventions for classes
+1. use _ for scoped or modules classnames (e.g. card_title)
+2. use - for global styles (without scoped or modules) classnames (e.g. button-primary)
+*/
+
+@use "./theme" as *;
+@use "./pages" as *;
+@use "./layouts" as *;
+
+// defaulting
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Global html element styles
+body {
+  overflow-x: hidden;
+  scroll-behavior: none;
+}
+
+button {
+  outline: none;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+ul {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-1);
+  color: var(--color-text);
+}
+
+th,
+tr {
+  font-weight: unset;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.75rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1rem;
+}
+
+p {
+  font-family: var(--font-1);
+  color: var(--color-text-l);
+  line-height: 1.4;
+  font-size: 0.9rem;
+}
+
+// scrollbar
+::-webkit-scrollbar {
+  width: 0.4rem;
+  height: 0.4rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}

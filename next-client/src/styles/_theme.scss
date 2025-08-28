@@ -1,0 +1,26 @@
+// Fonts
+// added via next/font
+
+// CSS variables
+:root {
+  // colors
+  /*
+  none - default
+  l - light
+  m - mid
+  d - dark
+  */
+  --color-primary: #181818;
+
+  --color-text: #1e1e1e;
+  --color-text-l: #4a4a4a;
+
+  --color-border: #e6e6e6;
+  --color-border-d: #b4b4b4;
+
+  --color-red: #b60808;
+  --color-green: #0a730a;
+
+  // shadows
+  --shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,136 @@
+// contains label and element below it with relativeness
+// can use same container in other custom input related components
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.2rem;
+
+  > .label {
+    font-family: var(--font-1);
+    color: var(--color-primary);
+    font-size: 0.9rem;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  gap: 0.5rem;
+
+  .search_icon {
+    position: absolute;
+    left: 0.5rem;
+    top: 48%;
+    transform: translateY(-45%);
+  }
+
+  .clear_icon {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-40%);
+  }
+
+  .password_eye {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-40%);
+    cursor: pointer;
+    color: var(--color-primary);
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    font-family: var(--font-1);
+    font-size: 1rem;
+    padding: 0.4rem 0.6rem;
+    border: 2px solid var(--color-border);
+    border-radius: 10px;
+    background: white;
+    color: var(--color-primary);
+    width: 100%;
+    box-sizing: border-box;
+    transition: border 0.2s;
+    text-align: start;
+    vertical-align: middle;
+    outline: none;
+
+    &::placeholder {
+      font-size: 0.9rem;
+    }
+
+    &:focus {
+      border-color: var(--color-primary);
+    }
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    appearance: none;
+    display: none;
+  }
+
+  /* For Microsoft Edge/IE (most common place to see this native eye) */
+  input[type="password"]::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  /* For WebKit-based browsers (like Chrome) if they were to add one natively,
+   or if a specific framework is using a similar pseudo-element */
+  input[type="password"]::-webkit-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  // modifying default style
+  input[type="checkbox"] {
+    width: 0.9rem;
+    height: 0.9rem;
+    cursor: pointer;
+    accent-color: var(--color-primary);
+    margin: 0;
+  }
+
+  // date input
+  input[type="date"] {
+    background-color: white;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+    font-family: var(--font-1);
+    color: var(--color-primary);
+    outline: none;
+    position: relative;
+    line-height: 1;
+
+    &:hover,
+    &:focus {
+      border-color: var(--color-primary);
+    }
+
+    // Placeholder styles
+    &::placeholder {
+      color: var(--color-text);
+      opacity: 1;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      position: absolute;
+      right: 0.1rem;
+      padding-left: 100%;
+      margin-top: 0.1rem;
+      cursor: pointer;
+    }
+  }
+}

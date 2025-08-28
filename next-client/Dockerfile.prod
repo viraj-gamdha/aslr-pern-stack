@@ -1,0 +1,61 @@
+FROM node:22-alpine AS base
+
+# setup docker image to install add node packages ----------
+
+FROM base AS dependencies
+
+WORKDIR /app
+COPY package.json package-lock.json* ./
+RUN npm ci
+
+# creating other stage from same base image ----------
+# setup docker image for next.js build
+
+FROM base AS build
+
+WORKDIR /app
+# we will require all the node_modules before build
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+
+# Set build-time variables using ARG
+ARG NEXT_PUBLIC_API_URL
+
+# setting some envs required on build time
+ENV NEXT_TELEMETRY_DISABLED=1 \
+  NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
+RUN npm run build
+
+# setup docker image to hold build, static and run the app ------------
+# run our app based on npm run build
+FROM base AS runner
+
+WORKDIR /app 
+
+# envs from arg
+ARG NEXT_PUBLIC_API_URL
+
+# setting some envs // envs must be present at run time
+ENV NODE_ENV=production \
+  NEXT_TELEMETRY_DISABLED=1 \
+  PORT=3000 \
+  HOSTNAME="0.0.0.0" \
+  NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+
+# copying public folder from build stage
+COPY --from=build /app/public ./public
+
+RUN mkdir .next
+
+# Expose the port
+EXPOSE 3000
+
+# copying required folders from build stage
+# we will have standalone folder with final build app in .next
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
+
+CMD ["node","server.js"]
+
+
