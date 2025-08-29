@@ -76,9 +76,8 @@ const Modal: FC<Props> = ({
         {heading && <div className={s.header}>
           <span>{heading}</span>
           <Button
-            variant="bordered"
+            variant="bordered_sm"
             onClick={closeModal}
-            style={{ padding: "0.2rem 0.4rem" }}
           >
             <X size={18} />
           </Button>

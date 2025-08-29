@@ -13,7 +13,7 @@ export const updateUserDetail = TryCatch<
   {},
   Partial<NewUser>
 >(async (req, res, next) => {
-  const userId = req.userId as string;
+  const userId = req.userId as string; ///UserId from middleware (already verified)
   const name = req.body?.name;
   const email = req.body?.email;
   const password = req.body?.password;

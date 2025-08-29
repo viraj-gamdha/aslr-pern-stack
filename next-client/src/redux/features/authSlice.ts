@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.userInfo = newUserInfo;
       localStorage.setItem("persist_signin", JSON.stringify(true));
     },
-    logout: (state, _action) => {
+    signout: (state, _action) => {
       state.userInfo = null;
       localStorage.setItem("persist_signin", JSON.stringify(false));
     },
@@ -23,7 +23,7 @@ const authSlice = createSlice({
 });
 
 ///setters of state using useAppDispatch
-export const { setUserInfo, logout } = authSlice.actions;
+export const { setUserInfo, signout } = authSlice.actions;
 ///can get current state of this slice using useAppSelector
 
 ///to register to the store

@@ -7,6 +7,7 @@ import { config } from "dotenv";
 import rateLimit from "express-rate-limit";
 import { authRoutes } from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import { projectRoutes } from "./routes/project.js";
 
 config({ path: "./.env" });
 export const envMode = process.env.NODE_ENV?.trim() || "development";
@@ -54,6 +55,7 @@ app.use(rateLimiter);
 // Routes ---
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/project", projectRoutes);
 // ---
 
 // All other routes

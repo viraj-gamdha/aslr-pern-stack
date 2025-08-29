@@ -7,6 +7,7 @@ import { useSignoutMutation } from "@/redux/apis/authApiSlice";
 import { errorToast, successToast } from "../ui/toast";
 import { parseError } from "@/utils/helpers";
 import { useAppSelector } from "@/hooks/storeHooks";
+import Link from "next/link";
 
 const HeaderMain = () => {
   const [signout, { isLoading }] = useSignoutMutation();
@@ -26,9 +27,9 @@ const HeaderMain = () => {
 
   return (
     <div className={s.container}>
-      <div className={s.logo}>
+      <Link className={s.logo} href={"/"}>
         <h4>DOSLR</h4>
-      </div>
+      </Link>
 
       {userInfo?.accessToken && (
         <div className={s.action_btns}>

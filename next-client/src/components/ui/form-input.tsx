@@ -17,9 +17,8 @@ import classNames from "classnames";
 type FormInputCommonProps<T extends FieldValues> = {
   id: Path<T>;
   form: UseFormReturn<T>;
-  label?: string;
-  styles?: CSSProperties;
-  className?: string;
+  formInputStyle?: CSSProperties;
+  formInputClassName?: string;
   showError?: boolean;
 };
 
@@ -40,8 +39,8 @@ export const FormInput = <T extends FieldValues>({
   id,
   variant = "input",
   label,
-  styles,
-  className,
+  formInputStyle,
+  formInputClassName,
   showError = true,
   ...props
 }: FormInputProps<T>) => {
@@ -78,10 +77,6 @@ export const FormInput = <T extends FieldValues>({
         );
       case "custom-select": {
         const customSelectProps = props as CustomSelectProps;
-        const isMultiple = customSelectProps.multiple || false;
-        const getEmptyValue = (): string | string[] => {
-          return isMultiple ? [] : "";
-        };
         return (
           <CustomSelect
             label={label}
@@ -98,18 +93,6 @@ export const FormInput = <T extends FieldValues>({
                 customSelectProps.onChange(val);
               }
             }}
-            onClear={() => {
-              const emptyValue = getEmptyValue();
-              setValue(id, emptyValue as T[Path<T>], {
-                shouldValidate: isSubmitted,
-                shouldDirty: true,
-                shouldTouch: true,
-              });
-              if (isSubmitted) trigger(id);
-              if (customSelectProps.onClear) {
-                customSelectProps.onClear();
-              }
-            }}
             {...customSelectProps}
           />
         );
@@ -117,6 +100,7 @@ export const FormInput = <T extends FieldValues>({
       case "otp-inputs": {
         const otpInputsProps = props as OTPInputsProps;
         const { onOTPChange, ...restProps } = otpInputsProps;
+
         return (
           <OTPInputs
             label={label}
@@ -151,7 +135,10 @@ export const FormInput = <T extends FieldValues>({
   };
 
   return (
-    <div style={styles} className={classNames(s.wrapper, className)}>
+    <div
+      style={formInputStyle}
+      className={classNames(s.wrapper, formInputClassName)}
+    >
       {renderVariant()}
       {errorMessage && showError && isSubmitted && (
         <p className={s.error}>{errorMessage}</p>

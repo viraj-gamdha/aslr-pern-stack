@@ -6,7 +6,7 @@ import { useRef, useState, type CSSProperties } from "react";
 // Base props for underlying input related components
 export interface BaseComponentProps {
   label?: string;
-  styles?: CSSProperties;
+  style?: CSSProperties;
   className?: string;
 }
 
@@ -23,7 +23,7 @@ export type InputProps = Omit<
 export const Input = ({
   type = "text",
   label,
-  styles,
+  style,
   value,
   onClear,
   onChange,
@@ -56,7 +56,7 @@ export const Input = ({
   };
 
   return (
-    <div className={classNames(s.container, className)} style={styles}>
+    <div className={classNames(s.container, className)} style={style}>
       {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
       <div className={s.wrapper}>
         {isSearch && <Search className={s.search_icon} size={16} />}
@@ -107,13 +107,13 @@ export type SelectProps = Omit<
 export const Select = ({
   label,
   options,
-  styles,
+  style,
   placeholder,
   className,
   ...props
 }: SelectProps) => {
   return (
-    <div className={classNames(s.container, className)} style={styles}>
+    <div className={classNames(s.container, className)} style={style}>
       {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
       <div className={s.wrapper}>
         <select id={props.name} {...props}>
@@ -144,7 +144,7 @@ export type TextareaProps = Omit<
 
 export const Textarea = ({
   label,
-  styles,
+  style,
   value,
   maxLength,
   charCount,
@@ -152,7 +152,7 @@ export const Textarea = ({
   ...props
 }: TextareaProps) => {
   return (
-    <div className={classNames(s.container, className)} style={styles}>
+    <div className={classNames(s.container, className)} style={style}>
       {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
       <div className={s.wrapper}>
         <textarea

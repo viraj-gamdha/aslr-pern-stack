@@ -5,7 +5,6 @@ import { BaseComponentProps, Input } from "./input";
 import classNames from "classnames";
 import { ChevronDown, X } from "lucide-react";
 
-// Custom Select Component
 export type CustomSelectProps = BaseComponentProps & {
   placeholder?: string;
   options: { value: string; label: string }[];
@@ -21,7 +20,7 @@ export type CustomSelectProps = BaseComponentProps & {
 export const CustomSelect = ({
   label,
   options,
-  styles,
+  style,
   placeholder,
   className,
   value,
@@ -38,21 +37,21 @@ export const CustomSelect = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
   const filteredOptions =
     searchable && searchTerm
       ? options.filter((option) =>
           option.label.toLowerCase().includes(searchTerm.toLowerCase())
         )
       : options;
-
-  const selectedValues = Array.isArray(value) ? value : value ? [value] : [];
   const selectedLabels = selectedValues
     .map((val) => options.find((opt) => opt.value === val)?.label)
     .filter(Boolean);
 
   const hasValue = selectedValues.length > 0;
-  const showClear = onClear && hasValue;
+  const showClear = hasValue;
 
+  // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -67,6 +66,23 @@ export const CustomSelect = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  // Respond to external value changes (e.g. form.reset)
+  useEffect(() => {
+    const normalized = Array.isArray(value) ? value : value ? [value] : [];
+
+    const current = selectedValues;
+    const isDifferent =
+      normalized.length !== current.length ||
+      normalized.some((val, i) => val !== current[i]);
+
+    if (isDifferent) {
+      setSearchTerm("");
+      if (!normalized.length) {
+        onClear?.();
+      }
+    }
+  }, [value]);
 
   const handleSelect = (optionValue: string) => {
     if (!onChange) return;
@@ -84,9 +100,7 @@ export const CustomSelect = ({
   };
 
   const handleClear = () => {
-    if (onClear) {
-      onClear();
-    } else if (onChange) {
+    if (onChange) {
       onChange(multiple ? [] : "");
     }
   };
@@ -104,7 +118,7 @@ export const CustomSelect = ({
   return (
     <div
       className={classNames(sInput.container, className)}
-      style={styles}
+      style={style}
       ref={containerRef}
     >
       {label && <span className={sInput.label}>{label}</span>}
@@ -113,7 +127,6 @@ export const CustomSelect = ({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         {...props}
       >
-        {/* select - main display part */}
         <div
           className={classNames(s.display, {
             [s.open]: isOpen,
@@ -124,7 +137,6 @@ export const CustomSelect = ({
             {getDisplayText()}
           </span>
 
-          {/* action btns */}
           <div className={s.actions}>
             {showClear && (
               <button
@@ -138,7 +150,6 @@ export const CustomSelect = ({
                 <X size={16} />
               </button>
             )}
-
             <button type="button">
               <ChevronDown
                 size={16}
@@ -148,12 +159,11 @@ export const CustomSelect = ({
           </div>
         </div>
 
-        {/* dd */}
         {isOpen && (
           <div
             className={s.dropdown}
             ref={dropdownRef}
-            onClick={(e) => e.stopPropagation()} // Prevent clicks inside dropdown from toggling isOpen
+            onClick={(e) => e.stopPropagation()}
           >
             {searchable && (
               <div className={s.search_container}>
@@ -166,8 +176,6 @@ export const CustomSelect = ({
                 />
               </div>
             )}
-
-            {/* options */}
             <div className={s.options_container}>
               {filteredOptions.length === 0 ? (
                 <p>No options found</p>
@@ -179,7 +187,7 @@ export const CustomSelect = ({
                       [s.selected]: selectedValues.includes(option.value),
                     })}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent option click from toggling isOpen
+                      e.stopPropagation();
                       handleSelect(option.value);
                     }}
                   >
@@ -189,7 +197,7 @@ export const CustomSelect = ({
                         checked={selectedValues.includes(option.value)}
                         onChange={() => {}}
                         className={s.option_checkbox}
-                        onClick={(e) => e.stopPropagation()} // Prevent checkbox click from toggling isOpen
+                        onClick={(e) => e.stopPropagation()}
                       />
                     )}
                     <span>{option.label}</span>

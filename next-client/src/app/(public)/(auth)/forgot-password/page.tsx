@@ -3,20 +3,24 @@
 import { errorToast, successToast } from "@/components/ui/toast";
 import s from "../auth.module.scss";
 import classNames from "classnames";
-import React from "react";
+import React, { useState } from "react";
 import { parseError } from "@/utils/helpers";
-import { ForgotPassInputs, forgotPassSchema } from "@/types/user";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, LinkButton } from "@/components/ui/button";
-import { useForgotPasswordMutation } from "@/redux/apis/authApiSlice";
 import { FormInput } from "@/components/ui/form-input";
+import { useRequestOTPMutation } from "@/redux/apis/authApiSlice";
+import { SendOTPInputs, sendOTPSchema } from "@/types/user";
+import ResetPassOTPModal from "@/components/page/auth/reset-pass-otp-modal";
+import { useRouter } from "next/navigation";
 
 const ForgotPassword = () => {
-  const [forgotPass, { isLoading }] = useForgotPasswordMutation();
+  const [forgotPass, { isLoading }] = useRequestOTPMutation();
+  const [showResetPassModal, setShowResetPassModal] = useState(false);
+  const navigate = useRouter();
 
-  const form = useForm<ForgotPassInputs>({
-    resolver: zodResolver(forgotPassSchema),
+  const form = useForm<SendOTPInputs>({
+    resolver: zodResolver(sendOTPSchema),
     defaultValues: {
       email: "",
     },
@@ -27,15 +31,23 @@ const ForgotPassword = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (data: ForgotPassInputs) => {
+  const onSubmit = async (data: SendOTPInputs) => {
     try {
       const res = await forgotPass(data).unwrap();
       if (res.success) {
         successToast(res.message);
+        setShowResetPassModal(true);
       }
     } catch (error) {
       errorToast(parseError(error));
     }
+  };
+
+  const handleOnSuccessReset = async () => {
+    setShowResetPassModal(false);
+    // navigate to signin...
+    navigate.push("/signin");
+    form.reset();
   };
 
   return (
@@ -75,6 +87,14 @@ const ForgotPassword = () => {
           </LinkButton>
         </div>
       </form>
+
+      {showResetPassModal && form.getValues("email") && (
+        <ResetPassOTPModal
+          email={form.getValues("email")}
+          onClose={() => setShowResetPassModal(false)}
+          onSuccess={handleOnSuccessReset}
+        />
+      )}
     </div>
   );
 };

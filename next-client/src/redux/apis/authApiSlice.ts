@@ -1,12 +1,15 @@
 import { apiSlice } from "./apiSlice";
-import { setUserInfo, logout } from "../features/authSlice";
+import { setUserInfo, signout } from "../features/authSlice";
 import {
-  ForgotPassInputs,
+  ResetPassInputs,
+  SendOTPInputs,
   SigninFormInputs,
   SignupFormInputs,
   UserInfo,
+  VerifyEmailOTPInputs,
 } from "@/types/user";
 import { ApiResult } from "@/types/general";
+import { projectApiSlice } from "./projectApiSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,9 +25,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           //dispatch userInfo (including header data) to global redux store
-          dispatch(setUserInfo(data.data));
+          if (data.success && data.data.accessToken) {
+            dispatch(setUserInfo(data.data));
+          }
         } catch (error) {
-          console.log("Login Error", error);
+          console.log("Signin Error", error);
         }
       },
     }),
@@ -37,22 +42,40 @@ export const authApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    forgotPassword: builder.mutation<ApiResult, ForgotPassInputs>({
+    requestOTP: builder.mutation<
+      ApiResult<{ resendAfter: number }>,
+      SendOTPInputs
+    >({
       query: (data) => ({
-        url: "auth/forgot_password",
+        url: "auth/request_otp",
         method: "POST",
         body: data,
       }),
     }),
 
-    ////
+    verifyOTP: builder.mutation<ApiResult, VerifyEmailOTPInputs>({
+      query: (data) => ({
+        url: "auth/verify_user",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    resetPassword: builder.mutation<ApiResult, ResetPassInputs>({
+      query: (data) => ({
+        url: "auth/reset_password",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     refresh: builder.mutation<ApiResult<UserInfo>, {}>({
       query: () => ({
         url: "auth/refresh_token",
         method: "GET",
       }),
 
-      ///We are globally setting user info in to redux
+      // we are globally setting user info in to redux
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           ////user info in data
@@ -67,7 +90,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
       },
     }),
 
-    signout: builder.mutation<ApiResult<{}>, {}>({
+    signout: builder.mutation<ApiResult, {}>({
       query: () => ({
         url: "auth/signout",
         method: "POST",
@@ -77,7 +100,21 @@ export const authApiSlice = apiSlice.injectEndpoints({
         try {
           const { data } = await queryFulfilled;
           if (data.success) {
-            dispatch(logout({}));
+            dispatch(signout({}));
+
+            // Optionally clear specific cached queries
+            // dispatch(
+            //   projectApiSlice.util.updateQueryData(
+            //     "getUserProjects",
+            //     undefined,
+            //     (draft) => {
+            //       draft.data = []; // or null, depending on your shape
+            //     }
+            //   )
+            // );
+
+            // Or reset the entire API cache
+            dispatch(projectApiSlice.util.resetApiState());
           }
         } catch (error) {
           console.log("Error signing Out user", error);
@@ -90,7 +127,9 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useSigninMutation,
   useSignupMutation,
+  useRequestOTPMutation,
+  useVerifyOTPMutation,
   useRefreshMutation,
-  useForgotPasswordMutation,
+  useResetPasswordMutation,
   useSignoutMutation,
 } = authApiSlice;

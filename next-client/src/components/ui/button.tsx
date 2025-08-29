@@ -3,7 +3,7 @@ import classNames from "classnames";
 import s from "./button.module.scss";
 import Link, { LinkProps } from "next/link";
 
-type ButtonVariants = "primary" | "bordered" | "border_b" | "icon";
+type ButtonVariants = "primary" | "bordered" | "bordered_sm" | "border_b" | "icon";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariants;

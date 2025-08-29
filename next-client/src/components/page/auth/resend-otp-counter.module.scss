@@ -1,0 +1,16 @@
+.container {
+  width: fit-content;
+
+  > p {
+    font-weight: 400;
+    color: var(--color-text-l);
+
+    > span {
+      font-family: var(--font-1);
+      font-weight: 500;
+      color: var(--color-text);
+    }
+  }
+
+  //   button
+}

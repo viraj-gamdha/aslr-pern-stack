@@ -10,6 +10,7 @@ export type OTPInputsProps = BaseComponentProps & {
   firstFocus?: boolean;
   value?: string;
   name?: string;
+  onClear?: () => void;
 };
 
 const OTPInputs: FC<OTPInputsProps> = ({
@@ -20,7 +21,8 @@ const OTPInputs: FC<OTPInputsProps> = ({
   name,
   label,
   className,
-  styles,
+  style,
+  onClear,
 }) => {
   const [otpValues, setOtpValues] = useState<string[]>(
     Array(allowedOtpLength).fill("")
@@ -37,16 +39,24 @@ const OTPInputs: FC<OTPInputsProps> = ({
     }
   }, [firstFocus]);
 
-  // Sync external value only if it changes and is different from internal state
+  // Sync external value (e.g. from form.reset)
   useEffect(() => {
-    if (value && value !== otpValues.join("")) {
-      const newValues = value
-        .slice(0, allowedOtpLength)
-        .split("")
-        .map((char) => (/\d/.test(char) ? char : ""));
+    const normalized = value?.slice(0, allowedOtpLength) || "";
+    const newValues = normalized
+      .split("")
+      .map((char) => (/\d/.test(char) ? char : ""));
+    const joinedNew = newValues.join("");
+    const joinedCurrent = otpValues.join("");
+
+    if (joinedNew !== joinedCurrent) {
       setOtpValues(
         newValues.concat(Array(allowedOtpLength - newValues.length).fill(""))
       );
+
+      if (!value) {
+        inputRefs.current[0]?.focus();
+        onClear?.();
+      }
     }
   }, [value, allowedOtpLength]);
 
@@ -108,7 +118,7 @@ const OTPInputs: FC<OTPInputsProps> = ({
   };
 
   return (
-    <div className={classNames(sInput.container, className)} style={styles}>
+    <div className={classNames(sInput.container, className)} style={style}>
       {label && (
         <label className={sInput.label} htmlFor={name}>
           {label}
@@ -118,7 +128,7 @@ const OTPInputs: FC<OTPInputsProps> = ({
         {Array.from({ length: allowedOtpLength }).map((_, index) => (
           <input
             key={index}
-            type="text"
+            type="number"
             inputMode="numeric"
             pattern="\d*"
             className={s.box}

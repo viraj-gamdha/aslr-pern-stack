@@ -36,6 +36,31 @@
   }
 }
 
+.bordered_sm {
+  width: fit-content;
+  background-color: transparent;
+  border: 2px solid var(--color-border);
+  color: var(--color-primary);
+  border-radius: 8px;
+  padding: 0.2rem 0.3rem;
+
+  &:hover {
+    background-color: var(--color-border);
+  }
+}
+
+.icon {
+  width: fit-content;
+  padding: 0.4rem 0.3rem;
+  border-radius: 8px;
+  color: var(--color-primary);
+  background-color: transparent;
+
+  &:hover {
+    background-color: var(--color-border);
+  }
+}
+
 .border_b {
   padding: 0;
   border-bottom: 2px dotted var(--color-border);

@@ -10,6 +10,7 @@ import bcrypt from "bcrypt";
 import { emailRegex, passwordRegex } from "@/utils/regex";
 import { Resend } from "resend";
 import { otpEmail } from "@/email-templates/otpEmail";
+import { verifyEmailOTP } from "@/utils/auth";
 
 // Constants
 const ACCESS_TOKEN_EXPIRY = 60 * 15; // 15 minutes
@@ -60,7 +61,9 @@ export const signupUser = TryCatch<
     where: eq(user.email, email),
   });
   if (existingUser) {
-    return next(new ErrorHandler(400, "User already exists"));
+    return next(
+      new ErrorHandler(400, "User already exists. Please initiate Signin.")
+    );
   }
 
   // Hash password and create user
@@ -86,7 +89,13 @@ export const signinUser = TryCatch<
   {}, // ReqParams
   {}, // ReqQueries
   {}, // ReqCookies
-  { id: string; name: string; email: string; accessToken: string } // Response
+  {
+    id?: string;
+    name?: string;
+    email?: string;
+    accessToken: string | null;
+    emailVerified: boolean;
+  } // Response
 >(async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -104,6 +113,18 @@ export const signinUser = TryCatch<
   const isMatch = await bcrypt.compare(password, foundUser.password);
   if (!isMatch) {
     return next(new ErrorHandler(400, "Invalid credentials"));
+  }
+
+  // strict verification before signin...
+  if (!foundUser.emailVerified) {
+    return res.status(200).json({
+      success: true,
+      message: "Email verification pending",
+      data: {
+        emailVerified: false,
+        accessToken: null,
+      },
+    });
   }
 
   // Generate tokens
@@ -135,12 +156,13 @@ export const signinUser = TryCatch<
 
   return res.status(200).json({
     success: true,
-    message: "Signin successful",
+    message: "Welcome",
     data: {
       id: foundUser.id,
       name: foundUser.name,
       email: foundUser.email,
       accessToken: accessToken,
+      emailVerified: foundUser.emailVerified,
     },
   });
 });
@@ -186,7 +208,7 @@ export const sendEmailOTP = TryCatch<
     return next(
       new ErrorHandler(
         400,
-        `You can resend OTP after ${Math.abs(resendEmailAfter)} seconds`
+        `Please try again after ${Math.abs(resendEmailAfter)} seconds`
       )
     );
   }
@@ -209,26 +231,28 @@ export const sendEmailOTP = TryCatch<
     .returning();
 
   // send email
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  // const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const resEmail = await resend.emails.send({
-    from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
-    to: emailSentOTP.email,
-    subject: "Email verification",
-    replyTo: process.env.RESEND_REPLY_TO,
-    html: otpEmail(findInDb.name, generatedOtp),
-  });
+  // const resEmail = await resend.emails.send({
+  //   from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
+  //   to: emailSentOTP.email,
+  //   subject: "Email verification",
+  //   replyTo: process.env.RESEND_REPLY_TO,
+  //   html: otpEmail(findInDb.name, generatedOtp),
+  // });
 
-  if (resEmail.error) {
-    await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
+  // if (resEmail.error) {
+  //   await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
 
-    return next(
-      new ErrorHandler(
-        400,
-        "Something went wrong! please try to reach us or try again later."
-      )
-    );
-  }
+  //   return next(
+  //     new ErrorHandler(
+  //       400,
+  //       "Something went wrong! please try to reach us or try again later."
+  //     )
+  //   );
+  // }
+
+  console.log("OTP is:", generatedOtp);
 
   // for showing time
   const resendEmailAfter =
@@ -236,75 +260,31 @@ export const sendEmailOTP = TryCatch<
 
   return res.status(200).json({
     success: true,
-    message: "OTP sent successfully",
+    message: "Verification email OTP sent successfully",
     data: { resendAfter: resendEmailAfter },
   });
 });
 
-// Verification after OTP submitted
-export const verifyOTP = TryCatch<{ email: string; emailOTP: string }>(
+// Verification after Signup
+export const verifyUser = TryCatch<{ email: string; emailOTP: string }>(
   async (req, res, next) => {
-    const { email, emailOTP } = req.body;
-    if (!email) {
-      return next(new ErrorHandler(400, "Please provide a valid email"));
+    const isVerified = await verifyEmailOTP(
+      req.body?.email,
+      req.body?.emailOTP
+    );
+
+    if (!isVerified) {
+      return next(new ErrorHandler(400, "Something went wrong"));
     }
 
-    if (!emailRegex.test(email)) {
-      return next(new ErrorHandler(400, "Invalid email"));
-    }
-
-    if (!emailOTP) {
-      return next(new ErrorHandler(400, "Please provide an OTP sent to email"));
-    }
-
-    // check for existing user
-    const existingUser = await db.query.user.findFirst({
-      where: eq(user.email, email),
-    });
-
-    if (!existingUser) {
-      return next(
-        new ErrorHandler(400, "No user found with given credentials")
-      );
-    }
-
-    // marching
-    const matchedOTPRecord = await db.query.otp.findFirst({
-      where: eq(otp.email, existingUser.email),
-    });
-
-    if (!matchedOTPRecord) {
-      return next(
-        new ErrorHandler(400, "No records found. Please request again.")
-      );
-    }
-
-    const { expiresAt } = matchedOTPRecord;
-
-    // checking for expired code
-    if (expiresAt.getTime() < Date.now()) {
-      await db.delete(otp).where(eq(otp.email, existingUser.email));
-      return next(
-        new ErrorHandler(400, "OTP is expired. Please request again.")
-      );
-    }
-
-    const hashedOtpEmail = matchedOTPRecord.emailOtp;
-    // verify value
-    const matchEmailOtp = await bcrypt.compare(emailOTP, hashedOtpEmail);
-
-    if (!matchEmailOtp) {
-      return next(new ErrorHandler(400, "OTP is invalid. Please try again."));
-    }
-
-    // set emailVerified status
+    // set emailVerified status (use must exists in db before sending any otp)
     await db
       .update(user)
       .set({ emailVerified: true })
-      .where(eq(user.email, existingUser.email));
+      .where(eq(user.email, req.body?.email));
 
     // delete record from otp
-    await db.delete(otp).where(eq(otp.email, existingUser.email));
+    await db.delete(otp).where(eq(otp.email, req.body?.email));
 
     return res.status(200).json({
       success: true,
@@ -313,6 +293,56 @@ export const verifyOTP = TryCatch<{ email: string; emailOTP: string }>(
     });
   }
 );
+
+// Forgot password reset
+export const verifyAndResetPassword = TryCatch<{
+  email: string;
+  emailOTP: string;
+  password: string;
+  confirmPassword: string;
+}>(async (req, res, next) => {
+  const isVerified = await verifyEmailOTP(req.body?.email, req.body?.emailOTP);
+
+  if (!isVerified) {
+    return next(new ErrorHandler(400, "Something went wrong"));
+  }
+
+  const { password, confirmPassword } = req.body;
+
+  if (!password || !confirmPassword) {
+    return next(new ErrorHandler(400, "Password is required"));
+  }
+
+  if (password !== confirmPassword) {
+    return next(new ErrorHandler(400, "Passwords doesn't match"));
+  }
+
+  if (!passwordRegex.test(confirmPassword)) {
+    return next(
+      new ErrorHandler(
+        400,
+        "Invalid password: min 8 chars, 1 uppercase, 1 lowercase, 1 digit, 1 special character."
+      )
+    );
+  }
+
+  // verified, set new password
+  const hashedPassword = await hashPassword(confirmPassword);
+
+  await db
+    .update(user)
+    .set({ password: hashedPassword })
+    .where(eq(user.email, req.body?.email));
+
+  // delete record from otp
+  await db.delete(otp).where(eq(otp.email, req.body?.email));
+
+  return res.status(200).json({
+    success: true,
+    message: `Your password has been reset successfully`,
+    data: null,
+  });
+});
 
 // Refresh access token
 export const refreshToken = TryCatch<

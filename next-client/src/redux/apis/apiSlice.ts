@@ -4,7 +4,7 @@ import {
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
 import type { RootState } from "../store";
-import { setUserInfo, logout } from "../features/authSlice";
+import { setUserInfo, signout } from "../features/authSlice";
 import { UserInfo } from "@/types/user";
 
 // Base query
@@ -56,14 +56,14 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
         refreshResult?.error?.status === 403 ||
         refreshResult?.error?.status === 401
       ) {
-        api.dispatch(logout({}));
+        api.dispatch(signout({}));
       }
       return refreshResult;
     }
 
     ///refresh token expired or not valid or not found
   } else if (result.error?.status === 401) {
-    api.dispatch(logout({}));
+    api.dispatch(signout({}));
   }
 
   return result;
@@ -71,6 +71,6 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: [],
+  tagTypes: ["Project", "Projects"],
   endpoints: (_builder) => ({}),
 });

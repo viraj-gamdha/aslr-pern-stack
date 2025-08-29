@@ -15,13 +15,7 @@ export const userInfoSchema = z
         message:
           "Password must include uppercase, lowercase, number, and special character",
       }),
-    confirmPassword: z
-      .string()
-      .min(8, "Confirm password must be at least 8 characters")
-      .regex(passwordRegex, {
-        message:
-          "Confirm password must include uppercase, lowercase, number, and special character",
-      }),
+    confirmPassword: z.string(),
     emailVerified: z.boolean().optional().nullable(),
     accessToken: z.string().optional().nullable(),
   })
@@ -40,19 +34,24 @@ export const signinFormSchema = userInfoSchema.pick({
 
 export type SigninFormInputs = z.infer<typeof signinFormSchema>;
 
-export const signupSchema = userInfoSchema.omit({
-  id: true,
-  accessToken: true,
-});
+export const signupSchema = userInfoSchema
+  .omit({
+    id: true,
+    accessToken: true,
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
 
 export type SignupFormInputs = z.infer<typeof signupSchema>;
 
 // Forgot password and reset
-export const forgotPassSchema = userInfoSchema.pick({
+export const sendOTPSchema = userInfoSchema.pick({
   email: true,
 });
 
-export type ForgotPassInputs = z.infer<typeof forgotPassSchema>;
+export type SendOTPInputs = z.infer<typeof sendOTPSchema>;
 
 export const resetPassSchema = userInfoSchema
   .pick({
@@ -61,11 +60,23 @@ export const resetPassSchema = userInfoSchema
     confirmPassword: true,
   })
   .extend({
-    otp: z.string().regex(/^\d{4}$/, {
+    emailOTP: z.string().regex(/^\d{4}$/, {
       message: "OTP must be exactly 4 digits",
     }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
   });
+  
 export type ResetPassInputs = z.infer<typeof resetPassSchema>;
+
+export const verifyEmailOTPSchema = resetPassSchema.pick({
+  email: true,
+  emailOTP: true,
+});
+
+export type VerifyEmailOTPInputs = z.infer<typeof verifyEmailOTPSchema>;
 
 // User data update
 export const profileUpdateSchema = z.object({
