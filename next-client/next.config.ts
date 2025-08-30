@@ -4,10 +4,10 @@ const nextConfig: NextConfig = {
   sassOptions: {
     additionalData: `@use "@/styles/media" as *;`,
   },
+  devIndicators: false,
   images: {
     unoptimized: true,
   },
-  // output: "export", // update accordingly
 };
 
 export default nextConfig;

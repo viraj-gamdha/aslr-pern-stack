@@ -128,17 +128,17 @@ export const getUserProjects = TryCatch<
 // Get a specific project by ID
 export const getUserProjectById = TryCatch<
   {},
-  { projectId: string },
+  { id: string },
   {},
   {},
   Project & { projectMembers: ProjectMember[] }
 >(async (req, res, next) => {
   const userId = req.userId as string; // UserId from middleware
-  const { projectId } = req.params;
+  const { id } = req.params;
 
   // Fetch project with its members using ORM relations
   const projectData = await db.query.project.findFirst({
-    where: eq(project.id, projectId),
+    where: eq(project.id, id),
     with: {
       projectMembers: {
         where: eq(projectMember.userId, userId),

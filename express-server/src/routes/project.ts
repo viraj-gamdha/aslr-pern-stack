@@ -1,6 +1,7 @@
 import {
   createProject,
   deleteProject,
+  getUserProjectById,
   getUserProjects,
   updateProject,
 } from "@/controllers/project.js";
@@ -12,7 +13,8 @@ const projectRoutes = Router();
 projectRoutes.use(verifyAuth);
 projectRoutes.post("/create", createProject);
 projectRoutes.put("/update/:id", updateProject);
-projectRoutes.get("/", getUserProjects);
+projectRoutes.get("/all", getUserProjects);
+projectRoutes.get("/:id", getUserProjectById)
 projectRoutes.delete("/:id", deleteProject);
 
 // todo later: user invitation so skip it for now

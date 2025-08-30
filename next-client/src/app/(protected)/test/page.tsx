@@ -68,7 +68,7 @@ const TestFormComponents = () => {
   return (
     <main className="layout-a">
       <HeaderMain />
-      <div className="content-wrapper">
+      <div className="layout-content-wrapper">
         <div
           style={{
             maxWidth: "500px",

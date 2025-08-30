@@ -1,29 +1,16 @@
-// Global styles for pages, layouts or bigger nested components
+// Global styles for pages or bigger nested components
 
-.page-container {
+.page-container-col {
   width: 100%;
-  height: 100%;
-  padding: 1rem;
+  height: fit-content;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
 
-  .wrapper {
-    width: 100%;
-    max-width: 60rem;
-    height: fit-content;
+  .page-header {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    background-color: white;
-    padding: 2rem;
-    border-radius: 10px;
-
-    // overriding the theme switch styling
-    [data-theme="dark"] & {
-      background-color: #151515;
-    }
+    gap: 2rem;
   }
 }

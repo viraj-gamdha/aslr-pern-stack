@@ -1,9 +1,16 @@
-import type { ButtonHTMLAttributes, FC, ReactNode } from "react";
+import type { ButtonHTMLAttributes, CSSProperties, FC, ReactNode } from "react";
 import classNames from "classnames";
 import s from "./button.module.scss";
 import Link, { LinkProps } from "next/link";
 
-type ButtonVariants = "primary" | "bordered" | "bordered_sm" | "border_b" | "icon";
+type ButtonVariants =
+  | "primary"
+  | "bordered"
+  | "bordered_sm"
+  | "border_b"
+  | "icon"
+  | "icon_title"
+  | "icon_bordered";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariants;
@@ -39,6 +46,7 @@ interface LinkButtonProps extends LinkProps {
   children?: ReactNode;
   disabled?: boolean;
   className?: string;
+  style?: CSSProperties;
 }
 
 export const LinkButton: FC<LinkButtonProps> = ({
@@ -48,6 +56,7 @@ export const LinkButton: FC<LinkButtonProps> = ({
   href = "/",
   replace,
   disabled,
+  style,
   ...rest
 }) => {
   const classes = classNames(
@@ -60,6 +69,7 @@ export const LinkButton: FC<LinkButtonProps> = ({
   return (
     <Link
       href={href}
+      style={style}
       replace={replace}
       aria-disabled={disabled}
       className={classes}

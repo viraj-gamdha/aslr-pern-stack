@@ -1,9 +1,11 @@
 "use client";
 
+// projects list page
+
 import ConfirmationModal from "@/components/layout/confirmation-modal";
 import s from "./home.module.scss";
 import HeaderMain from "@/components/layout/header-main";
-import { Button, LinkButton } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/form-input";
 import { PageLoader } from "@/components/ui/loader";
 import Modal from "@/components/ui/modal";
@@ -77,14 +79,14 @@ const Home = () => {
   };
 
   return (
-    <main className="layout-a">
+    <div className="layout-a">
       <HeaderMain />
-      <div className="content-wrapper">
+      <main className="layout-content-wrapper">
         {isLoading ? (
           <PageLoader />
         ) : (
-          <section className={s.container}>
-            <div className={s.header}>
+          <section className="page-container-col">
+            <div className="page-header">
               <h3>
                 Projects <span>({data?.data?.length || 0})</span>
               </h3>
@@ -106,7 +108,7 @@ const Home = () => {
               {data?.data.map((p) => {
                 return (
                   <Link
-                    href={`/project/${p.id}`}
+                    href={`/project/${p.id}/document`}
                     className={s.project_card}
                     key={p.id}
                   >
@@ -132,7 +134,9 @@ const Home = () => {
                         });
                       }}
                     >
-                      <Trash2 size={16} color="var(--color-red)" />
+                      <span>
+                        <Trash2 size={16} color="var(--color-red)" />
+                      </span>
                     </Button>
                   </Link>
                 );
@@ -140,7 +144,7 @@ const Home = () => {
             </div>
           </section>
         )}
-      </div>
+      </main>
 
       {/* Modals */}
       {createProject && (
@@ -184,7 +188,7 @@ const Home = () => {
           message="Are you sure you want to delete this project? This action cannot be undone. Please click on confirm to proceed."
         />
       )}
-    </main>
+    </div>
   );
 };
 

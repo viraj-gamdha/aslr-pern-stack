@@ -1,7 +1,14 @@
-import type { ReactNode } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-export const Portal = ({ children }: {children: ReactNode}) => {
-  const portalRoot = document.getElementById('portal-root');
-  return createPortal(children, portalRoot as HTMLElement);
+export const Portal = ({ children }: { children: React.ReactNode }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  return mounted ? createPortal(children, document.body) : null;
 };

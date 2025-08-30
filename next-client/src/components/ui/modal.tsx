@@ -73,15 +73,16 @@ const Modal: FC<Props> = ({
           ...wrapperStyle,
         }}
       >
-        {heading && <div className={s.header}>
-          <span>{heading}</span>
-          <Button
-            variant="bordered_sm"
-            onClick={closeModal}
-          >
-            <X size={18} />
-          </Button>
-        </div>}
+        {heading && (
+          <div className={s.header}>
+            <span>{heading}</span>
+            <Button variant="bordered_sm" onClick={closeModal}>
+              <span>
+                <X size={18} />
+              </span>
+            </Button>
+          </div>
+        )}
         {/* Modal content */}
         {children}
       </div>

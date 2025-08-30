@@ -10,6 +10,20 @@
   transition: all 0.1s ease-in-out;
   cursor: pointer;
   text-wrap: nowrap;
+
+  // put icon in a span
+  // or can put text also
+  > span, p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-1);
+    color: var(--color-primary);
+
+    > svg {
+      color: var(--color-primary);
+    }
+  }
 }
 
 .disabled {
@@ -49,9 +63,20 @@
   }
 }
 
+.border_b {
+  padding: 0;
+  border-bottom: 2px dotted var(--color-border);
+  border-radius: 0;
+
+  &:hover {
+    border-color: var(--color-text);
+  }
+}
+
 .icon {
-  width: fit-content;
-  padding: 0.4rem 0.3rem;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0;
   border-radius: 8px;
   color: var(--color-primary);
   background-color: transparent;
@@ -61,12 +86,25 @@
   }
 }
 
-.border_b {
-  padding: 0;
-  border-bottom: 2px dotted var(--color-border);
-  border-radius: 0;
+.icon_title {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.4rem 0.6rem;
+  gap: 1rem;
 
   &:hover {
-    border-color: var(--color-text);
+    background-color: var(--color-border);
+  }
+}
+
+.icon_bordered {
+  width: 100%;
+  justify-content: flex-start;
+  padding: 0.4rem 0.6rem;
+  gap: 1rem;
+  border: 2px solid var(--color-border);
+
+  &:hover {
+    border-color: var(--color-primary);
   }
 }

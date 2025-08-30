@@ -30,7 +30,7 @@ export default function PublicLayout({
   return (
     <main className="layout-a">
       <HeaderMain />
-      <div className="content-wrapper">{children}</div>
+      <div className="layout-content-wrapper">{children}</div>
     </main>
   );
 }

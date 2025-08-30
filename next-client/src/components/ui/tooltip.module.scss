@@ -1,29 +1,28 @@
-.wrapper {
+.container {
+  width: fit-content;
   display: inline-block;
   position: relative;
 }
 
-.tooltip {
+.wrapper {
   width: fit-content;
   position: fixed;
-  background-color: rgba($color: var(--color-primary), $alpha: 0.9);
+  background-color: var(--color-primary);
   color: white;
-  font-family: 'Arial', sans-serif;
+  font-family: var(--font-1);
   font-size: 0.7rem;
   border-radius: 8px;
   padding: 0.35rem 0.6rem;
-  transition:
-    transform 0.2s ease-in-out,
-    opacity 0.2s ease-in-out,
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out,
     visibility 0.1s ease-in-out;
   visibility: hidden;
   opacity: 0;
   z-index: 9999;
   pointer-events: none;
   text-wrap: wrap;
-}
 
-.visible {
-  visibility: visible;
-  opacity: 0.95;
+  &.visible {
+    visibility: visible;
+    opacity: 0.95;
+  }
 }

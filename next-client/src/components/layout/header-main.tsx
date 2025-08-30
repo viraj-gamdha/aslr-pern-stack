@@ -1,50 +1,54 @@
 "use client";
 
-import { LogOutIcon, User2 } from "lucide-react";
-import { Button } from "../ui/button";
+import { Atom, Folder, LogOutIcon, User2 } from "lucide-react";
+import { Button, LinkButton } from "../ui/button";
 import s from "./header-main.module.scss";
-import { useSignoutMutation } from "@/redux/apis/authApiSlice";
-import { errorToast, successToast } from "../ui/toast";
-import { parseError } from "@/utils/helpers";
 import { useAppSelector } from "@/hooks/storeHooks";
 import Link from "next/link";
+import { useSignout } from "@/hooks/useSignout";
+import { usePathname } from "next/navigation";
 
 const HeaderMain = () => {
-  const [signout, { isLoading }] = useSignoutMutation();
   const userInfo = useAppSelector((state) => state.auth.userInfo);
-
-  const handleSignout = async () => {
-    try {
-      const res = await signout({}).unwrap();
-
-      if (res.success) {
-        successToast(res.message);
-      }
-    } catch (error) {
-      errorToast(parseError(error));
-    }
-  };
+  const pathname = usePathname();
+  const { handleSignout, isLoading: loadingSignout } = useSignout();
 
   return (
     <div className={s.container}>
       <Link className={s.logo} href={"/"}>
+        <span>
+          <Atom size={18} />
+        </span>
         <h4>DOSLR</h4>
       </Link>
 
       {userInfo?.accessToken && (
         <div className={s.action_btns}>
-          <Button variant="bordered">
-            <User2 size={18} />
-            My Account
-          </Button>
-
+          {!pathname.endsWith("/") && (
+            <LinkButton variant="bordered" href={"/"}>
+              <span>
+                <Folder size={18} />
+              </span>
+              <p>My Projects</p>
+            </LinkButton>
+          )}
+          {!pathname.endsWith("/account") && (
+            <LinkButton variant="bordered" href={"/account"}>
+              <span>
+                <User2 size={18} />
+              </span>
+              <p>My Account</p>
+            </LinkButton>
+          )}
           <Button
             variant="bordered"
             onClick={handleSignout}
-            disabled={isLoading}
+            disabled={loadingSignout}
           >
-            <LogOutIcon size={18} />
-            Signout
+            <span>
+              <LogOutIcon size={18} />
+            </span>
+            <p>Signout</p>
           </Button>
         </div>
       )}

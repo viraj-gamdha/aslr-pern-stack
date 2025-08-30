@@ -79,7 +79,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
     // Get all user projects
     getUserProjects: builder.query<ApiResult<Project[]>, void>({
       query: () => ({
-        url: "project",
+        url: "project/all",
         method: "GET",
       }),
       providesTags: ["Projects"], // Provide tag for projects list

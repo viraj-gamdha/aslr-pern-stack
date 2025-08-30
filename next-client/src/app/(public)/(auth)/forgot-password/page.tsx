@@ -68,7 +68,7 @@ const ForgotPassword = () => {
         />
 
         <p>
-          You will receive an email containing a 4-digit OTP, which you'll need
+          You will receive an email containing a 4-digit OTP, which you&apos;ll need
           to enter to reset your password.
         </p>
 

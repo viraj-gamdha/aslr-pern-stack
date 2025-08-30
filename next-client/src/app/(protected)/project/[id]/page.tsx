@@ -1,13 +1,11 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useParams } from "next/navigation";
-import React from "react";
-
-const Project = () => {
-  const params = useParams();
-  const id = params?.id as string;
-
-  return <div>Project {id}</div>;
-};
-
-export default Project;
+// defaulr redirect...
+export default async function ProjectRoot({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  redirect(`/project/${id}/document`);
+}
