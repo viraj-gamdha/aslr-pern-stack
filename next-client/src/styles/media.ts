@@ -1,3 +1,4 @@
+// To use in ts files
 export const media = {
   xsm: 350,
   sm: 550,
@@ -5,4 +6,4 @@ export const media = {
   lg: 1200,
   xl: 1800,
 };
-// to use in ts files
+

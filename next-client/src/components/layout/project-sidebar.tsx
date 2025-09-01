@@ -36,7 +36,7 @@ const projectLinks = [
 ];
 
 const ProjectSidebar = () => {
-  const { id } = useParams<{ id: string }>();
+  const { projectId } = useParams<{ projectId: string }>();
   const pathname = usePathname();
   const { handleSignout, isLoading: loadingSignout } = useSignout();
   const { width } = useDeviceSize();
@@ -95,13 +95,13 @@ const ProjectSidebar = () => {
 
       <nav>
         {projectLinks.map((pl) => {
-          const isActive = pathname === `/project/${id}/${pl.url}`;
+          const isActive = pathname === `/project/${projectId}/${pl.url}`;
           const linkButton = (
             <LinkButton
-              href={`/project/${id}/${pl.url}`}
+              href={`/project/${projectId}/${pl.url}`}
               variant={isCollapsed ? "icon" : "icon_title"}
               key={pl.url}
-              style={isActive ? { backgroundColor: "var(--color-border)" } : {}}
+              isActive={isActive}
             >
               <span>
                 <pl.icon size={18} />

@@ -1,14 +1,29 @@
-// Global styles for smaller components
+// Global styles for smaller components, wrappers
+// Prefer to give some short, meaningful name
+
+.form-wrapper-a {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background-color: white;
+}
 
 .truncate-text {
-  width: fit-content;
+  display: block !important; // with flex it wont work
+  max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
+  flex-shrink: 1;
+
+  // prefer to update width at usage
+  // e.g. max-width: 8rem;
 }
 
-.vr-line{
+.vr-line {
   height: 100%;
   width: 2px;
   background-color: var(--color-border);

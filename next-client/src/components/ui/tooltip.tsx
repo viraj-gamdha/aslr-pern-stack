@@ -119,25 +119,22 @@ const Tooltip = ({
         {children}
       </div>
 
-      <Portal>
-        <div
-          ref={tooltipRef}
-          className={classNames(
-            s.wrapper,
-            isVisible && isMeasured && s.visible
-          )}
-          style={{
-            top: `${coords.top}px`,
-            left: `${coords.left}px`,
-            opacity: isMeasured ? 1 : 0,
-            pointerEvents: "none",
-            zIndex: 9999,
-            ...style,
-          }}
-        >
-          {tooltip}
-        </div>
-      </Portal>
+      {/* <Portal> */}
+      <div
+        ref={tooltipRef}
+        className={classNames(s.wrapper, isVisible && isMeasured && s.visible)}
+        style={{
+          top: `${coords.top}px`,
+          left: `${coords.left}px`,
+          opacity: isMeasured ? 1 : 0,
+          pointerEvents: "none",
+          zIndex: 9999,
+          ...style,
+        }}
+      >
+        {tooltip}
+      </div>
+      {/* </Portal> */}
     </>
   );
 };

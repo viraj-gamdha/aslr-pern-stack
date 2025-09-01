@@ -1,15 +1,19 @@
 // Fonts
 // added via next/font
 
+/*
+Some Naming conventions for variables
+1. use none - default (e.g. --color-text)
+       l - light  (e.g. --color-text-l)
+       m - mid
+       d - dark
+2. use 1, 2, 3 etc.. as variants of variables
+(e.g. font-1)
+*/
+
 // CSS variables
 :root {
   // colors
-  /*
-  none - default
-  l - light
-  m - mid
-  d - dark
-  */
   --color-primary: #181818;
 
   --color-text: #1e1e1e;

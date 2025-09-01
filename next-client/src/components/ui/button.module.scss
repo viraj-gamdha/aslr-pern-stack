@@ -13,7 +13,7 @@
 
   // put icon in a span
   // or can put text also
-  > span, p {
+  span {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,8 +27,9 @@
 }
 
 .disabled {
-  pointer-events: none;
-  opacity: 0.8;
+  pointer-events: none !important;
+  opacity: 0.8 !important;
+  cursor: not-allowed;
 }
 
 .primary {
@@ -38,6 +39,8 @@
   &:hover {
     opacity: 0.9;
   }
+
+  // no need of active state
 }
 
 .bordered {
@@ -46,6 +49,10 @@
   color: var(--color-primary);
 
   &:hover {
+    border-color: var(--color-primary);
+  }
+
+  &.active {
     border-color: var(--color-primary);
   }
 }
@@ -61,6 +68,10 @@
   &:hover {
     background-color: var(--color-border);
   }
+
+  &.active {
+    border-color: var(--color-primary);
+  }
 }
 
 .border_b {
@@ -69,6 +80,10 @@
   border-radius: 0;
 
   &:hover {
+    border-color: var(--color-text);
+  }
+
+  &.active {
     border-color: var(--color-text);
   }
 }
@@ -84,6 +99,10 @@
   &:hover {
     background-color: var(--color-border);
   }
+
+  &.active {
+    background-color: var(--color-border);
+  }
 }
 
 .icon_title {
@@ -91,8 +110,13 @@
   justify-content: flex-start;
   padding: 0.4rem 0.6rem;
   gap: 1rem;
+  min-height: 2.1rem;
 
   &:hover {
+    background-color: var(--color-border);
+  }
+
+  &.active {
     background-color: var(--color-border);
   }
 }
@@ -102,9 +126,14 @@
   justify-content: flex-start;
   padding: 0.4rem 0.6rem;
   gap: 1rem;
+  min-height: 2.1rem;
   border: 2px solid var(--color-border);
 
   &:hover {
+    border-color: var(--color-primary);
+  }
+
+  &.active {
     border-color: var(--color-primary);
   }
 }

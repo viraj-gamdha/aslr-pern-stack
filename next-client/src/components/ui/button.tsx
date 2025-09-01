@@ -1,9 +1,14 @@
-import type { ButtonHTMLAttributes, CSSProperties, FC, ReactNode } from "react";
+import {
+  ElementType,
+  ReactNode,
+  ComponentPropsWithoutRef,
+  PropsWithChildren,
+} from "react";
 import classNames from "classnames";
 import s from "./button.module.scss";
 import Link, { LinkProps } from "next/link";
 
-type ButtonVariants =
+export type ButtonVariants =
   | "primary"
   | "bordered"
   | "bordered_sm"
@@ -12,44 +17,72 @@ type ButtonVariants =
   | "icon_title"
   | "icon_bordered";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: ButtonVariants;
-  children?: ReactNode;
-  as?: "button" | "span";
-}
+// Polymorphic types
+type AsProp<T extends ElementType> = {
+  as?: T;
+};
 
-export const Button: FC<ButtonProps> = ({
+type PropsToOmit<T extends ElementType, P> = keyof (AsProp<T> & P);
+
+type PolymorphicComponentProps<
+  T extends ElementType,
+  Props = {}
+> = PropsWithChildren<Props & AsProp<T>> &
+  Omit<ComponentPropsWithoutRef<T>, PropsToOmit<T, Props>>;
+
+// Button-specific props
+type ButtonOwnProps = {
+  variant?: ButtonVariants;
+  className?: string;
+  disabled?: boolean;
+  isActive?: boolean;
+};
+
+type ButtonProps<T extends ElementType> = PolymorphicComponentProps<
+  T,
+  ButtonOwnProps
+>;
+
+// Polymorphic Button component
+export const Button = <T extends ElementType = "button">({
+  as,
   variant,
   className,
   children = "Button",
   disabled,
-  ...props
-}) => {
+  isActive,
+  ...rest
+}: ButtonProps<T>) => {
+  const Component = as || "button";
+
   return (
-    <button
+    <Component
       className={classNames(
         s.base,
         variant && s[variant],
+        isActive && s.active,
         className,
         disabled && s.disabled
       )}
-      disabled={disabled}
-      {...props}
+      {...(Component === "button" ? { disabled } : {})}
+      {...rest}
     >
       {children}
-    </button>
+    </Component>
   );
 };
 
+// LinkButton component
 interface LinkButtonProps extends LinkProps {
   variant?: ButtonVariants;
   children?: ReactNode;
   disabled?: boolean;
   className?: string;
-  style?: CSSProperties;
+  style?: React.CSSProperties;
+  isActive?: boolean;
 }
 
-export const LinkButton: FC<LinkButtonProps> = ({
+export const LinkButton = ({
   variant,
   children = "Link",
   className,
@@ -57,11 +90,13 @@ export const LinkButton: FC<LinkButtonProps> = ({
   replace,
   disabled,
   style,
+  isActive,
   ...rest
-}) => {
+}: LinkButtonProps) => {
   const classes = classNames(
     s.base,
     variant && s[variant],
+    isActive && s.active,
     className,
     disabled && s.disabled
   );

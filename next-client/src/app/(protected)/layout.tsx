@@ -1,5 +1,6 @@
 "use client";
 
+// This is the RequireAuth provider layout
 import { PageLoader } from "@/components/ui/loader";
 import { useAppSelector } from "@/hooks/storeHooks";
 import { useRouter } from "next/navigation";
@@ -27,5 +28,5 @@ export default function ProtectedLayout({
   }
 
   // Render the protected content
-  return <>{children}</>;
+  return children;
 }

@@ -1,9 +1,13 @@
 // Global styles
 
 /*
-Some Naming conventions for classes
+Some naming conventions for class names
 1. use _ for scoped or modules classnames (e.g. card_title)
-2. use - for global styles (without scoped or modules) classnames (e.g. button-primary)
+2. use - for global styles (without scoped / modules) classnames (e.g. layout-a)
+3. use a, b, c etc.. as variants of classes 
+(e.g. form-wrapper-a) 
+4. for classnames in module / scoped files avoid using prefix of components
+(e.g. wrong -> .products_container | right -> .container)
 */
 
 @use "./theme" as *;
@@ -20,7 +24,7 @@ Some Naming conventions for classes
   box-sizing: border-box;
 }
 
-// Global html element styles
+// Global default html element styles
 body {
   overflow-x: hidden;
   scroll-behavior: none;

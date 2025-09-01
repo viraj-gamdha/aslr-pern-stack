@@ -1,5 +1,6 @@
 import ProjectSidebar from "@/components/layout/project-sidebar";
 
+// project/:projectId/<tabs>
 export default function ProjectLayout({
   children,
 }: {

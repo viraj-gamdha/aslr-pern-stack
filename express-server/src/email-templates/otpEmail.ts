@@ -100,7 +100,7 @@ export const otpEmail = (name: string, otp: number) => {
 
         <div class="contact-info">
           Need help? Contact us at
-          <a href="mailto:support@doslr.in">support@doslr.in</a>
+          <a href="mailto:support@doslr.com">support@doslr.com</a>
         </div>
 
         <div class="note">

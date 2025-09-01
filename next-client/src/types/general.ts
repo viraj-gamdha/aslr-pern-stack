@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface ApiResult<T = unknown> {
   success: boolean;
   message: string;
@@ -11,3 +13,7 @@ export interface FetchError extends Error {
 }
 
 export type StateSetter<T> = React.Dispatch<React.SetStateAction<T>>;
+
+export interface LayoutChildren {
+  children: ReactNode
+}

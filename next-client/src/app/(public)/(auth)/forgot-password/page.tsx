@@ -55,7 +55,7 @@ const ForgotPassword = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
-        className={classNames("form-wrapper-1", s.form)}
+        className={classNames("form-wrapper-a", s.form)}
       >
         <h4>Forgot Password?</h4>
 
@@ -82,7 +82,7 @@ const ForgotPassword = () => {
 
         <div className={s.link}>
           <p>Go to</p>
-          <LinkButton href={"/signup"} variant="border_b">
+          <LinkButton href={"/signin"} variant="border_b">
             Signin
           </LinkButton>
         </div>

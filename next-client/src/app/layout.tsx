@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   description: "DOSLR | Do systematic literature review",
 };
 
+// Like main.tsx
 export default function RootLayout({
   children,
 }: Readonly<{

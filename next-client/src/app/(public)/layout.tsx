@@ -6,6 +6,8 @@ import { useAppSelector } from "@/hooks/storeHooks";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
+// This is the NonAuth provider for public pages..
+// All have same with-layout-a pattern
 export default function PublicLayout({
   children,
 }: {

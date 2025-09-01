@@ -15,8 +15,8 @@ import {
 import { SkeletonLoader } from "@/components/ui/loader";
 
 const Document = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data, isLoading } = useGetUserProjectByIdQuery(id);
+  const { projectId } = useParams<{ projectId: string }>();
+  const { data, isLoading } = useGetUserProjectByIdQuery(projectId);
 
   return (
     <div className="layout-a">

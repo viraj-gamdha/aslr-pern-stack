@@ -1,4 +1,5 @@
-// Global styles for pages or bigger nested components
+// Global styles for pages
+// Prefer to add prefix as "page"
 
 .page-container-col {
   width: 100%;
@@ -7,6 +8,7 @@
   flex-direction: column;
   gap: 2rem;
   padding: 1.5rem;
+  margin: 0 auto; //to align center in case of max-width
 
   .page-header {
     display: flex;

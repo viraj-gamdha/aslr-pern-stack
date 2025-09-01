@@ -84,7 +84,7 @@ const Signup = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         autoComplete="off"
-        className={classNames("form-wrapper-1", s.form)}
+        className={classNames("form-wrapper-a", s.form)}
       >
         <h4>Signup</h4>
 
