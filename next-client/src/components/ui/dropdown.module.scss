@@ -1,0 +1,26 @@
+.container {
+  width: 100%;
+  position: relative;
+  display: inline-block;
+
+  .button {
+    width: 100%;
+    cursor: pointer;
+    // add other styles from props
+  }
+
+  .menu_wrapper {
+    // manage overflow in child wrappers
+    overflow: hidden;
+    position: fixed;
+    min-width: fit-content;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    z-index: 1000;
+    background-color: white;
+    margin-top: 0.25rem;
+    // Note: This only applies visually for 'bottom' position. Consider removing or adjusting.
+    // add other styles from props
+  }
+}

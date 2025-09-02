@@ -30,7 +30,7 @@ const Document = () => {
         </h4>
 
         <div className={s.header_wrapper}>
-          <Tooltip tooltip="Table of contents" bottom>
+          <Tooltip tooltip="Table of contents" position="bottom">
             <Button variant="icon">
               <span>
                 <TableProperties size={18} />
@@ -38,7 +38,7 @@ const Document = () => {
             </Button>
           </Tooltip>
 
-          <Tooltip tooltip="View history" bottom>
+          <Tooltip tooltip="View history" position="bottom">
             <Button variant="icon">
               <span>
                 <History size={18} />
@@ -46,7 +46,7 @@ const Document = () => {
             </Button>
           </Tooltip>
 
-          <Tooltip tooltip="View abstract" bottom>
+          <Tooltip tooltip="View abstract" position="bottom">
             <Button variant="icon">
               <span>
                 <File size={18} />

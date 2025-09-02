@@ -81,7 +81,6 @@ export const FormInput = <T extends FieldValues>({
           <CustomSelect
             label={label}
             value={value}
-            name={id}
             onChange={(val: string | string[]) => {
               setValue(id, val as T[Path<T>], {
                 shouldValidate: isSubmitted,

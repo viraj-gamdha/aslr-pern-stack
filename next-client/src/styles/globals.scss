@@ -84,7 +84,6 @@ h5 {
 p {
   font-family: var(--font-1);
   color: var(--color-text-l);
-  line-height: 1.4;
   font-size: 0.9rem;
 }
 
@@ -96,12 +95,15 @@ p {
 
 ::-webkit-scrollbar-track {
   background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
 }

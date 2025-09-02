@@ -6,25 +6,18 @@ import {
   type ReactNode,
 } from "react";
 import s from "./tooltip.module.scss";
-import { Portal } from "./portal";
 import classNames from "classnames";
 
 const Tooltip = ({
   children,
   tooltip,
-  top = false,
-  bottom = false,
-  left = false,
-  right = false,
+  position = "bottom",
   offset = 8,
   style = {},
 }: {
   children: ReactNode;
   tooltip: string;
-  top?: boolean;
-  bottom?: boolean;
-  right?: boolean;
-  left?: boolean;
+  position?: "top" | "bottom" | "left" | "right";
   offset?: number;
   style?: CSSProperties;
 }) => {
@@ -33,6 +26,7 @@ const Tooltip = ({
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const [isMeasured, setIsMeasured] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
 
   const calculatePosition = () => {
     if (!wrapperRef.current || !tooltipRef.current) return;
@@ -45,23 +39,25 @@ const Tooltip = ({
     let topPos = 0;
     let leftPos = 0;
 
-    // Determine position based on props (default to bottom if none specified)
-    if (top) {
-      topPos = targetRect.top - tooltipRect.height - offset;
-      leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
-    } else if (left) {
-      topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
-      leftPos = targetRect.left - tooltipRect.width - offset;
-    } else if (right) {
-      topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
-      leftPos = targetRect.right + offset;
-    } else {
-      // Default to bottom
-      topPos = targetRect.bottom + offset;
-      leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+    switch (position) {
+      case "top":
+        topPos = targetRect.top - tooltipRect.height - offset;
+        leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+        break;
+      case "left":
+        topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
+        leftPos = targetRect.left - tooltipRect.width - offset;
+        break;
+      case "right":
+        topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
+        leftPos = targetRect.right + offset;
+        break;
+      default:
+        topPos = targetRect.bottom + offset;
+        leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+        break;
     }
 
-    // Clamp to viewport bounds
     topPos = Math.max(
       4,
       Math.min(topPos, viewportHeight - tooltipRect.height - 4)
@@ -76,37 +72,33 @@ const Tooltip = ({
   };
 
   useEffect(() => {
-    if (!isVisible) {
+    if (isVisible) {
+      setShouldRender(true);
+      const frame = requestAnimationFrame(() => {
+        calculatePosition();
+      });
+      return () => cancelAnimationFrame(frame);
+    } else {
       setIsMeasured(false);
-      return;
+      const timeout = setTimeout(() => {
+        setShouldRender(false);
+      }, 200); // match CSS transition duration
+      return () => clearTimeout(timeout);
     }
+  }, [isVisible, position, offset]);
 
-    // Use requestAnimationFrame to ensure DOM has updated
-    const frame = requestAnimationFrame(() => {
-      calculatePosition();
-    });
-
-    return () => cancelAnimationFrame(frame);
-  }, [isVisible, top, bottom, left, right, offset]);
-
-  // Recalculate on scroll/resize
   useEffect(() => {
     if (!isVisible) return;
-
     const handleUpdate = () => {
-      if (isMeasured) {
-        calculatePosition();
-      }
+      if (isMeasured) calculatePosition();
     };
-
     window.addEventListener("scroll", handleUpdate, true);
     window.addEventListener("resize", handleUpdate);
-
     return () => {
       window.removeEventListener("scroll", handleUpdate, true);
       window.removeEventListener("resize", handleUpdate);
     };
-  }, [isVisible, isMeasured, top, bottom, left, right, offset]);
+  }, [isVisible, isMeasured, position, offset]);
 
   return (
     <>
@@ -119,22 +111,26 @@ const Tooltip = ({
         {children}
       </div>
 
-      {/* <Portal> */}
-      <div
-        ref={tooltipRef}
-        className={classNames(s.wrapper, isVisible && isMeasured && s.visible)}
-        style={{
-          top: `${coords.top}px`,
-          left: `${coords.left}px`,
-          opacity: isMeasured ? 1 : 0,
-          pointerEvents: "none",
-          zIndex: 9999,
-          ...style,
-        }}
-      >
-        {tooltip}
-      </div>
-      {/* </Portal> */}
+      {shouldRender && (
+        <div
+          ref={tooltipRef}
+          className={classNames(
+            s.wrapper,
+            isVisible && isMeasured && s.visible
+          )}
+          style={{
+            position: "fixed",
+            top: `${coords.top}px`,
+            left: `${coords.left}px`,
+            opacity: isMeasured ? 1 : 0,
+            pointerEvents: "none",
+            zIndex: 9999,
+            ...style,
+          }}
+        >
+          {tooltip}
+        </div>
+      )}
     </>
   );
 };

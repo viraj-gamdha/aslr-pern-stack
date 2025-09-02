@@ -40,3 +40,10 @@ export const updateProjectFormSchema = projectSchema
   .partial();
 
 export type UpdateProjectFormInputs = z.infer<typeof updateProjectFormSchema>;
+
+// Link url for editor...
+export const linkSchema = z.object({
+  link: z.url({ message: "Enter a valid URL" }),
+});
+
+export type LinkFormValues = z.infer<typeof linkSchema>;

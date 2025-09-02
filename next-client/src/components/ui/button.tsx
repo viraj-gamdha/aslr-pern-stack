@@ -10,11 +10,11 @@ import Link, { LinkProps } from "next/link";
 
 export type ButtonVariants =
   | "primary"
+  | "primary_sm"
   | "bordered"
   | "bordered_sm"
   | "border_b"
   | "icon"
-  | "icon_title"
   | "icon_bordered";
 
 // Polymorphic types

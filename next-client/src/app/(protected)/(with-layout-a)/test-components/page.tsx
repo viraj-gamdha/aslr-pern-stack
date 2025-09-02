@@ -82,7 +82,8 @@ const TestFormComponents = () => {
           label="Country"
           options={countryOptions}
           searchable
-          placeholder="Select country..."
+          searchPlaceholder="Select country..."
+          style={{width: "100%"}}
         />
 
         <FormInput
@@ -93,7 +94,7 @@ const TestFormComponents = () => {
           options={skillOptions}
           multiple
           searchable={false}
-          placeholder="Select skills..."
+          searchPlaceholder="Select skills..."
         />
 
         <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>

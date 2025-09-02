@@ -7,6 +7,7 @@ import {
   FileSearch,
   Folder,
   Layout,
+  LayoutIcon,
   Library,
   Lightbulb,
   ListCollapseIcon,
@@ -33,6 +34,11 @@ const projectLinks = [
   { title: "Citations", url: "citations", icon: ListCollapseIcon },
   { title: "Paper Insights", url: "paper-insights", icon: Lightbulb },
   { title: "Library", url: "library", icon: Library },
+];
+
+const otherLinks = [
+  { title: "My Projects", url: "/", icon: Folder },
+  { title: "My Account", url: "/account", icon: User },
 ];
 
 const ProjectSidebar = () => {
@@ -88,7 +94,7 @@ const ProjectSidebar = () => {
 
         <Button variant="icon" onClick={toggleCollapsed} className={s.toggle}>
           <span>
-            <Layout size={18} />
+            <LayoutIcon size={18} />
           </span>
         </Button>
       </div>
@@ -99,9 +105,10 @@ const ProjectSidebar = () => {
           const linkButton = (
             <LinkButton
               href={`/project/${projectId}/${pl.url}`}
-              variant={isCollapsed ? "icon" : "icon_title"}
+              variant="icon"
               key={pl.url}
               isActive={isActive}
+              style={{ width: isCollapsed ? "fit-content" : "100%" }}
             >
               <span>
                 <pl.icon size={18} />
@@ -111,7 +118,7 @@ const ProjectSidebar = () => {
           );
 
           return isCollapsed ? (
-            <Tooltip tooltip={pl.title} key={pl.title} right>
+            <Tooltip tooltip={pl.title} key={pl.title} position="right">
               {linkButton}
             </Tooltip>
           ) : (
@@ -121,45 +128,33 @@ const ProjectSidebar = () => {
       </nav>
 
       <ul>
-        <li>
-          {isCollapsed ? (
-            <Tooltip tooltip="My Projects" right>
-              <LinkButton href={"/"} variant="icon">
+        {otherLinks.map((link) => {
+          return isCollapsed ? (
+            <Tooltip key={link.url} tooltip={link.title} position="right">
+              <LinkButton href={link.url} variant="icon">
                 <span>
-                  <Folder size={18} />
+                  <link.icon size={18} />
                 </span>
               </LinkButton>
             </Tooltip>
           ) : (
-            <LinkButton href={"/"} variant="icon_title">
+            <LinkButton
+              key={link.url}
+              href={link.url}
+              variant="icon"
+              style={{ width: "100%" }}
+            >
               <span>
-                <Folder size={18} />
+                <link.icon size={18} />
               </span>
-              My Projects
+              {link.title}
             </LinkButton>
-          )}
-        </li>
+          );
+        })}
+
         <li>
           {isCollapsed ? (
-            <Tooltip tooltip="My Account" right>
-              <LinkButton href={"/account"} variant="icon">
-                <span>
-                  <User size={18} />
-                </span>
-              </LinkButton>
-            </Tooltip>
-          ) : (
-            <LinkButton href={"/account"} variant="icon_title">
-              <span>
-                <User size={18} />
-              </span>
-              My Account
-            </LinkButton>
-          )}
-        </li>
-        <li>
-          {isCollapsed ? (
-            <Tooltip tooltip="Signout" right>
+            <Tooltip tooltip="Signout" position="right">
               <Button
                 variant="icon"
                 onClick={handleSignout}
@@ -172,9 +167,10 @@ const ProjectSidebar = () => {
             </Tooltip>
           ) : (
             <Button
-              variant="icon_title"
+              variant="icon"
               onClick={handleSignout}
               disabled={loadingSignout}
+              style={{ width: "100%" }}
             >
               <span>
                 <LogOut size={18} />

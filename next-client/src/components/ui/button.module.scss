@@ -3,7 +3,8 @@
   font-size: 0.9rem;
   padding: 0.5rem 1rem;
   border-radius: 10px;
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
@@ -21,6 +22,7 @@
     color: var(--color-primary);
 
     > svg {
+      display: block;
       color: var(--color-primary);
     }
   }
@@ -35,6 +37,21 @@
 .primary {
   background-color: var(--color-primary);
   color: white;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  // no need of active state
+}
+
+.primary_sm {
+  width: fit-content;
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 8px;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.8rem;
 
   &:hover {
     opacity: 0.9;
@@ -64,6 +81,7 @@
   color: var(--color-primary);
   border-radius: 8px;
   padding: 0.2rem 0.3rem;
+  font-size: 0.8rem;
 
   &:hover {
     background-color: var(--color-border);
@@ -74,6 +92,7 @@
   }
 }
 
+// bottom dotted border
 .border_b {
   padding: 0;
   border-bottom: 2px dotted var(--color-border);
@@ -89,28 +108,13 @@
 }
 
 .icon {
-  min-width: 2rem;
-  height: 2rem;
-  padding: 0;
-  border-radius: 8px;
-  color: var(--color-primary);
-  background-color: transparent;
-
-  &:hover {
-    background-color: var(--color-border);
-  }
-
-  &.active {
-    background-color: var(--color-border);
-  }
-}
-
-.icon_title {
-  width: 100%;
+  width: fit-content;
   justify-content: flex-start;
-  padding: 0.4rem 0.6rem;
-  gap: 1rem;
-  min-height: 2.1rem;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
+  min-height: 2rem;
+  min-width: 2rem;
+  // use 16 to 18 px of icon
 
   &:hover {
     background-color: var(--color-border);
@@ -122,11 +126,13 @@
 }
 
 .icon_bordered {
-  width: 100%;
-  justify-content: flex-start;
-  padding: 0.4rem 0.6rem;
-  gap: 1rem;
-  min-height: 2.1rem;
+  width: fit-content;
+  padding: 0 0.5rem;
+  gap: 0.5rem;
+  min-height: 2rem;
+  color: var(--color-primary);
+  justify-content: space-between;
+  background-color: transparent;
   border: 2px solid var(--color-border);
 
   &:hover {
