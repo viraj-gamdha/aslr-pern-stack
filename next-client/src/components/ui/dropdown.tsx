@@ -120,7 +120,7 @@ export const DropDown: FC<DropDownProps> = ({
       const GAP = 4;
       const PADDING = 8;
 
-      let newPos = { top: 0, left: 0 };
+      const newPos = { top: 0, left: 0 };
 
       // Vertical positioning
       switch (position) {
