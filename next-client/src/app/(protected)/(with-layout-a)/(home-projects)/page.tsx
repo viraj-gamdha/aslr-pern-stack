@@ -6,7 +6,7 @@ import s from "./project.module.scss";
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/form-input";
 import { PageLoader } from "@/components/ui/loader";
-import Modal from "@/components/ui/modal";
+import { Modal, ModalHeader, ModalContent } from "@/components/ui/modal";
 import { errorToast, successToast } from "@/components/ui/toast";
 import {
   useCreateProjectMutation,
@@ -29,6 +29,7 @@ const Projects = () => {
   const { data, isLoading } = useGetUserProjectsQuery();
 
   const [createProject, setCreateProject] = useState(false);
+  const [deleteProjectModal, setDeleteProjectModal] = useState(false);
   const [deleteProject, setDeleteProject] = useState<{
     id: string;
     title: string;
@@ -69,7 +70,9 @@ const Projects = () => {
       const res = await deleteP(deleteProject.id).unwrap();
       if (res.success) {
         successToast(res.message);
-        setDeleteProject(null);
+        setDeleteProjectModal(false);
+        // to show little more until modal closed
+        setTimeout(() => setDeleteProject(null), 200);
       }
     } catch (error) {
       errorToast(parseError(error));
@@ -124,6 +127,7 @@ const Projects = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
+                      setDeleteProjectModal(true);
                       setDeleteProject({
                         id: p.id as string,
                         title: p.title,
@@ -142,47 +146,56 @@ const Projects = () => {
       )}
 
       {/* Modals */}
-      {createProject && (
-        <Modal heading="Create Project" onClose={() => setCreateProject(false)}>
-          <div className="modal-content">
-            <form onSubmit={createForm.handleSubmit(onCreateSubmit)}>
-              <FormInput
-                form={createForm}
-                id="title"
-                label="Project title"
-                placeholder="Enter project title"
-                variant="input"
-                type="text"
-              />
+      <Modal
+        onClose={() => {
+          setCreateProject(false);
+          createForm.reset();
+        }}
+        isOpen={createProject}
+      >
+        <ModalHeader>
+          <span>Create Project</span>
+        </ModalHeader>
+        <ModalContent>
+          <form onSubmit={createForm.handleSubmit(onCreateSubmit)}>
+            <FormInput
+              form={createForm}
+              id="title"
+              label="Project title"
+              placeholder="Enter project title"
+              variant="input"
+              type="text"
+            />
 
-              <FormInput
-                form={createForm}
-                id="description"
-                label="Project description"
-                placeholder="Enter project description"
-                variant="input"
-                type="text"
-              />
+            <FormInput
+              form={createForm}
+              id="description"
+              label="Project description"
+              placeholder="Enter project description"
+              variant="input"
+              type="text"
+            />
 
-              <div className="modal-action-btns">
-                <Button variant="primary" disabled={loadingCreateProject}>
-                  {loadingCreateProject ? "Creating..." : "Create Project"}
-                </Button>
-              </div>
-            </form>
-          </div>
-        </Modal>
-      )}
+            <div className="modal-action-btns">
+              <Button variant="primary" disabled={loadingCreateProject}>
+                {loadingCreateProject ? "Creating..." : "Create Project"}
+              </Button>
+            </div>
+          </form>
+        </ModalContent>
+      </Modal>
 
-      {deleteProject && (
-        <ConfirmationModal
-          onClose={() => setDeleteProject(null)}
-          onConfirm={handleDeleteProject}
-          loadingConfirm={loadingDeleteProject}
-          title={`Delete Project: ${deleteProject.title}`}
-          message="Are you sure you want to delete this project? This action cannot be undone. Please click on confirm to proceed."
-        />
-      )}
+      <ConfirmationModal
+        isOpen={deleteProjectModal}
+        onClose={() => {
+          setDeleteProjectModal(false);
+          setDeleteProject(null);
+        }}
+        onConfirm={handleDeleteProject}
+        loadingConfirm={loadingDeleteProject}
+        title={`Delete Project: ${deleteProject?.title}`}
+        message="Are you sure you want to delete this project? This action cannot be undone. Please click on confirm to proceed."
+      />
     </>
   );
 };

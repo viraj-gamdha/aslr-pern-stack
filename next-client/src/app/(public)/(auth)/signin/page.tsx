@@ -135,13 +135,12 @@ const Signin = () => {
         </div>
       </form>
 
-      {showVerificationModal && form.getValues("email") && (
-        <VerifyEmailOTPModal
-          email={form.getValues("email")}
-          onClose={() => setShowVerificationModal(false)}
-          onSuccess={handleOnSuccessVerification}
-        />
-      )}
+      <VerifyEmailOTPModal
+        isOpen={showVerificationModal && !!form.getValues("email")}
+        email={form.getValues("email")}
+        onClose={() => setShowVerificationModal(false)}
+        onSuccess={handleOnSuccessVerification}
+      />
     </div>
   );
 };

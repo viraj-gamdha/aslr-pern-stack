@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/form-input";
-import Modal from "@/components/ui/modal";
+import { Modal, ModalHeader, ModalContent } from "@/components/ui/modal";
 import { errorToast, successToast } from "@/components/ui/toast";
 import { useVerifyOTPMutation } from "@/redux/apis/authApiSlice";
 import { VerifyEmailOTPInputs, verifyEmailOTPSchema } from "@/types/user";
@@ -12,10 +12,12 @@ import ResendOTPCounter from "./resend-otp-counter";
 
 const VerifyEmailOTPModal = ({
   email,
+  isOpen = false,
   onClose,
   onSuccess,
 }: {
   email: string;
+  isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }) => {
@@ -47,9 +49,14 @@ const VerifyEmailOTPModal = ({
     }
   };
 
+  if(!isOpen) return null;
+
   return (
-    <Modal heading="Verify Email" onClose={onClose}>
-      <div className="modal-content">
+    <Modal onClose={onClose} isOpen={isOpen} closeOnOutsideClick={false}>
+      <ModalHeader>
+        <span>Verify Email</span>
+      </ModalHeader>
+      <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <p className="modal-form-col-1">
             Enter a 4 digit OTP sent to
@@ -76,7 +83,7 @@ const VerifyEmailOTPModal = ({
             Submit & Verify
           </Button>
         </form>
-      </div>
+      </ModalContent>
     </Modal>
   );
 };

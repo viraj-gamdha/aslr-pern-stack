@@ -1,4 +1,6 @@
-import Modal from "@/components/ui/modal";
+"use client";
+
+import { Modal, ModalHeader, ModalContent } from "@/components/ui/modal";
 import { errorToast, successToast } from "@/components/ui/toast";
 import { useResetPasswordMutation } from "@/redux/apis/authApiSlice";
 import { ResetPassInputs, resetPassSchema } from "@/types/user";
@@ -12,13 +14,16 @@ import { FormInput } from "@/components/ui/form-input";
 
 const ResetPassOTPModal = ({
   email,
+  isOpen = false,
   onClose,
   onSuccess,
 }: {
   email: string;
+  isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }) => {
+
   const form = useForm<ResetPassInputs>({
     resolver: zodResolver(resetPassSchema),
     defaultValues: {
@@ -34,9 +39,12 @@ const ResetPassOTPModal = ({
     formState: { isSubmitting },
   } = form;
 
+  console.log(form.formState.errors);
+
   const [resetPass, { isLoading }] = useResetPasswordMutation();
 
   const onSubmit = async (data: ResetPassInputs) => {
+    console.log(data);
     try {
       const res = await resetPass(data).unwrap();
 
@@ -49,10 +57,31 @@ const ResetPassOTPModal = ({
     }
   };
 
+  if(!isOpen) return null
+
   return (
-    <Modal heading="Reset Password" onClose={onClose}>
-      <div className="modal-content">
+    <Modal onClose={onClose} isOpen={isOpen} closeOnOutsideClick={false}>
+      <ModalHeader>
+        <span>Reset Password</span>
+      </ModalHeader>
+      <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <p className="modal-form-col-1">
+            Enter a 4 digit OTP sent to
+            <span>{email}</span>
+          </p>
+
+          <div className="modal-form-col-2">
+            <FormInput
+              form={form}
+              id="emailOTP"
+              variant="otp-inputs"
+              style={{ width: "fit-content" }}
+              formInputStyle={{ alignItems: "center" }}
+            />
+            <ResendOTPCounter email={email} />
+          </div>
+
           <FormInput
             form={form}
             id="password"
@@ -72,22 +101,6 @@ const ResetPassOTPModal = ({
             autoComplete="new-password"
           />
 
-          <p className="modal-form-col-1">
-            Enter a 4 digit OTP sent to
-            <span>{email}</span>
-          </p>
-
-          <div className="modal-form-col-2">
-            <FormInput
-              form={form}
-              id="emailOTP"
-              variant="otp-inputs"
-              style={{ width: "fit-content" }}
-              formInputStyle={{ alignItems: "center" }}
-            />
-            <ResendOTPCounter email={email} />
-          </div>
-
           <Button
             type="submit"
             disabled={isSubmitting || isLoading}
@@ -97,7 +110,7 @@ const ResetPassOTPModal = ({
             Submit & Reset Password
           </Button>
         </form>
-      </div>
+      </ModalContent>
     </Modal>
   );
 };

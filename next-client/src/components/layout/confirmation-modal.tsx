@@ -1,24 +1,27 @@
 import React from "react";
-import Modal from "../ui/modal";
+import { Modal, ModalContent, ModalHeader } from "../ui/modal";
 import { Button } from "../ui/button";
 
 const ConfirmationModal = ({
   title,
   message,
+  isOpen = false,
   onClose,
   onConfirm,
   loadingConfirm,
 }: {
   title?: string;
   message: string;
+  isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   loadingConfirm: boolean;
 }) => {
   return (
-    <Modal heading="Confirmation" onClose={onClose}>
-      <div className="modal-content">
-        {title && <h5 style={{width: "100%"}}>{title}</h5>}
+    <Modal onClose={onClose} isOpen={isOpen}>
+      <ModalHeader><span>Confirmation</span></ModalHeader>
+      <ModalContent>
+        {title && <h5 style={{ width: "100%" }}>{title}</h5>}
         <p>{message}</p>
 
         <div className="modal-action-btns">
@@ -31,7 +34,7 @@ const ConfirmationModal = ({
             Confirm
           </Button>
         </div>
-      </div>
+      </ModalContent>
     </Modal>
   );
 };

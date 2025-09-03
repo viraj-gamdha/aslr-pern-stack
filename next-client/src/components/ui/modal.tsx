@@ -7,87 +7,185 @@ import {
   useRef,
   useState,
   useEffect,
+  RefObject,
+  useCallback,
+  useLayoutEffect,
 } from "react";
+import { createContext, useContext } from "react";
 import { X } from "lucide-react";
+import classNames from "classnames";
 
-type Props = {
-  heading?: string;
-  children: ReactNode;
-  onClose: () => void;
-  wrapperStyle?: CSSProperties;
+type ModalContextType = {
+  closeModal: () => void;
+  modalRef: RefObject<HTMLDivElement | null>;
+  isVisible: boolean;
 };
 
-const Modal: FC<Props> = ({
-  heading,
-  children,
+const ModalContext = createContext<ModalContextType | null>(null);
+
+export const useModal = () => {
+  const ctx = useContext(ModalContext);
+  if (!ctx) throw new Error("Modal components must be used within Modal");
+  return ctx;
+};
+
+type ModalProps = {
+  isOpen?: boolean;
+  children: ReactNode;
+  onClose: () => void;
+  animationDuration?: number;
+  style?: CSSProperties;
+  className?: string;
+  closeOnOutsideClick?: boolean;
+};
+
+export const Modal: FC<ModalProps> = ({
+  isOpen = false,
   onClose,
-  wrapperStyle = {},
+  animationDuration = 200,
+  children,
+  className,
+  style = {},
+  closeOnOutsideClick = true,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const [shouldRender, setShouldRender] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
+  const onCloseRef = useRef(onClose);
 
   useEffect(() => {
-    setTimeout(() => setIsVisible(true), 30); // slight delay to trigger transition
-  }, []);
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-      closeModal();
+  // Phase 1: Trigger render
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+    } else if (shouldRender) {
+      setIsVisible(false);
+      setTimeout(() => {
+        setShouldRender(false);
+        document.body.style.overflow = "auto";
+      }, animationDuration);
     }
-  };
+  }, [isOpen, shouldRender, animationDuration]);
 
-  const closeModal = () => {
-    setIsClosing(true);
-    setTimeout(onClose, 50); // transition duration
-  };
+  // Phase 2: Trigger animation after DOM mount
+  useLayoutEffect(() => {
+    if (shouldRender) {
+      const id = requestAnimationFrame(() => {
+        setIsVisible(true);
+        document.body.style.overflow = "hidden";
+      });
+      return () => cancelAnimationFrame(id);
+    }
+  }, [shouldRender]);
+
+  const closeModal = useCallback(() => {
+    if (!isOpen) return;
+    setIsVisible(false);
+    setTimeout(() => {
+      setShouldRender(false);
+      document.body.style.overflow = "auto";
+      onCloseRef.current();
+    }, animationDuration);
+  }, [isOpen, animationDuration]);
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    document.body.style.overflow = "hidden";
+    if (!closeOnOutsideClick || !shouldRender) return;
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [shouldRender, closeOnOutsideClick, closeModal]);
+
+  useEffect(() => {
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
       document.body.style.overflow = "auto";
     };
   }, []);
 
+  if (!shouldRender) return null;
+
   return (
-    <div
-      className={s.overlay}
-      style={{
-        opacity: isClosing ? 0 : isVisible ? 1 : 0,
-        visibility: isClosing ? "hidden" : "visible",
-      }}
-    >
+    <ModalContext.Provider value={{ closeModal, modalRef, isVisible }}>
       <div
-        ref={modalRef}
-        className={s.wrapper}
+        className={classNames(s.overlay, className)}
         style={{
-          transform: isClosing
-            ? "translateY(-8px)"
-            : isVisible
-            ? "translateY(0)"
-            : "translateY(-8px)",
-          opacity: isClosing ? 0 : isVisible ? 1 : 0,
-          ...wrapperStyle,
+          opacity: isVisible ? 1 : 0,
+          transition: `opacity ${animationDuration}ms ease-in-out`,
         }}
       >
-        {heading && (
-          <div className={s.header}>
-            <span>{heading}</span>
-            <Button variant="bordered_sm" onClick={closeModal}>
-              <span>
-                <X size={18} />
-              </span>
-            </Button>
-          </div>
-        )}
-        {/* Modal content */}
-        {children}
+        <div
+          ref={modalRef}
+          className={s.wrapper}
+          style={{
+            transform: isVisible ? "translateY(0)" : "translateY(-8px)",
+            opacity: isVisible ? 1 : 0,
+            transition: `transform ${animationDuration}ms ease-in-out, opacity ${animationDuration}ms ease-in-out`,
+            ...style,
+          }}
+        >
+          {children}
+        </div>
       </div>
+    </ModalContext.Provider>
+  );
+};
+
+// Modal header wrapper
+type ModalHeaderProps = {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  showCloseButton?: boolean;
+};
+
+export const ModalHeader: FC<ModalHeaderProps> = ({
+  children,
+  className,
+  style,
+  showCloseButton = true,
+}) => {
+  const { closeModal } = useModal();
+
+  return (
+    <div className={classNames(s.header, className)} style={style}>
+      {children}
+      {showCloseButton && (
+        <Button variant="bordered_sm" onClick={closeModal}>
+          <span>
+            <X size={18} />
+          </span>
+        </Button>
+      )}
     </div>
   );
 };
 
-export default Modal;
+// Modal content wrapper
+type ModalContentProps = {
+  children: ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+};
+
+export const ModalContent: FC<ModalContentProps> = ({
+  children,
+  className,
+  style,
+}) => {
+  return (
+    <div className={classNames(s.modal_content, className)} style={style}>
+      {children}
+    </div>
+  );
+};

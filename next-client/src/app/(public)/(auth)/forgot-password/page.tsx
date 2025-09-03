@@ -28,7 +28,7 @@ const ForgotPassword = () => {
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isSubmitSuccessful },
   } = form;
 
   const onSubmit = async (data: SendOTPInputs) => {
@@ -68,8 +68,8 @@ const ForgotPassword = () => {
         />
 
         <p>
-          You will receive an email containing a 4-digit OTP, which you&apos;ll need
-          to enter to reset your password.
+          You will receive an email containing a 4-digit OTP, which you&apos;ll
+          need to enter to reset your password.
         </p>
 
         <Button
@@ -88,8 +88,9 @@ const ForgotPassword = () => {
         </div>
       </form>
 
-      {showResetPassModal && form.getValues("email") && (
+      {isSubmitSuccessful && isValid && (
         <ResetPassOTPModal
+          isOpen={showResetPassModal && !!form.getValues("email")}
           email={form.getValues("email")}
           onClose={() => setShowResetPassModal(false)}
           onSuccess={handleOnSuccessReset}
