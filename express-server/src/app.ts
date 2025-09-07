@@ -8,6 +8,8 @@ import rateLimit from "express-rate-limit";
 import { authRoutes } from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import { projectRoutes } from "./routes/project.js";
+import { documentRoutes } from "./routes/document.js";
+import { uploadRoutes } from "./routes/file-upload.js";
 
 config({ path: "./.env" });
 export const envMode = process.env.NODE_ENV?.trim() || "development";
@@ -23,8 +25,8 @@ app.use(
 );
 
 //
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit: "10mb"}));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
 // CORS
@@ -56,6 +58,8 @@ app.use(rateLimiter);
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/project", projectRoutes);
+app.use("/api/documents", documentRoutes);
+app.use("/api/upload", uploadRoutes);
 // ---
 
 // All other routes

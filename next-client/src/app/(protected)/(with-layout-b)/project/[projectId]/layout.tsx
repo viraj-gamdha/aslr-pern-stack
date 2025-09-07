@@ -1,4 +1,5 @@
 import ProjectSidebar from "@/components/layout/project-sidebar";
+import TipTapEditorProvider from "@/providers/EditorProvider";
 
 // project/:projectId/<tabs>
 export default function ProjectLayout({
@@ -8,8 +9,10 @@ export default function ProjectLayout({
 }) {
   return (
     <div className="layout-b">
-      <ProjectSidebar />
-      <main className="layout-content-wrapper">{children}</main>
+      <TipTapEditorProvider>
+        <ProjectSidebar />
+        <main className="layout-content-wrapper">{children}</main>
+      </TipTapEditorProvider>
     </div>
   );
 }

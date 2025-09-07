@@ -36,7 +36,7 @@ const Signin = () => {
 
   const {
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, isValid, isSubmitSuccessful },
   } = form;
 
   const onSubmit = async (data: SigninFormInputs) => {
@@ -135,12 +135,14 @@ const Signin = () => {
         </div>
       </form>
 
-      <VerifyEmailOTPModal
-        isOpen={showVerificationModal && !!form.getValues("email")}
-        email={form.getValues("email")}
-        onClose={() => setShowVerificationModal(false)}
-        onSuccess={handleOnSuccessVerification}
-      />
+      {isSubmitSuccessful && isValid && (
+        <VerifyEmailOTPModal
+          isOpen={showVerificationModal && !!form.getValues("email")}
+          email={form.getValues("email")}
+          onClose={() => setShowVerificationModal(false)}
+          onSuccess={handleOnSuccessVerification}
+        />
+      )}
     </div>
   );
 };

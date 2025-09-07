@@ -1,0 +1,2 @@
+CREATE TYPE "public"."invitation_status" AS ENUM('pending', 'invited');--> statement-breakpoint
+ALTER TABLE "doslr_schema"."project_members" ADD COLUMN "invitation_status" "invitation_status" DEFAULT 'pending' NOT NULL;

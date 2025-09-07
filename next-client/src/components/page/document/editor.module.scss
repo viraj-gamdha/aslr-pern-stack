@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  height: 100%; //Sticked container
+  overflow-x: auto;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  padding-inline: 1rem;
+  background-color: #fafafa;
+  position: relative;
+  // children inside it will be overflow scroll
+  // not this one it self
+  // its parent is also 100% width
+
+  // wrapper of editor area
+  .wrapper {
+    width: fit-content;
+    height: fit-content;
+    min-width: max-content;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    padding-block: 1rem;
+    margin-inline: auto;
+  }
+}
+
+// editor props (passed in editor attributes)
+// inside wrapper -> editor content
+.prop {
+  display: flex;
+  flex-direction: column;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 16mm;
+  background: white;
+  cursor: text;
+
+  &:focus {
+    outline: none;
+  }
+}

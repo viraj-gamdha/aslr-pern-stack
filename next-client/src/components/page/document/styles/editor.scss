@@ -1,0 +1,217 @@
+// Global editor styles and overrides
+// Every element should have default styling to include in print properly
+
+@import "./drag-handle";
+@import "./page-break";
+@import "./editor-table";
+
+/* Basic editor styles */
+.tiptap {
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* Default Heading and Text Styles */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-wrap: wrap;
+  color: #000000;
+  line-height: 1.5;
+  font-family: "Arial";
+  font-weight: 400; /* Regular weight for body text */
+  font-size: 12pt; /* Standard academic body size */
+
+  /* Heading hierarchy */
+  h1 {
+    font-size: 16pt;
+    font-weight: 700; /* Bold for top-level heading */
+  }
+
+  h2 {
+    font-size: 14pt;
+    font-weight: 600; /* Semi-bold for subheading */
+  }
+
+  h3 {
+    font-size: 13pt;
+    font-weight: 600;
+  }
+
+  h4,
+  h5,
+  h6 {
+    font-size: 12pt;
+    font-weight: 500; /* Medium weight for lower headings */
+  }
+
+  /* Placeholder (at the top) */
+  p.is-editor-empty:first-child::before {
+    color: #cecece;
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
+
+  /* Image styles */
+  img {
+    display: block;
+    height: auto;
+    // margin: 1.5rem 0;
+    max-width: 100%;
+
+    &.ProseMirror-selectednode {
+      outline: 3px solid #181818;
+    }
+  }
+
+  /* List styles */
+  ul,
+  ol {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+  }
+
+  ul li {
+    list-style-type: disc;
+
+    p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  ol li {
+    list-style-type: decimal;
+    p {
+      margin-top: 0.25em;
+      margin-bottom: 0.25em;
+    }
+  }
+
+  /* Task list specific styles */
+  ul[data-type="taskList"] {
+    list-style: none;
+    margin-left: 0;
+    padding: 0;
+
+    li {
+      align-items: center;
+      display: flex;
+
+      > label {
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+        user-select: none;
+      }
+
+      > div {
+        flex: 1 1 auto;
+      }
+    }
+
+    input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: #181818;
+    }
+
+    ul[data-type="taskList"] {
+      margin: 0;
+    }
+  }
+
+  // Mark (default)
+  mark {
+    background-color: #059d00;
+    padding: 0.1em 0.2em;
+    border-radius: 4px;
+  }
+
+  /* Link styles */
+  a {
+    color: #14379e;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: 1px dotted #14379e;
+    }
+  }
+
+  // Code Block Styling
+  pre {
+    background: #f4f4f4;
+    border: 1px solid #e2e2e2;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    line-height: 1.4;
+
+    code {
+      background: transparent;
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      font-size: inherit;
+      color: inherit;
+    }
+  }
+
+  // Inline code styling
+  code {
+    background: #f1f3f4;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+    font-size: 0.9em;
+    color: #212121;
+  }
+
+  // Blockquote Styling
+  blockquote {
+    border-left: 4px solid #ddd;
+    padding-left: 16px;
+    margin: 16px 0;
+    font-style: italic;
+    color: #666;
+    background: #fafafa;
+    padding: 12px 16px;
+
+    p {
+      margin: 0;
+    }
+
+    // Nested blockquotes
+    blockquote {
+      margin: 8px 0;
+      border-left-color: #ccc;
+    }
+  }
+
+  // Strikethrough Styling
+  s,
+  del,
+  .strike {
+    text-decoration: line-through;
+    text-decoration-color: #999;
+    text-decoration-thickness: 1px;
+  }
+
+  // Subscript Styling
+  sub,
+  .subscript {
+    vertical-align: sub;
+    font-size: 0.75em;
+    line-height: 1;
+  }
+
+  // Superscript Styling
+  sup,
+  .superscript {
+    vertical-align: super;
+    font-size: 0.75em;
+    line-height: 1;
+  }
+}

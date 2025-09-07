@@ -2,16 +2,18 @@ import { ApiResult } from "@/types/general";
 import { apiSlice } from "./apiSlice"; // Assuming you have a base apiSlice
 import {
   CreateProjectFormInputs,
+  FullProject,
   Project,
   ProjectMember,
   UpdateProjectFormInputs,
+  UserProject,
 } from "@/types/project";
 
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Create a new project
     createProject: builder.mutation<
-      ApiResult<Project>,
+      ApiResult<UserProject>,
       CreateProjectFormInputs
     >({
       query: (data) => ({
@@ -77,24 +79,21 @@ export const projectApiSlice = apiSlice.injectEndpoints({
     }),
 
     // Get all user projects
-    getUserProjects: builder.query<ApiResult<Project[]>, void>({
+    getUserProjects: builder.query<ApiResult<UserProject[]>, void>({
       query: () => ({
         url: "project/all",
         method: "GET",
       }),
-      providesTags: ["Projects"], // Provide tag for projects list
+      providesTags: ["Projects"],
     }),
 
     // Get a specific project by ID
-    getUserProjectById: builder.query<
-      ApiResult<Project & { projectMembers: ProjectMember[] }>,
-      string
-    >({
+    getUserProjectById: builder.query<ApiResult<FullProject>, string>({
       query: (id) => ({
         url: `project/${id}`,
         method: "GET",
       }),
-      providesTags: (result, error, id) => [{ type: "Project", id }], // Provide tag for specific project
+      providesTags: (result, error, id) => [{ type: "Project", id }],
     }),
 
     // Delete a project

@@ -1,0 +1,264 @@
+{
+  "response": {
+    "status": {
+      "statusCode": 200,
+      "statusMessage": "OK",
+      "statusDescription": ""
+    },
+    "data": {
+      "projects": {
+        "_id": "vrjgamdha@gmail.comAi Research",
+        "_rev": "184-f2c9a4953d0b1b6f02a490dac38e635c",
+        "email": "vrjgamdha@gmail.com",
+        "title": "Ai Research",
+        "created_at": 1756122463,
+        "modified_at": 1757057553,
+        "main_document": {
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {},
+              "content": [
+                {
+                  "type": "text",
+                  "text": "Ai research"
+                },
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "link",
+                      "attrs": {
+                        "href": "https://www.semanticscholar.org/paper/74ba6ab1b8de705e3b00774a18d607aaa5737ed0",
+                        "target": "_blank",
+                        "rel": "noreferrer"
+                      }
+                    }
+                  ],
+                  "text": "(Schank, 1987)"
+                }
+              ]
+            }
+          ]
+        },
+        "wordCount": 3,
+        "referenceFormats": {
+          "(Pearson et al., 2021)": {
+            "harvard": "Pearson, A.D.J. et al., 2021. Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer, 157, pp.198–213. Available at: https://doi.org/10.1016/j.ejca.2021.08.022.",
+            "apa": "Pearson, A. D. J., Barry, E., Mossé, Y. P., Ligas, F., Bird, N., de Rojas, T., … Vassal, G. (2021, November). Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer. Elsevier BV. http://doi.org/10.1016/j.ejca.2021.08.022",
+            "mla": "Pearson, Andrew D.J. et al.. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer Nov. 2021: 198–213. Crossref. Web. <https://doi.org/10.1016/j.ejca.2021.08.022>...",
+            "chicago": "Pearson, Andrew D.J., Elly Barry, Yael P. Mossé, Franca Ligas, Nick Bird, Teresa de Rojas, Zachary F. Zimmerman, et al.. 2021. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer. Elsevier BV. doi:10.1016/j.ejca.2021.08.022."
+          },
+          "(Rajpurkar et al., 2022)": {
+            "harvard": "Rajpurkar, P. et al., 2022. AI in health and medicine. Nature Medicine, 28(1), pp.31–38. Available at: https://doi.org/10.1038/s41591-021-01614-0.",
+            "apa": "Rajpurkar, P., Chen, E., Banerjee, O., & Topol, E. J. (2022, January). AI in health and medicine. Nature Medicine. Springer Science and Business Media LLC. http://doi.org/10.1038/s41591-021-01614-0",
+            "mla": "Rajpurkar, Pranav et al.. “AI in Health and Medicine”. Nature Medicine Jan. 2022: 31–38. Crossref. Web. <https://doi.org/10.1038/s41591-021-01614-0>...",
+            "chicago": "Rajpurkar, Pranav, Emma Chen, Oishi Banerjee, and Eric J. Topol. 2022. “AI in Health and Medicine”. Nature Medicine. Springer Science and Business Media LLC. doi:10.1038/s41591-021-01614-0."
+          },
+          "(Koski and Murphy, 2021)": {
+            "harvard": "Koski, E. & Murphy, J., 2021. AI in Healthcare. Studies in Health Technology and Informatics. Available at: https://doi.org/10.3233/SHTI210726.",
+            "apa": "Koski, E., & Murphy, J. (2021, December 15). AI in Healthcare. Studies in Health Technology and Informatics. IOS Press. http://doi.org/10.3233/shti210726",
+            "mla": "Koski, Eileen, and Judy Murphy. “AI in Healthcare”. Studies in Health Technology and Informatics 15 Dec. 2021. Crossref. Web. <https://doi.org/10.3233/SHTI210726>...",
+            "chicago": "Koski, Eileen, and Judy Murphy. 2021. “AI in Healthcare”. Studies in Health Technology and Informatics. IOS Press. doi:10.3233/shti210726."
+          },
+          "(Zhang and Boulos, 2023)": {
+            "harvard": "Zhang, P. & Kamel Boulos, M.N., 2023. Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges. Future Internet, 15(9), p.286. Available at: https://doi.org/10.3390/fi15090286.",
+            "apa": "Zhang, P., & Kamel Boulos, M. N. (2023, August 24). Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges. Future Internet. MDPI AG. http://doi.org/10.3390/fi15090286",
+            "mla": "Zhang, Peng, and Maged N. Kamel Boulos. “Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges”. Future Internet 24 Aug. 2023: 286. Crossref. Web. <https://doi.org/10.3390/fi15090286>...",
+            "chicago": "Zhang, Peng, and Maged N. Kamel Boulos. 2023. “Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges”. Future Internet. MDPI AG. doi:10.3390/fi15090286."
+          },
+          "(Reddy, 2024)": {
+            "harvard": "Reddy, S., 2024. Generative AI in healthcare: an implementation science informed translational path on application, integration and governance. Implementation Science, 19(1). Available at: https://doi.org/10.1186/s13012-024-01357-9.",
+            "apa": "Reddy, S. (2024, March 15). Generative AI in healthcare: an implementation science informed translational path on application, integration and governance. Implementation Science. Springer Science and Business Media LLC. http://doi.org/10.1186/s13012-024-01357-9",
+            "mla": "Reddy, Sandeep. “Generative AI in Healthcare: An Implementation Science Informed Translational Path on Application, Integration and Governance”. Implementation Science 15 Mar. 2024. Crossref. Web. <https://doi.org/10.1186/s13012-024-01357-9>...",
+            "chicago": "Reddy, Sandeep. 2024. “Generative AI in Healthcare: An Implementation Science Informed Translational Path on Application, Integration and Governance”. Implementation Science. Springer Science and Business Media LLC. doi:10.1186/s13012-024-01357-9."
+          },
+          "(Zhu et al., 2024)": {
+            "harvard": "Zhu, X. et al., 2024. Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science, pp.192–196. Available at: https://doi.org/10.1145/3706890.3706923.",
+            "apa": "Zhu, X., Li, X., Wang, Y., Chen, L., & Qu, J. (2024, August 13). Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science. ACM. http://doi.org/10.1145/3706890.3706923",
+            "mla": "Zhu, Xinyue et al.. “Intelligent Diagnosis and Treatment in Clinical Chinese Medicine and Nephrology: The Construction and Application Prospect of AI Macromodeling”. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science 13 Aug. 2024: 192–196. Crossref. Web. <https://doi.org/10.1145/3706890.3706923>...",
+            "chicago": "Zhu, Xinyue, Xiaohui Li, Yanwen Wang, Liming Chen, and Jie Qu. 2024. “Intelligent Diagnosis and Treatment in Clinical Chinese Medicine and Nephrology: The Construction and Application Prospect of AI Macromodeling”. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science. ACM. doi:10.1145/3706890.3706923."
+          },
+          "(Schank, 1987)": {
+            "harvard": "Schank, R.C., 1987. What is AI, anyway?. AI magazine, 8(4), pp.59-59.",
+            "mla": "Schank, Roger C. \"What is AI, anyway?.\" AI magazine 8.4 (1987): 59-59.",
+            "apa": "Schank, R. C. (1987). What is AI, anyway?. AI magazine, 8(4), 59-59.",
+            "chicago": "Schank, Roger C. \"What is AI, anyway?.\" AI magazine 8, no. 4 (1987): 59-59."
+          }
+        },
+        "references": {
+          "(Pearson et al., 2021)": {
+            "harvard": "Pearson, A.D.J. et al., 2021. Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer, 157, pp.198–213. Available at: https://doi.org/10.1016/j.ejca.2021.08.022.",
+            "apa": "Pearson, A. D. J., Barry, E., Mossé, Y. P., Ligas, F., Bird, N., de Rojas, T., … Vassal, G. (2021, November). Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer. Elsevier BV. http://doi.org/10.1016/j.ejca.2021.08.022",
+            "mla": "Pearson, Andrew D.J. et al.. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer Nov. 2021: 198–213. Crossref. Web. <https://doi.org/10.1016/j.ejca.2021.08.022>...",
+            "chicago": "Pearson, Andrew D.J., Elly Barry, Yael P. Mossé, Franca Ligas, Nick Bird, Teresa de Rojas, Zachary F. Zimmerman, et al.. 2021. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer. Elsevier BV. doi:10.1016/j.ejca.2021.08.022."
+          },
+          "(Rajpurkar et al., 2022)": {
+            "harvard": "Rajpurkar, P. et al., 2022. AI in health and medicine. Nature Medicine, 28(1), pp.31–38. Available at: https://doi.org/10.1038/s41591-021-01614-0.",
+            "apa": "Rajpurkar, P., Chen, E., Banerjee, O., & Topol, E. J. (2022, January). AI in health and medicine. Nature Medicine. Springer Science and Business Media LLC. http://doi.org/10.1038/s41591-021-01614-0",
+            "mla": "Rajpurkar, Pranav et al.. “AI in Health and Medicine”. Nature Medicine Jan. 2022: 31–38. Crossref. Web. <https://doi.org/10.1038/s41591-021-01614-0>...",
+            "chicago": "Rajpurkar, Pranav, Emma Chen, Oishi Banerjee, and Eric J. Topol. 2022. “AI in Health and Medicine”. Nature Medicine. Springer Science and Business Media LLC. doi:10.1038/s41591-021-01614-0."
+          },
+          "(Koski and Murphy, 2021)": {
+            "harvard": "Koski, E. & Murphy, J., 2021. AI in Healthcare. Studies in Health Technology and Informatics. Available at: https://doi.org/10.3233/SHTI210726.",
+            "apa": "Koski, E., & Murphy, J. (2021, December 15). AI in Healthcare. Studies in Health Technology and Informatics. IOS Press. http://doi.org/10.3233/shti210726",
+            "mla": "Koski, Eileen, and Judy Murphy. “AI in Healthcare”. Studies in Health Technology and Informatics 15 Dec. 2021. Crossref. Web. <https://doi.org/10.3233/SHTI210726>...",
+            "chicago": "Koski, Eileen, and Judy Murphy. 2021. “AI in Healthcare”. Studies in Health Technology and Informatics. IOS Press. doi:10.3233/shti210726."
+          },
+          "(Zhang and Boulos, 2023)": {
+            "harvard": "Zhang, P. & Kamel Boulos, M.N., 2023. Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges. Future Internet, 15(9), p.286. Available at: https://doi.org/10.3390/fi15090286.",
+            "apa": "Zhang, P., & Kamel Boulos, M. N. (2023, August 24). Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges. Future Internet. MDPI AG. http://doi.org/10.3390/fi15090286",
+            "mla": "Zhang, Peng, and Maged N. Kamel Boulos. “Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges”. Future Internet 24 Aug. 2023: 286. Crossref. Web. <https://doi.org/10.3390/fi15090286>...",
+            "chicago": "Zhang, Peng, and Maged N. Kamel Boulos. 2023. “Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges”. Future Internet. MDPI AG. doi:10.3390/fi15090286."
+          },
+          "(Reddy, 2024)": {
+            "harvard": "Reddy, S., 2024. Generative AI in healthcare: an implementation science informed translational path on application, integration and governance. Implementation Science, 19(1). Available at: https://doi.org/10.1186/s13012-024-01357-9.",
+            "apa": "Reddy, S. (2024, March 15). Generative AI in healthcare: an implementation science informed translational path on application, integration and governance. Implementation Science. Springer Science and Business Media LLC. http://doi.org/10.1186/s13012-024-01357-9",
+            "mla": "Reddy, Sandeep. “Generative AI in Healthcare: An Implementation Science Informed Translational Path on Application, Integration and Governance”. Implementation Science 15 Mar. 2024. Crossref. Web. <https://doi.org/10.1186/s13012-024-01357-9>...",
+            "chicago": "Reddy, Sandeep. 2024. “Generative AI in Healthcare: An Implementation Science Informed Translational Path on Application, Integration and Governance”. Implementation Science. Springer Science and Business Media LLC. doi:10.1186/s13012-024-01357-9."
+          },
+          "(Zhu et al., 2024)": {
+            "harvard": "Zhu, X. et al., 2024. Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science, pp.192–196. Available at: https://doi.org/10.1145/3706890.3706923.",
+            "apa": "Zhu, X., Li, X., Wang, Y., Chen, L., & Qu, J. (2024, August 13). Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science. ACM. http://doi.org/10.1145/3706890.3706923",
+            "mla": "Zhu, Xinyue et al.. “Intelligent Diagnosis and Treatment in Clinical Chinese Medicine and Nephrology: The Construction and Application Prospect of AI Macromodeling”. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science 13 Aug. 2024: 192–196. Crossref. Web. <https://doi.org/10.1145/3706890.3706923>...",
+            "chicago": "Zhu, Xinyue, Xiaohui Li, Yanwen Wang, Liming Chen, and Jie Qu. 2024. “Intelligent Diagnosis and Treatment in Clinical Chinese Medicine and Nephrology: The Construction and Application Prospect of AI Macromodeling”. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science. ACM. doi:10.1145/3706890.3706923."
+          },
+          "(Schank, 1987)": "Schank, R.C., 1987. What is AI, anyway?. AI magazine, 8(4), pp.59-59."
+        },
+        "s3FileReferences": {},
+        "s3Files": [],
+        "abstracts": {
+          "Sodiqovna, I. & Park, J.C., 2024. AI in Medicine Recent Progress Opportunities and Future Directions. Proceedings of the 8th International Conference on Future Networks & Distributed Systems, pp.995–999. Available at: https://doi.org/10.1145/3726122.3726267.": {
+            "title": "AI in Medicine Recent Progress Opportunities and Future Directions",
+            "abstract": "Abstract. Artificial intelligence (AI) is revolutionizing the field of medicine by introducing groundbreaking tools that enhance the accuracy and precision of disease diagnosis, progression monitoring, and treatment planning. This review article delves into recent investigations and future advancements of AI in the medical landscape. The article focuses on the influence of AI-driven tools in various specialties, such as radiology, pathology, gastroenter-ology, oncology, nephrology, ophthalmology, neurology, and cardiology. The integration of AI with multimodal data sources, including genomics, imaging, and electronic health records, plays a key role in applications like smart clinics and drug discovery. Moreover, AI has strong potential to re-shape clinical practice and improve patient outcomes. These investigations open the door to a new chapter of precision medicine.",
+            "url": "https://dl.acm.org/doi/10.1145/3726122.3726267",
+            "author": "Iroda SodiqovnaJeong Chan Park",
+            "year": 2025,
+            "journal": "ICFNDS '24",
+            "uploadDate": 1756128211
+          },
+          "Zhu, X. et al., 2024. Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling. Proceedings of the 2024 5th International Symposium on Artificial Intelligence for Medicine Science, pp.192–196. Available at: https://doi.org/10.1145/3706890.3706923.": {
+            "title": "Intelligent diagnosis and treatment in clinical Chinese medicine and nephrology: the construction and application prospect of AI macromodeling",
+            "abstract": "This article focuses on the application and prospects of artificial intelligence technology in the diagnosis and treatment of traditional Chinese medicine nephrology. It aims to analyse how artificial intelligence can improve diagnosis, treatment recommendations and efficacy prediction through large model technology to improve diagnosis and treatment efficiency. With the rapid development of AI technology, the field of traditional Chinese medicine nephrology is opening up unprecedented intelligent opportunities. By integrating traditional Chinese medicine classics, modern clinical data and knowledge graphs, and other technologies, AI large models can support traditional Chinese medicine diagnosis and treatment, not only improving the efficiency of doctors' decision-making, but also promoting the accuracy of diagnosis and personalised treatment. With the further application of multimodal data fusion in the future, AI is expected to promote the intelligent diagnosis and treatment of traditional Chinese medicine nephrology to the global level.",
+            "url": "https://dl.acm.org/doi/10.1145/3706890.3706923",
+            "author": "Xinyue ZhuXiaohui LiYanwen WangLiming ChenJie Qu",
+            "year": 2025,
+            "journal": "ISAIMS '24",
+            "uploadDate": 1756128209
+          },
+          "Reddy, S., 2024. Generative AI in healthcare: an implementation science informed translational path on application, integration and governance. Implementation Science, 19(1). Available at: https://doi.org/10.1186/s13012-024-01357-9.": {
+            "paperId": "25361e9582996220625a1823d931b4ed5f5558d3",
+            "externalIds": {
+              "PubMedCentral": "10941464",
+              "DOI": "10.1186/s13012-024-01357-9",
+              "CorpusId": 268424453,
+              "PubMed": "38491544"
+            },
+            "url": "https://www.semanticscholar.org/paper/25361e9582996220625a1823d931b4ed5f5558d3",
+            "title": "Generative AI in healthcare: an implementation science informed translational path on application, integration and governance",
+            "year": 2024,
+            "citationCount": 176,
+            "openAccessPdf": {
+              "url": "https://implementationscience.biomedcentral.com/counter/pdf/10.1186/s13012-024-01357-9",
+              "status": "GOLD",
+              "license": "CCBY",
+              "disclaimer": "Notice: Paper or abstract available at https://pmc.ncbi.nlm.nih.gov/articles/PMC10941464, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "journal": {
+              "name": "Implementation Science : IS",
+              "volume": "19"
+            },
+            "citationStyles": {
+              "bibtex": "@Article{Reddy2024GenerativeAI,\n author = {S. Reddy},\n booktitle = {Implementation science : IS},\n journal = {Implementation Science : IS},\n title = {Generative AI in healthcare: an implementation science informed translational path on application, integration and governance},\n volume = {19},\n year = {2024}\n}\n"
+            },
+            "authors": [
+              {
+                "authorId": "2077496497",
+                "name": "S. Reddy"
+              }
+            ],
+            "abstract": "Background Artificial intelligence (AI), particularly generative AI, has emerged as a transformative tool in healthcare, with the potential to revolutionize clinical decision-making and improve health outcomes. Generative AI, capable of generating new data such as text and images, holds promise in enhancing patient care, revolutionizing disease diagnosis and expanding treatment options. However, the utility and impact of generative AI in healthcare remain poorly understood, with concerns around ethical and medico-legal implications, integration into healthcare service delivery and workforce utilisation. Also, there is not a clear pathway to implement and integrate generative AI in healthcare delivery. Methods This article aims to provide a comprehensive overview of the use of generative AI in healthcare, focusing on the utility of the technology in healthcare and its translational application highlighting the need for careful planning, execution and management of expectations in adopting generative AI in clinical medicine. Key considerations include factors such as data privacy, security and the irreplaceable role of clinicians’ expertise. Frameworks like the technology acceptance model (TAM) and the Non-Adoption, Abandonment, Scale-up, Spread and Sustainability (NASSS) model are considered to promote responsible integration. These frameworks allow anticipating and proactively addressing barriers to adoption, facilitating stakeholder participation and responsibly transitioning care systems to harness generative AI’s potential. Results Generative AI has the potential to transform healthcare through automated systems, enhanced clinical decision-making and democratization of expertise with diagnostic support tools providing timely, personalized suggestions. Generative AI applications across billing, diagnosis, treatment and research can also make healthcare delivery more efficient, equitable and effective. However, integration of generative AI necessitates meticulous change management and risk mitigation strategies. Technological capabilities alone cannot shift complex care ecosystems overnight; rather, structured adoption programs grounded in implementation science are imperative. Conclusions It is strongly argued in this article that generative AI can usher in tremendous healthcare progress, if introduced responsibly. Strategic adoption based on implementation science, incremental deployment and balanced messaging around opportunities versus limitations helps promote safe, ethical generative AI integration. Extensive real-world piloting and iteration aligned to clinical priorities should drive development. With conscientious governance centred on human wellbeing over technological novelty, generative AI can enhance accessibility, affordability and quality of care. As these models continue advancing rapidly, ongoing reassessment and transparent communication around their strengths and weaknesses remain vital to restoring trust, realizing positive potential and, most importantly, improving patient outcomes.",
+            "combined_score": 0.5401637426900585,
+            "uploadDate": 1756128204
+          },
+          "Zhang, P. & Kamel Boulos, M.N., 2023. Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges. Future Internet, 15(9), p.286. Available at: https://doi.org/10.3390/fi15090286.": {
+            "paperId": "bb60d51630a649535ed3d1bcb445524fbae6cf0b",
+            "externalIds": {
+              "DBLP": "journals/fi/ZhangB23",
+              "DOI": "10.3390/fi15090286",
+              "CorpusId": 261206138
+            },
+            "url": "https://www.semanticscholar.org/paper/bb60d51630a649535ed3d1bcb445524fbae6cf0b",
+            "title": "Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges",
+            "year": 2023,
+            "citationCount": 176,
+            "openAccessPdf": {
+              "url": "https://www.mdpi.com/1999-5903/15/9/286/pdf?version=1692864615",
+              "status": "GOLD",
+              "license": "CCBY",
+              "disclaimer": "Notice: Paper or abstract available at https://api.unpaywall.org/v2/10.3390/fi15090286?email=<INSERT_YOUR_EMAIL> or https://doi.org/10.3390/fi15090286, which is subject to the license by the author or copyright owner provided with this content. Please go to the source to verify the license and copyright information for your use."
+            },
+            "journal": {
+              "name": "Future Internet",
+              "pages": "286",
+              "volume": "15"
+            },
+            "citationStyles": {
+              "bibtex": "@Article{Zhang2023GenerativeAI,\n author = {Peng Zhang and M. Boulos},\n booktitle = {Future Internet},\n journal = {Future Internet},\n pages = {286},\n title = {Generative AI in Medicine and Healthcare: Promises, Opportunities and Challenges},\n volume = {15},\n year = {2023}\n}\n"
+            },
+            "authors": [
+              {
+                "authorId": "2151330625",
+                "name": "Peng Zhang"
+              },
+              {
+                "authorId": "49143963",
+                "name": "M. Boulos"
+              }
+            ],
+            "abstract": "Generative AI (artificial intelligence) refers to algorithms and models, such as OpenAI’s ChatGPT, that can be prompted to generate various types of content. In this narrative review, we present a selection of representative examples of generative AI applications in medicine and healthcare. We then briefly discuss some associated issues, such as trust, veracity, clinical safety and reliability, privacy, copyrights, ownership, and opportunities, e.g., AI-driven conversational user interfaces for friendlier human-computer interaction. We conclude that generative AI will play an increasingly important role in medicine and healthcare as it further evolves and gets better tailored to the unique settings and requirements of the medical domain and as the laws, policies and regulatory frameworks surrounding its use start taking shape.",
+            "combined_score": 0.571469298245614,
+            "uploadDate": 1756128204
+          },
+          "Koski, E. & Murphy, J., 2021. AI in Healthcare. Studies in Health Technology and Informatics. Available at: https://doi.org/10.3233/SHTI210726.": {
+            "title": "AI in Healthcare.",
+            "abstract": "The potential value of AI to healthcare, and nursing in particular, ranges from improving quality and efficiency of care to delivering on the promise of personalized and precision medicine. AI systems may become virtually indispensable as ever more data is amassed about every aspect of health. AI can help reduce variability in care, while improving precision, accelerating discovery and reducing disparities. AI can empower patients and potentially allow healthcare professionals to relate to their patients as healers supported by the combined wisdom of the best medical research and analytic technology. There are, however, many challenges to understanding the optimal uses of AI; addressing the technological, systemic, regulatory and attitudinal roadblocks to successful implementation; and integrating AI into the fabric of health care. This paper provides a grounding in the origins and fundamental building blocks of AI, applications in healthcare and for nursing, and the critical challenges facing implementation in healthcare.",
+            "url": "https://www.doi.org/10.3233/SHTI210726",
+            "author": "Eileen Koski, Judy Murphy",
+            "year": "2021",
+            "journal": "Stud Health Technol Inform",
+            "uploadDate": 1756128207
+          },
+          "Rajpurkar, P. et al., 2022. AI in health and medicine. Nature Medicine, 28(1), pp.31–38. Available at: https://doi.org/10.1038/s41591-021-01614-0.": {
+            "title": "AI in health and medicine.",
+            "abstract": "Artificial intelligence (AI) is poised to broadly reshape medicine, potentially improving the experiences of both clinicians and patients. We discuss key findings from a 2-year weekly effort to track and share key developments in medical AI. We cover prospective studies and advances in medical image analysis, which have reduced the gap between research and deployment. We also address several promising avenues for novel medical AI research, including non-image data sources, unconventional problem formulations and human-AI collaboration. Finally, we consider serious technical and ethical challenges in issues spanning from data scarcity to racial bias. As these challenges are addressed, AI's potential may be realized, making healthcare more accurate, efficient and accessible for patients worldwide.",
+            "url": "https://www.doi.org/10.1038/s41591-021-01614-0",
+            "author": "Pranav Rajpurkar, Emma Chen, Oishi Banerjee, Eric J Topol",
+            "year": "2021",
+            "journal": "Nat Med",
+            "uploadDate": 1756128204
+          },
+          "Pearson, A.D.J. et al., 2021. Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer, 157, pp.198–213. Available at: https://doi.org/10.1016/j.ejca.2021.08.022.": {
+            "title": "Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies: ACCELERATE in collaboration with the European Medicines Agency with the participation of the Food and Drug Administration.",
+            "abstract": "The first (2017) and sixth (2021) multistakeholder Paediatric Strategy Forums focused on anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. ALK is an important oncogene and target in several paediatric tumours (anaplastic large cell lymphoma [ALCL], inflammatory myofibroblastic tumour [IMT], neuroblastoma and hemispheric gliomas in infants and young children) with unmet therapeutic needs. ALK tyrosine kinase inhibitors have been demonstrated to be active both in ALK fusion-kinase positive ALCL and IMT. ALK alterations differ, with fusions occurring in ALCL, IMT and gliomas, and activating mutations and amplification in neuroblastoma. While there are many ALK inhibitors in development, the number of children diagnosed with ALK driven malignancies is very small. The objectives of this ALK Forum were to (i) Describe current knowledge of ALK biology in childhood cancers; (ii) Provide an overview of the development of ALK inhibitors for children; (iii) Identify the unmet needs taking into account planned or current ongoing trials; (iv) Conclude how second/third-generation inhibitors could be evaluated and prioritised; (v) Identify lessons learnt from the experience with ALK inhibitors to accelerate the paediatric development of other anti-cancer targeted agents in the new regulatory environments. There has been progress over the last four years, with more trials of ALK inhibitors opened in paediatrics and more regulatory submissions. In January 2021, the US Food and Drug Administration approved crizotinib for the treatment of paediatric and young adult patients with relapsed or refractory ALCL and there are paediatric investigation plans (PIPs) for brigatinib and for crizotinib in ALCL and IMT. In ALCL, the current goal is to investigate the inclusion of ALK inhibitors in front-line therapy with the aim of decreasing toxicity with higher/similar efficacy compared to present first-line therapies. For IMT, the focus is to develop a joint prospective trial with one product in children, adolescents and adults, taking advantage of the common biology across the age spectrum. As approximately 50% of IMTs are ALK-positive, molecular analysis is required to identify patients to be treated with an ALK inhibitor. For neuroblastoma, crizotinib has not shown robust anti-tumour activity. A focused and sequential development of ALK inhibitors with very good central nervous system (CNS) penetration in CNS tumours with ALK fusions should be undertaken. The Forum reinforced the strong need for global academic collaboration, very early involvement of regulators with studies seeking possible registration and early academia-multicompany engagement. Innovations in study design and conduct and the use of 'real-world data' supporting development in these rare sub-groups of patients for whom randomised clinical trials are not feasible are important initiatives. A focused and sequenced development strategy, where one product is evaluated first with other products being assessed sequentially, is applicable for ALK inhibitors and other medicinal products in children.",
+            "url": "https://www.doi.org/10.1016/j.ejca.2021.08.022",
+            "author": "Andrew D J Pearson, Elly Barry, Yael P Mossé, Franca Ligas, Nick Bird, Teresa de Rojas, Zachary F Zimmerman, Keith Wilner, Willi Woessmann, Susan Weiner, Brenda Weigel, Rajkumar Venkatramani, Dominique Valteau, Toby Trahair, Malcolm Smith, Sonia Singh, Giovanni Selvaggi, Nicole Scobie, Gudrun Schleiermacher, Nicholas Richardson, Julie Park, Karsten Nysom, Koen Norga, Margret Merino, Joe McDonough, Yousif Matloub, Lynley V Marshall, Eric Lowe, Giovanni Lesa, Meredith Irwin, Dominik Karres, Amar Gajjar, François Doz, Elizabeth Fox, Steven G DuBois, Martha Donoghue, Michela Casanova, Hubert Caron, Vickie Buenger, Diana Bradford, Patricia Blanc, Amy Barone, Gregory Reaman, Gilles Vassal",
+            "year": "2021",
+            "journal": "Eur J Cancer",
+            "uploadDate": 1756128206
+          },
+          "Colak, S. & ten Dijke, P., 2017. Targeting TGF-β Signaling in Cancer. Trends in Cancer, 3(1), pp.56–71. Available at: https://doi.org/10.1016/j.trecan.2016.11.008.": {
+            "title": "Targeting TGF-β Signaling in Cancer.",
+            "abstract": "The transforming growth factor (TGF)-β signaling pathway is deregulated in many diseases, including cancer. In healthy cells and early-stage cancer cells, this pathway has tumor-suppressor functions, including cell-cycle arrest and apoptosis. However, its activation in late-stage cancer can promote tumorigenesis, including metastasis and chemoresistance. The dual function and pleiotropic nature of TGF-β signaling make it a challenging target and imply the need for careful therapeutic dosing of TGF-β drugs and patient selection. We review here the rationale for targeting TGF-β signaling in cancer and summarize the clinical status of pharmacological inhibitors. We discuss the direct effects of TGF-β signaling blockade on tumor and stromal cells, as well as biomarkers that can predict the efficacy of TGF-β inhibitors in cancer patients.",
+            "url": "https://www.doi.org/10.1016/j.trecan.2016.11.008",
+            "author": "Selcuk Colak, Peter Ten Dijke",
+            "year": "2016",
+            "journal": "Trends Cancer",
+            "uploadDate": 1756128204
+          }
+        }
+      }
+    }
+  }
+}

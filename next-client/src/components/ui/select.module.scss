@@ -59,8 +59,14 @@
       transition: transform 0.2s;
       flex-shrink: 0;
 
+      // for dropdown menu bottom
       &.rotated {
         transform: rotate(180deg);
+      }
+
+      // for submenu
+      &.rotated_sub {
+        transform: translateX(2px);
       }
 
       &.disabled {
@@ -98,7 +104,6 @@
     font-size: 0.9rem;
   }
 
-  // button with variant
   .option {
     width: 100%;
   }

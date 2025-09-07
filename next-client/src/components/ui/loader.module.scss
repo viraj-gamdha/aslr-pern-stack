@@ -29,6 +29,7 @@
   position: fixed;
   animation: delayed-load 0.1s linear 0.2s 1 forwards;
   visibility: hidden;
+  overflow: hidden;
   opacity: 0;
   top: 50%;
   left: 50%;

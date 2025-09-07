@@ -21,6 +21,8 @@ export const user = mySchema.table(
 );
 
 // Define relations for users table
+// many projects as owner
+// can be part of many project members
 export const userRelations = relations(user, ({ many }) => ({
   ownedProjects: many(project, {
     relationName: "owner",

@@ -1,5 +1,5 @@
 .container {
-  width: 100%;
+  width: fit-content;
   position: relative;
   display: inline-block;
 
@@ -20,7 +20,13 @@
     z-index: 1000;
     background-color: white;
     margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
     // Note: This only applies visually for 'bottom' position. Consider removing or adjusting.
     // add other styles from props
+
+    > button {
+      width: 100%;
+    }
   }
 }

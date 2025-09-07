@@ -1,6 +1,8 @@
+// select.tsx
+
 import s from "./select.module.scss";
 import { BaseComponentProps, Input } from "./input";
-import { ChevronDown, LucideIcon, X } from "lucide-react";
+import { ChevronDown, ChevronRight, LucideIcon, X } from "lucide-react";
 import { Button, ButtonVariants } from "./button";
 import { CSSProperties, FC, ReactNode, useEffect, useState } from "react";
 import classNames from "classnames";
@@ -303,6 +305,7 @@ interface SelectButtonProps {
   tooltipPosition?: "top" | "bottom" | "left" | "right";
   showClear?: boolean;
   showChevron?: boolean;
+  isSubmenu?: boolean;
   onClear?: (e: React.MouseEvent) => void;
   children?: ReactNode;
 }
@@ -313,6 +316,7 @@ export const SelectButton: FC<SelectButtonProps> = ({
   buttonStyle,
   buttonVariant = "icon_bordered",
   showClear = false,
+  isSubmenu = false,
   showChevron = true,
   tooltip,
   tooltipPosition = "bottom",
@@ -343,11 +347,20 @@ export const SelectButton: FC<SelectButtonProps> = ({
               <X size={16} />
             </button>
           )}
-          {showChevron && (
+          {!isSubmenu && showChevron && (
             <ChevronDown
               size={16}
               className={classNames(s.chevron, {
                 [s.rotated]: isOpen,
+                [s.disabled]: disabled,
+              })}
+            />
+          )}
+          {isSubmenu && showChevron && (
+            <ChevronRight
+              size={16}
+              className={classNames(s.chevron, {
+                [s.rotated_sub]: isOpen,
                 [s.disabled]: disabled,
               })}
             />

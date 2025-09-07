@@ -1,14 +1,15 @@
-import { primaryKey, text } from "drizzle-orm/pg-core";
+import { pgEnum, primaryKey, text } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 import { mySchema } from "@/db/schema/base.js";
 import { timestamps } from "@/db/schema/helpers/column.js";
 import { user } from "@/db/schema/user.js";
+import { document } from "./document";
 
 // Define the projects table for storing project details
 export const project = mySchema.table("projects", {
   id: text("id")
-      .primaryKey()
-      .$defaultFn(() => crypto.randomUUID()),
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
   title: text("title").notNull(),
   description: text("description"),
   userId: text("user_id")
@@ -16,6 +17,8 @@ export const project = mySchema.table("projects", {
     .references(() => user.id, { onDelete: "cascade" }),
   ...timestamps,
 });
+
+export const invitationStatusEnum = pgEnum("invitation_status", ["pending", "invited"]);
 
 // Define the project_members junction table for invited user
 export const projectMember = mySchema.table(
@@ -27,12 +30,14 @@ export const projectMember = mySchema.table(
     userId: text("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
+    invitationStatus: invitationStatusEnum("invitation_status").default("pending").notNull(),
     ...timestamps,
   },
   (table) => [primaryKey({ columns: [table.projectId, table.userId] })]
 );
 
 // Define relations for projects table
+// One project can have one owner (creator) /// many members (users) /// one document
 export const projectRelations = relations(project, ({ one, many }) => ({
   owner: one(user, {
     fields: [project.userId],
@@ -40,6 +45,10 @@ export const projectRelations = relations(project, ({ one, many }) => ({
     relationName: "owner",
   }),
   projectMembers: many(projectMember),
+  document: one(document, {
+    fields: [project.id],
+    references: [document.projectId],
+  }),
 }));
 
 // Define relations for project_members junction table
