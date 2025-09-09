@@ -262,3 +262,31 @@
     }
   }
 }
+
+
+[
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "name": "(Pearson et al., 2021)",
+    "harvard": "Pearson, A.D.J. et al., 2021. Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer, 157, pp.198–213. Available at: https://doi.org/10.1016/j.ejca.2021.08.022.",
+    "apa": "Pearson, A. D. J., Barry, E., Mossé, Y. P., Ligas, F., Bird, N., de Rojas, T., … Vassal, G. (2021, November). Second Paediatric Strategy Forum for anaplastic lymphoma kinase (ALK) inhibition in paediatric malignancies. European Journal of Cancer. Elsevier BV. http://doi.org/10.1016/j.ejca.2021.08.022",
+    "mla": "Pearson, Andrew D.J. et al.. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer Nov. 2021: 198–213. Crossref. Web. <https://doi.org/10.1016/j.ejca.2021.08.022>...",
+    "chicago": "Pearson, Andrew D.J., Elly Barry, Yael P. Mossé, Franca Ligas, Nick Bird, Teresa de Rojas, Zachary F. Zimmerman, et al.. 2021. “Second Paediatric Strategy Forum for Anaplastic Lymphoma Kinase (ALK) Inhibition in Paediatric Malignancies”. European Journal of Cancer. Elsevier BV. doi:10.1016/j.ejca.2021.08.022."
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440001",
+    "name": "(Rajpurkar et al., 2022)",
+    "harvard": "Rajpurkar, P. et al., 2022. AI in health and medicine. Nature Medicine, 28(1), pp.31–38. Available at: https://doi.org/10.1038/s41591-021-01614-0.",
+    "apa": "Rajpurkar, P., Chen, E., Banerjee, O., & Topol, E. J. (2022, January). AI in health and medicine. Nature Medicine. Springer Science and Business Media LLC. http://doi.org/10.1038/s41591-021-01614-0",
+    "mla": "Rajpurkar, Pranav et al.. “AI in Health and Medicine”. Nature Medicine Jan. 2022: 31–38. Crossref. Web. <https://doi.org/10.1038/s41591-021-01614-0>...",
+    "chicago": "Rajpurkar, Pranav, Emma Chen, Oishi Banerjee, and Eric J. Topol. 2022. “AI in Health and Medicine”. Nature Medicine. Springer Science and Business Media LLC. doi:10.1038/s41591-021-01614-0."
+  },
+  {
+    "id": "550e8400-e29b-41d4-a716-446655440002",
+    "name": "(Koski and Murphy, 2021)",
+    "harvard": "Koski, E. & Murphy, J., 2021. AI in Healthcare. Studies in Health Technology and Informatics. Available at: https://doi.org/10.3233/SHTI210726.",
+    "apa": "Koski, E., & Murphy, J. (2021, December 15). AI in Healthcare. Studies in Health Technology and Informatics. IOS Press. http://doi.org/10.3233/shti210726",
+    "mla": "Koski, Eileen, and Judy Murphy. “AI in Healthcare”. Studies in Health Technology and Informatics 15 Dec. 2021. Crossref. Web. <https://doi.org/10.3233/SHTI210726>...",
+    "chicago": "Koski, Eileen, and Judy Murphy. 2021. “AI in Healthcare”. Studies in Health Technology and Informatics. IOS Press. doi:10.3233/shti210726."
+  }
+]

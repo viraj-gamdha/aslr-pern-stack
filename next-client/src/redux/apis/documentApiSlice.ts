@@ -4,6 +4,7 @@ import { projectApiSlice } from "./projectApiSlice";
 import { DocumentType } from "@/types/document";
 import { JSONContent } from "@tiptap/react";
 import { setEditorDirty } from "../features/editorSlice";
+import { EnhanceOptions } from "@/types/aiAssist";
 
 export const docApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -42,7 +43,24 @@ export const docApiSlice = apiSlice.injectEndpoints({
         }
       },
     }),
+
+    enhanceText: builder.mutation<
+      ApiResult<string>,
+      {
+        projectId: string;
+        text: string;
+        action: string;
+        options?: EnhanceOptions;
+      }
+    >({
+      query: ({ projectId, ...body }) => ({
+        url: `/ai-assist/enhance-text/${projectId}`,
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useUpdateDocumentMutation } = docApiSlice;
+export const { useUpdateDocumentMutation, useEnhanceTextMutation } =
+  docApiSlice;

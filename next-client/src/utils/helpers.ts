@@ -19,3 +19,4 @@ export const parseError = (error: unknown): string => {
 
   return "An unexpected error occurred.";
 };
+

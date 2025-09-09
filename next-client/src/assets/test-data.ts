@@ -72,4 +72,37 @@ export const tocContent = {
       ],
     },
   ],
-}
+};
+
+export const references = [
+  {
+    id: "ref1",
+    name: "Smith, J.",
+    reference:
+      "Understanding Typography in Digital Media. Journal of Design Studies, 2020.",
+  },
+  {
+    id: "ref2",
+    name: "Chen, L. & Kumar, R.",
+    reference:
+      "The Impact of Margins on Readability. International Conference on UX Research, 2019.",
+  },
+  {
+    id: "ref3",
+    name: "W3C",
+    reference:
+      "CSS Paged Media Module Level 3. Retrieved from https://www.w3.org/TR/css-page-3/",
+  },
+  {
+    id: "ref4",
+    name: "Doe, A.",
+    reference:
+      "Designing for Print: A Practical Guide. PrintWorks Publishing, 2018.",
+  },
+  {
+    id: "ref5",
+    name: "OpenAI",
+    reference:
+      "Generative Models and Their Applications. Technical Report, 2021.",
+  },
+];

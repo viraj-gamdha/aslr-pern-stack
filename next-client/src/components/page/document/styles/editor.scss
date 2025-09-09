@@ -4,6 +4,7 @@
 @import "./drag-handle";
 @import "./page-break";
 @import "./editor-table";
+@import "./editor-page";
 
 /* Basic editor styles */
 .tiptap {
@@ -161,12 +162,13 @@
 
   // Inline code styling
   code {
-    background: #f1f3f4;
+    background-color: #f1f3f4;
     padding: 2px 4px;
     border-radius: 3px;
     font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
     font-size: 0.9em;
     color: #212121;
+    text-wrap: wrap;
   }
 
   // Blockquote Styling
@@ -176,7 +178,7 @@
     margin: 16px 0;
     font-style: italic;
     color: #666;
-    background: #fafafa;
+    background-color: #fafafa;
     padding: 12px 16px;
 
     p {
@@ -213,5 +215,9 @@
     vertical-align: super;
     font-size: 0.75em;
     line-height: 1;
+  }
+
+  @media print {
+    page-break-before: always;
   }
 }

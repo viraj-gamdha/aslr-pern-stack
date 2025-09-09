@@ -1,0 +1,19 @@
+.tiptap {
+  // Use CSS variables with default values for dynamic properties
+  width: var(--page-width, 210mm);
+  min-height: var(--page-height, 297mm);
+  margin: 0 auto;
+  background-color: white;
+  cursor: text;
+  padding: var(--page-padding-top, 16mm) var(--page-padding-right, 16mm)
+    var(--page-padding-bottom, 16mm) var(--page-padding-left, 16mm);
+  box-shadow: var(--shadow);
+
+  &:focus {
+    outline: none;
+  }
+
+  @media print {
+    box-shadow: none;
+  }
+}

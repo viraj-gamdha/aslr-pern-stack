@@ -9,7 +9,8 @@ import { authRoutes } from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import { projectRoutes } from "./routes/project.js";
 import { documentRoutes } from "./routes/document.js";
-import { uploadRoutes } from "./routes/file-upload.js";
+import { uploadRoutes } from "./routes/fileUpload.js";
+import { aiAssistRoutes } from "./routes/aiAssist.js";
 
 config({ path: "./.env" });
 export const envMode = process.env.NODE_ENV?.trim() || "development";
@@ -25,7 +26,7 @@ app.use(
 );
 
 //
-app.use(express.json({limit: "10mb"}));
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 
@@ -60,6 +61,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/project", projectRoutes);
 app.use("/api/documents", documentRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/ai-assist", aiAssistRoutes);
 // ---
 
 // All other routes

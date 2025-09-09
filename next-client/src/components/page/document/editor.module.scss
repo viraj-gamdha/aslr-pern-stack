@@ -23,20 +23,3 @@
     margin-inline: auto;
   }
 }
-
-// editor props (passed in editor attributes)
-// inside wrapper -> editor content
-.prop {
-  display: flex;
-  flex-direction: column;
-  width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  padding: 16mm;
-  background: white;
-  cursor: text;
-
-  &:focus {
-    outline: none;
-  }
-}

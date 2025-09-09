@@ -11,13 +11,22 @@ export interface BaseComponentProps {
 }
 
 // Input Component
+export type InputTypes =
+  | "text"
+  | "password"
+  | "search"
+  | "email"
+  | "date"
+  | "number"
+  | "checkbox";
 export type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
   "type" | "form"
 > &
   BaseComponentProps & {
-    type?: "text" | "password" | "search" | "email" | "date" | "number" | "checkbox";
+    type?: InputTypes;
     onClear?: () => void;
+    valueWatch?: string | number;
   };
 
 export const Input = ({
@@ -25,6 +34,7 @@ export const Input = ({
   label,
   style,
   value,
+  valueWatch,
   onClear,
   onChange,
   className,
@@ -37,7 +47,7 @@ export const Input = ({
   const isSearch = type === "search";
   const inputType = isPassword && visible ? "text" : type;
 
-  const hasValue = value != null && String(value).length > 0;
+  const hasValue = valueWatch != null && String(valueWatch).length > 0;
   const showToggle = isPassword && hasValue;
   const showClear = isSearch && hasValue;
 
@@ -57,7 +67,11 @@ export const Input = ({
 
   return (
     <div className={classNames(s.container, className)} style={style}>
-      {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
+      {label && (
+        <label className={s.label} htmlFor={props.name}>
+          {label}
+        </label>
+      )}
       <div className={s.wrapper}>
         {isSearch && <Search className={s.search_icon} size={16} />}
         <input
@@ -114,7 +128,11 @@ export const Select = ({
 }: SelectProps) => {
   return (
     <div className={classNames(s.container, className)} style={style}>
-      {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
+      {label && (
+        <label className={s.label} htmlFor={props.name}>
+          {label}
+        </label>
+      )}
       <div className={s.wrapper}>
         <select id={props.name} {...props}>
           {placeholder && (
@@ -153,7 +171,11 @@ export const Textarea = ({
 }: TextareaProps) => {
   return (
     <div className={classNames(s.container, className)} style={style}>
-      {label && <label className={s.label} htmlFor={props.name}>{label}</label>}
+      {label && (
+        <label className={s.label} htmlFor={props.name}>
+          {label}
+        </label>
+      )}
       <div className={s.wrapper}>
         <textarea
           id={props.name}

@@ -4,6 +4,7 @@ import { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   Input,
   InputProps,
+  InputTypes,
   Select,
   SelectProps,
   Textarea,
@@ -47,13 +48,32 @@ export const FormInput = <T extends FieldValues>({
   const {
     register,
     formState: { errors, isSubmitted },
-    watch,
     setValue,
     trigger,
   } = form;
   const errorMessage = errors[id]?.message as string;
-  const value = watch(id);
-  const registeredProps = register(id);
+
+  // Specifically for input we have to add value type for rhf
+  const getRegisterOptions = (
+    variant: "input" | "select" | "textarea" | "custom-select" | "otp-inputs",
+    type?: InputTypes
+  ) => {
+    if (variant !== "input") return {};
+
+    switch (type) {
+      case "number":
+        return { valueAsNumber: true };
+      case "date":
+        return { valueAsDate: true };
+      default:
+        return {};
+    }
+  };
+
+  const registeredProps = register(
+    id,
+    getRegisterOptions(variant, (props as InputProps).type)
+  );
 
   const renderVariant = () => {
     switch (variant) {
@@ -61,7 +81,6 @@ export const FormInput = <T extends FieldValues>({
         return (
           <Select
             label={label}
-            value={value}
             {...registeredProps}
             {...(props as SelectProps)}
           />
@@ -70,7 +89,6 @@ export const FormInput = <T extends FieldValues>({
         return (
           <Textarea
             label={label}
-            value={value as string}
             {...registeredProps}
             {...(props as TextareaProps)}
           />
@@ -80,7 +98,7 @@ export const FormInput = <T extends FieldValues>({
         return (
           <CustomSelect
             label={label}
-            value={value}
+            value={form.watch(id)}
             onChange={(val: string | string[]) => {
               setValue(id, val as T[Path<T>], {
                 shouldValidate: isSubmitted,
@@ -103,7 +121,7 @@ export const FormInput = <T extends FieldValues>({
         return (
           <OTPInputs
             label={label}
-            value={value as string}
+            value={form.watch(id) as string}
             name={id}
             onOTPChange={(val: string) => {
               setValue(id, val as T[Path<T>], {
@@ -125,7 +143,8 @@ export const FormInput = <T extends FieldValues>({
         return (
           <Input
             label={label}
-            value={value as string | number}
+            value={form.watch(id)}
+            valueWatch={form.watch(id)} ///for internal use in input
             {...registeredProps}
             {...(props as InputProps)}
           />

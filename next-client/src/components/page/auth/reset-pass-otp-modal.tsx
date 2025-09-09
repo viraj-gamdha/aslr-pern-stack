@@ -66,12 +66,12 @@ const ResetPassOTPModal = ({
       </ModalHeader>
       <ModalContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <p className="modal-form-col-1">
+          <p className="modal-col-1">
             Enter a 4 digit OTP sent to
             <span>{email}</span>
           </p>
 
-          <div className="modal-form-col-2">
+          <div className="modal-col-2">
             <FormInput
               form={form}
               id="emailOTP"

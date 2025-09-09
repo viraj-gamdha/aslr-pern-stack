@@ -7,3 +7,9 @@ export type DocumentType = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type ReferenceItem = {
+  id: string;
+  name: string;
+  reference: string;
+};

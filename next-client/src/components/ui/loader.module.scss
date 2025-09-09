@@ -40,9 +40,9 @@
 .skeleton_shape {
   height: fit-content;
   width: fit-content;
-  background-color: #eeeeeeb4;
+  background-color: #dbdbdbb4;
   border-radius: 4px;
-  animation: skeleon-loading 3s infinite;
+  animation: skeleon-loading 2s ease-in-out infinite;
 }
 
 // anims
@@ -81,12 +81,12 @@
 
 @keyframes skeleon-loading {
   0% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
   50% {
     opacity: 1;
   }
   100% {
-    opacity: 0.5;
+    opacity: 0.3;
   }
 }

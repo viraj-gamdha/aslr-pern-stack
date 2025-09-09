@@ -1,8 +1,8 @@
 "use client";
 
-import s from "@/components/page/document/editor.module.scss";
+// import s from "@/components/page/document/editor.module.scss";
 import { EditorContext, JSONContent, useEditor } from "@tiptap/react";
-import React, { ReactNode, useEffect, useMemo } from "react";
+import { ReactNode, useEffect, useMemo } from "react";
 // Starter kit includes history etc...
 import StarterKit from "@tiptap/starter-kit";
 // Underline mark (from starter kit)
@@ -39,8 +39,8 @@ import { useGetUserProjectByIdQuery } from "@/redux/apis/projectApiSlice";
 import { useEditorStore } from "@/stores/useEditorStore";
 import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
 import { setEditorDirty } from "@/redux/features/editorSlice";
-import { PageExtension } from "@/components/page/document/extensions/page";
-import classNames from "classnames";
+import PageOptionsExtension from "@/components/page/document/extensions/pageOptions";
+import { resetEditorContent } from "@/utils/editorUtils";
 
 const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
   // redux / rtk related states
@@ -53,8 +53,8 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
   const { projectId } = useParams<{ projectId: string }>();
   const {
     data: projectData,
-    // isLoading: loadingProjectData,
     isFetching: fetchingProjectData,
+    isError,
   } = useGetUserProjectByIdQuery(projectId);
 
   const [updateDocument] = useUpdateDocumentMutation();
@@ -64,7 +64,7 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
       if (!editorInstance) return;
       const content: JSONContent = editorInstance.getJSON();
       // API call
-      if (isEditorDirty) {
+      if (isEditorDirty && !isError) {
         updateDocument({ projectId, content });
       }
     },
@@ -73,11 +73,9 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
 
   const editor = useEditor({
     editorProps: {
-      attributes: {
-        class: classNames(s.prop),
-      },
+      // attributes: {
+      // },
     },
-
     extensions: [
       StarterKit.configure({
         link: {
@@ -137,17 +135,7 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
         onPaste: () => false,
         allowedMimeTypes: [], // Optional: block all file types
       }),
-      PageExtension.configure({
-        pageSize: "a3",
-        orientation: "landscape",
-        margin: {
-          top: "1in",
-          right: "1in",
-          bottom: "1in",
-          left: "1in",
-        },
-        showPageBreaks: true,
-      }),
+      PageOptionsExtension,
     ],
     onUpdate: ({ editor }) => {
       dispatch(setEditorDirty(true));
@@ -156,7 +144,7 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
     immediatelyRender: false,
   });
 
-  // Update editor content when document is fetched
+  // Update editor content when document is fetched (mostly on first render)
   // (for first load time only not cache update)
   // To preserve history...
   useEffect(() => {
@@ -165,9 +153,9 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
       editor &&
       projectData?.data?.document?.content
     ) {
-      editor.commands.setContent(projectData.data.document.content, {
-        emitUpdate: false,
-      });
+      resetEditorContent(editor, projectData.data.document.content);
+      // update locally persisted states (without causing re render)
+      editor.commands.setPageOptions(useEditorStore.getState().pageOptions);
     }
   }, [editor, fetchingProjectData]);
 

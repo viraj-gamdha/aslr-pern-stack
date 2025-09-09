@@ -38,7 +38,14 @@
       font-family: var(--font-1);
       font-weight: 500;
       font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       color: var(--color-primary);
+
+      > svg {
+        color: var(--color-primary);
+      }
     }
   }
 
@@ -59,29 +66,43 @@
       flex-direction: column;
       align-items: center;
       gap: 1rem;
-
-      :global(.modal-form-col-1) {
-        width: fit-content;
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-        align-items: center;
-      }
-
-      :global(.modal-form-col-2) {
-        width: fit-content;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        align-items: center;
-      }
     }
 
-    // can use this classname
+    // can use this classnames
+    :global(.modal-col-1) {
+      width: fit-content;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      align-items: center;
+    }
+
+    :global(.modal-col-2) {
+      width: fit-content;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    :global(.modal-row-1) {
+      width: fit-content;
+      display: flex;
+      gap: 0.25rem;
+      align-items: center;
+    }
+
+    :global(.modal-row-2) {
+      width: fit-content;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
     :global(.modal-action-btns) {
       width: fit-content;
       display: flex;
-      gap: 1rem;
+      gap: 0.5rem;
       align-items: center;
       align-self: flex-end;
       margin-top: 0.5rem;

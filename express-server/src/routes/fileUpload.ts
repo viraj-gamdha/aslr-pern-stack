@@ -1,4 +1,4 @@
-import { handleFileUpload } from "@/controllers/file-upload";
+import { handleFileUpload } from "@/controllers/fileUpload";
 import { upload } from "@/middlewares/multer";
 import express from "express";
 

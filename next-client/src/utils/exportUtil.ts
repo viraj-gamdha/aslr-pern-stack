@@ -1,71 +1,95 @@
-// Define reference type
-export interface Reference {
-  id: string;
-  authors: string;
-  title: string;
-  journal?: string;
-  year: number;
-  volume?: string;
-  pages?: string;
-  doi?: string;
-}
+import { PageOptions } from "@/components/page/document/extensions/pageOptions";
+import { ReferenceItem } from "@/types/document";
 
-// Mock references data (to be replaced with API data)
-export const mockReferences: Reference[] = [
-  {
-    id: "1",
-    authors: "Smith, J., Johnson, A., & Williams, R.",
-    title: "Advanced Research Methods",
-    journal: "Journal of Scientific Research",
-    year: 2023,
-    volume: "15",
-    pages: "112-125",
-    doi: "10.1002/jsar.20230012",
-  },
-  {
-    id: "2",
-    authors: "Chen, L., & Kim, M.",
-    title: "Modern Approaches to Data Analysis",
-    journal: "Data Science Review",
-    year: 2022,
-    volume: "8",
-    pages: "45-67",
-    doi: "10.1016/j.dsr.2022.04.003",
-  },
-];
+export function getTiptapStyles(pageOptions: PageOptions): string {
+  let styles = "";
+  for (const sheet of Array.from(document.styleSheets)) {
+    try {
+      const rules = sheet.cssRules;
+      for (const rule of Array.from(rules)) {
+        if (rule.cssText.includes(".tiptap")) {
+          styles += rule.cssText + "\n";
+        }
+      }
+    } catch (e) {
+      // Skip cross-origin stylesheets
+    }
+  }
 
-// utils/exportUtils.ts (additional function)
-export const exportToPDFViaAPI = async (
-  content: any,
-  projectId: string
-): Promise<void> => {
-  try {
-    const response = await fetch(`http://localhost:4000/api/export/${projectId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content,
-        format: "pdf",
-        references: mockReferences,
-      }),
-    });
+  const margins = pageOptions.margins;
 
-    if (!response.ok) {
-      throw new Error("Export failed");
+  styles += `@page { margin: ${margins.top}mm ${margins.right}mm ${margins.bottom}mm ${margins.left}mm; }`;
+
+  // other overriding styles
+  // Its necessary to add some overrides
+  styles += `
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    const blob = await response.blob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "document.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("API export error:", error);
-  }
-};
+    p:empty:not([class]):not([id]):not([style]) {
+      min-height: 1em;
+      line-height: 1;
+    }
+
+    @media print {
+      .tiptap {
+        padding: 0 !important;
+        width: auto !important;
+        min-height: auto !important;
+        box-shadow: none !important;
+        background-image: none !important;
+      }
+
+      table th {
+        background-color: #f5f5f5;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      
+      mark {
+        background-color: #059d00;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  `;
+
+  // references page
+  styles += `
+   .references-page {
+     break-before: page;
+     page-break-before: always;
+     padding-top: 0;
+     margin-top: 0;
+   }
+ `;
+
+  return styles;
+}
+
+export function createReferencesSection(
+  doc: Document,
+  references: ReferenceItem[]
+): HTMLElement {
+  const wrapper = doc.createElement("div");
+  wrapper.className = "tiptap references-page";
+  const heading = doc.createElement("h1");
+  heading.textContent = "References";
+  heading.style.marginBottom = "1em";
+  wrapper.appendChild(heading);
+
+  const list = doc.createElement("ol");
+  references.forEach((ref) => {
+    const item = doc.createElement("li");
+    item.textContent = `${ref.name}: ${ref.reference}`;
+    list.appendChild(item);
+  });
+
+  wrapper.appendChild(list);
+  return wrapper;
+}

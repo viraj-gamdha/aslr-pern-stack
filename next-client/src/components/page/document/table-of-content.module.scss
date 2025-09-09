@@ -6,10 +6,11 @@
   width: 16rem;
   position: sticky;
   height: fit-content;
-  top: 0;
+  top: 1rem;
   font-family: var(--font-1);
   color: var(--color-text);
   text-wrap: wrap;
+  box-shadow: var(--shadow);
 }
 
 .sidebar_options {

@@ -8,7 +8,11 @@ import { Button } from "@/components/ui/button";
 import {
   DownloadIcon,
   File,
+  FileCode2,
+  FileTextIcon,
   History,
+  PanelLeftRightDashedIcon,
+  Printer,
   Redo2Icon,
   SaveIcon,
   TableConfigIcon,
@@ -23,8 +27,19 @@ import { useUpdateDocumentMutation } from "@/redux/apis/documentApiSlice";
 import { errorToast, successToast } from "@/components/ui/toast";
 import { parseError } from "@/utils/helpers";
 import { useAppSelector } from "@/hooks/storeHooks";
-import ExportPDFButton from "@/components/page/document/export-button";
 import { printTiptapContent } from "@/utils/handlePrint";
+import { PageOptions } from "@/components/page/document/extensions/pageOptions";
+import { useEffect, useState } from "react";
+import {
+  DropDown,
+  DropDownMenu,
+  DropDownTrigger,
+} from "@/components/ui/dropdown";
+import { SelectButton } from "@/components/ui/select";
+import PageOptionsButton from "@/components/page/document/page-options-button";
+import { references } from "@/assets/test-data";
+import { exportTiptapToDocx } from "@/utils/handleDocx";
+import { downloadTiptapHtmlContent } from "@/utils/handleHtml";
 // import { printTiptapContent } from "@/utils/handleExport";
 
 const Document = () => {
@@ -48,7 +63,7 @@ const Document = () => {
   });
 
   // zustand store
-  const { showToC, setShowToC } = useEditorStore();
+  const { showToC, setShowToC, pageOptions } = useEditorStore();
 
   // rtk relates states
   const isEditorDirty = useAppSelector((state) => state.editor.isEditorDirty);
@@ -84,7 +99,7 @@ const Document = () => {
         </h4>
 
         <div className={s.header_wrapper}>
-          <Tooltip tooltip="Table of contents" position="bottom">
+          <Tooltip tooltip="Table of Contents" position="bottom">
             <Button
               variant="icon"
               isActive={showToC}
@@ -114,7 +129,6 @@ const Document = () => {
               </span>
             </Button>
           </Tooltip> */}
-          {/* <ExportPDFButton projectId={projectId} editor={editor!} /> */}
 
           <Tooltip tooltip="Undo" position="bottom">
             <Button
@@ -149,6 +163,8 @@ const Document = () => {
             </p>
           </div>
 
+          <PageOptionsButton />
+
           <Button
             variant="icon_bordered"
             disabled={!isEditorDirty || loadingSave}
@@ -160,16 +176,67 @@ const Document = () => {
             Save
           </Button>
 
-          {editor && (
-            <Button
-              variant="icon_bordered"
-              onClick={() => printTiptapContent(editor)}
-            >
-              <span>
-                <DownloadIcon size={18} />
-              </span>
-              Export
-            </Button>
+          {projectData?.data && editor && (
+            <DropDown>
+              <DropDownTrigger asChild>
+                <SelectButton showChevron={false}>
+                  <span>
+                    <DownloadIcon size={18} />
+                  </span>
+                  Export
+                </SelectButton>
+              </DropDownTrigger>
+              <DropDownMenu style={{ padding: "0.25rem", gap: "0.25rem" }}>
+                <Button
+                  variant="icon"
+                  onClick={() =>
+                    printTiptapContent({
+                      editor,
+                      pageOptions,
+                      pdfTitle: projectData.data.title,
+                      references: references,
+                    })
+                  }
+                >
+                  <span>
+                    <Printer size={18} />
+                  </span>
+                  Pdf
+                </Button>
+                <Button
+                  variant="icon"
+                  onClick={() =>
+                    exportTiptapToDocx({
+                      editor,
+                      pageOptions,
+                      docxTitle: projectData.data.title,
+                      references: references,
+                    })
+                  }
+                >
+                  <span>
+                    <FileTextIcon size={18} />
+                  </span>
+                  Word
+                </Button>
+                <Button
+                  variant="icon"
+                  onClick={() =>
+                    downloadTiptapHtmlContent({
+                      editor,
+                      pageOptions,
+                      htmlTitle: projectData.data.title,
+                      references: references,
+                    })
+                  }
+                >
+                  <span>
+                    <FileCode2 size={18} />
+                  </span>
+                  HTML
+                </Button>
+              </DropDownMenu>
+            </DropDown>
           )}
         </div>
       </header>
