@@ -1,6 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 import sharp from "sharp";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand } from "@aws-sdk/client-s3";
 
 export const s3Client = new S3Client({
   region: "auto",
@@ -31,7 +32,7 @@ export async function convertToWebP(buffer: Buffer): Promise<Buffer> {
     .toBuffer();
 }
 
-// Upload to garage
+// Upload to s3
 export async function uploadToS3({
   buffer,
   key,
@@ -54,3 +55,17 @@ export async function uploadToS3({
   return key;
 }
 
+export async function deleteFromS3({
+  key,
+  bucket,
+}: {
+  key: string;
+  bucket: string;
+}) {
+  const command = new DeleteObjectCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+
+  await s3Client.send(command);
+}

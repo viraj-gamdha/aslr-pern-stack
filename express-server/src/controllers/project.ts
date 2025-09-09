@@ -12,6 +12,7 @@ import { eq, and } from "drizzle-orm";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";
 import { db } from "@/db/dbInit.js";
+import { verifyProjectOwnerShip } from "@/utils/project";
 
 // Create a new project with related data
 export const createProject = TryCatch<Partial<NewProject>, {}, {}, {}, Project>(
@@ -203,35 +204,12 @@ export const getUserProjectById = TryCatch<{}, { id: string }, {}, {}, {}>(
 
     // Fetch project with its members using ORM relations
     // also other project data like document
-    const projectDataRaw = await db.query.project.findFirst({
-      where: eq(project.id, id),
-      with: {
-        projectMembers: {
-          where: eq(projectMember.userId, userId),
-          with: {
-            user: true, // This pulls in name, email, etc.
-          },
-        },
-        document: true,
-      },
-    });
-
-    if (!projectDataRaw) {
-      return next(new ErrorHandler(404, "Project not found"));
-    }
-
-    // Check if user is the owner or a member
-    if (
-      projectDataRaw.userId !== userId &&
-      !projectDataRaw.projectMembers.length
-    ) {
-      return next(new ErrorHandler(403, "Unauthorized to access this project"));
-    }
+    const projectDataVerified = await verifyProjectOwnerShip(userId, id);
 
     // Trim user fields
     const projectData = {
-      ...projectDataRaw,
-      projectMembers: projectDataRaw.projectMembers.map((member) => ({
+      ...projectDataVerified,
+      projectMembers: projectDataVerified.projectMembers.map((member) => ({
         ...member,
         user: {
           name: member.user.name,
@@ -261,13 +239,7 @@ export const deleteProject = TryCatch<
   const { id } = req.params;
 
   // Check if project exists and user is the owner using ORM relations
-  const existingProject = await db.query.project.findFirst({
-    where: and(eq(project.id, id), eq(project.userId, userId)),
-  });
-
-  if (!existingProject) {
-    return next(new ErrorHandler(404, "Project not found or unauthorized"));
-  }
+  await verifyProjectOwnerShip(userId, id);
 
   await db.delete(project).where(eq(project.id, id));
 
@@ -294,14 +266,7 @@ export const inviteUserToProject = TryCatch<
     return next(new ErrorHandler(400, "Email is required"));
   }
 
-  // Check if project exists and user is the owner using ORM relations
-  const existingProject = await db.query.project.findFirst({
-    where: and(eq(project.id, projectId), eq(project.userId, userId)),
-  });
-
-  if (!existingProject) {
-    return next(new ErrorHandler(404, "Project not found or unauthorized"));
-  }
+  await verifyProjectOwnerShip(userId, projectId);
 
   // Find user by email
   const invitedUser = await db.query.user.findFirst({

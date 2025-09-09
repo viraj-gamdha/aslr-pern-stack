@@ -1,10 +1,10 @@
 // Global editor styles and overrides
 // Every element should have default styling to include in print properly
 
-@import "./drag-handle";
-@import "./page-break";
-@import "./editor-table";
-@import "./editor-page";
+@use "./drag-handle" as *;
+@use "./page-break" as *;
+@use "./editor-table" as *;
+@use "./editor-page" as *;
 
 /* Basic editor styles */
 .tiptap {
@@ -46,6 +46,18 @@
     font-weight: 500; /* Medium weight for lower headings */
   }
 
+  // Image resize fixes
+  // p:has(img) > div {
+  //   > div {
+  //     padding-left: 0 !important;
+  //     padding-right: 0 !important;
+  //   }
+  // }
+
+  // p:has(img) {
+  //   max-width: 100%;
+  // }
+
   /* Placeholder (at the top) */
   p.is-editor-empty:first-child::before {
     color: #cecece;
@@ -59,11 +71,12 @@
   img {
     display: block;
     height: auto;
-    // margin: 1.5rem 0;
-    max-width: 100%;
+    max-width: 100% !important;
+    min-width: 1rem;
+    min-height: 1rem;
 
-    &.ProseMirror-selectednode {
-      outline: 3px solid #181818;
+    &.ProseMirror-separator {
+      display: none !important;
     }
   }
 

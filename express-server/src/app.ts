@@ -11,6 +11,7 @@ import { projectRoutes } from "./routes/project.js";
 import { documentRoutes } from "./routes/document.js";
 import { uploadRoutes } from "./routes/fileUpload.js";
 import { aiAssistRoutes } from "./routes/aiAssist.js";
+import { startS3RemoveUnusedObjCron } from "./schedules/s3RemoveUnusedObj.js";
 
 config({ path: "./.env" });
 export const envMode = process.env.NODE_ENV?.trim() || "development";
@@ -74,6 +75,9 @@ app.all("/{*any}", (req, res) => {
 
 // Global error middleware
 app.use(errorMiddleware);
+
+// Schedules
+// startS3RemoveUnusedObjCron();
 
 app.listen(port, () =>
   console.log("Server is working on Port:" + port + " in " + envMode + " Mode.")

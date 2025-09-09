@@ -107,7 +107,7 @@ const BubbleMenuTools = () => {
   // Safe returns
   if (
     !editor ||
-    (editorState?.words &&
+    (editorState &&
       (editorState.words < 3 ||
         editorState.words > 200 ||
         editorState.selectedText.length > 1600))

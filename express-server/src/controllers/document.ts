@@ -2,8 +2,11 @@ import { db } from "@/db/dbInit";
 import { document, DocumentType, NewDocument } from "@/db/schema/document";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler";
-import { eq } from "drizzle-orm";
-import { project, projectMember } from "@/db/schema/index.js";
+import { and, eq, inArray } from "drizzle-orm";
+import { extractImageKeys, verifyProjectOwnerShip } from "@/utils/project";
+import { JSONContent } from "@/types/document";
+import { deleteFromS3 } from "@/utils/s3Client";
+import { s3UnusedKey } from "@/db/schema";
 
 export const getDocumentByProjectId = TryCatch<
   {},
@@ -15,24 +18,7 @@ export const getDocumentByProjectId = TryCatch<
   const userId = req.userId as string;
   const { projectId } = req.params;
 
-  // Fetch project to verify access
-  const projectData = await db.query.project.findFirst({
-    where: eq(project.id, projectId),
-    with: {
-      projectMembers: {
-        where: eq(projectMember.userId, userId),
-      },
-      document: true,
-    },
-  });
-
-  if (!projectData) {
-    return next(new ErrorHandler(404, "Project not found"));
-  }
-
-  if (projectData.userId !== userId && !projectData.projectMembers.length) {
-    return next(new ErrorHandler(403, "Unauthorized to access this project"));
-  }
+  const projectData = await verifyProjectOwnerShip(userId, projectId);
 
   if (!projectData.document) {
     return next(new ErrorHandler(404, "Document not found"));
@@ -58,26 +44,51 @@ export const updateDocument = TryCatch<
   const { content } = req.body;
 
   // Fetch project to verify access
-  const projectData = await db.query.project.findFirst({
-    where: eq(project.id, projectId),
-    with: {
-      projectMembers: {
-        where: eq(projectMember.userId, userId),
-      },
-      document: true,
-    },
-  });
-
-  if (!projectData) {
-    return next(new ErrorHandler(404, "Project not found"));
-  }
-
-  if (projectData.userId !== userId && !projectData.projectMembers.length) {
-    return next(new ErrorHandler(403, "Unauthorized to access this project"));
-  }
+  const projectData = await verifyProjectOwnerShip(userId, projectId);
 
   if (!projectData.document) {
     return next(new ErrorHandler(404, "Document not found"));
+  }
+
+  // Delete s3 images if not in new content
+  const oldKeys = extractImageKeys(projectData.document.content as JSONContent);
+  const newKeys = extractImageKeys(content as JSONContent);
+
+  // 1. Remove reused keys from unused store
+  const existingUnusedKeys = await db
+    .select({ key: s3UnusedKey.key })
+    .from(s3UnusedKey)
+    .where(eq(s3UnusedKey.documentId, projectData.document.id));
+
+  const existingKeySet = new Set(existingUnusedKeys.map((k) => k.key));
+  const reusedKeys = [...newKeys].filter((key) => existingKeySet.has(key));
+
+  if (reusedKeys.length > 0) {
+    await db
+      .delete(s3UnusedKey)
+      .where(
+        and(
+          eq(s3UnusedKey.documentId, projectData.document.id),
+          inArray(s3UnusedKey.key, reusedKeys)
+        )
+      );
+  }
+
+  // 2. Add newly unused keys
+  const unusedKeys = [...oldKeys].filter((key) => !newKeys.has(key));
+
+  if (unusedKeys.length > 0) {
+    await db
+      .insert(s3UnusedKey)
+      .values(
+        Array.from(unusedKeys).map((key) => ({
+          key,
+          bucket: process.env.S3_BUCKET!,
+          documentId: projectData.document.id,
+          createdAt: new Date(),
+        }))
+      )
+      .onConflictDoNothing();
   }
 
   // Update document

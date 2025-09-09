@@ -3,11 +3,14 @@ import { apiSlice } from "./apiSlice";
 
 export const uploadApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    uploadFile: builder.mutation<ApiResult<string>, FormData>({
-      query: (formData) => ({
-        url: "upload",
+    uploadFile: builder.mutation<
+      ApiResult<string>,
+      { projectId: string; data: FormData }
+    >({
+      query: ({ projectId, data }) => ({
+        url: `upload/${projectId}`,
         method: "POST",
-        body: formData,
+        body: data,
       }),
       extraOptions: { isMultipart: true },
     }),

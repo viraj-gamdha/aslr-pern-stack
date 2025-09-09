@@ -15,10 +15,10 @@ import Highlight from "@tiptap/extension-highlight";
 import { TaskList, TaskItem } from "@tiptap/extension-list";
 // Table
 import { TableKit } from "@tiptap/extension-table";
-// Image (included with resize-image)
 // Link (from starter kit)
 // Custom resizer extension
 import ImageResize from "tiptap-extension-resize-image";
+// Image (included with resize-image)
 // Code block, blockquote, strike from starter kit
 import Subscript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
@@ -109,8 +109,8 @@ const TipTapEditorProvider = ({ children }: { children: ReactNode }) => {
       }),
       // Text Highlight
       Highlight.configure({ multicolor: true }),
-      //   Image,
-      ImageResize,
+      //  Image,
+      ImageResize.configure({ inline: false, allowBase64: true }),
       //   From TaskList kit
       TaskItem.configure({ nested: true }),
       TaskList,

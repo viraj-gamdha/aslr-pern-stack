@@ -16,9 +16,11 @@ import { SelectButton } from "@/components/ui/select";
 import { useUploadFileMutation } from "@/redux/apis/uploadApiSlice";
 import { errorToast, loaderToast } from "@/components/ui/toast";
 import { parseError } from "@/utils/helpers";
+import { useParams } from "next/navigation";
 
 const ImageButton = () => {
   const { editor } = useCurrentEditor();
+  const { projectId } = useParams<{ projectId: string }>();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +48,10 @@ const ImageButton = () => {
       if (file) {
         const formData = new FormData();
         formData.append("file", file);
-        const uploadPromise = uploadFile(formData).unwrap();
+        const uploadPromise = uploadFile({
+          projectId,
+          data: formData,
+        }).unwrap();
 
         loaderToast(
           uploadPromise,
@@ -59,7 +64,7 @@ const ImageButton = () => {
           const res = await uploadPromise;
           if (res.success) {
             onChange(res.data);
-            setIsMenuOpen(false)
+            setIsMenuOpen(false);
           }
         } catch (error) {
           errorToast(parseError(error));

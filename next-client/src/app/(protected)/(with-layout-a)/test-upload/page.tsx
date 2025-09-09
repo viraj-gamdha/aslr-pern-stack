@@ -4,10 +4,9 @@ import { Button } from "@/components/ui/button";
 import { errorToast, successToast } from "@/components/ui/toast";
 import { useUploadFileMutation } from "@/redux/apis/uploadApiSlice";
 import { parseError } from "@/utils/helpers";
-import Image from "next/image";
 import React, { useState } from "react";
 
-const FileUpload: React.FC = () => {
+const FileUpload: React.FC<{ projectId: string }> = ({ projectId }) => {
   const [file, setFile] = useState<File | null>(null);
   const [uploadFile, { isLoading, data, error }] = useUploadFileMutation();
 
@@ -24,7 +23,7 @@ const FileUpload: React.FC = () => {
     formData.append("file", file);
 
     try {
-      await uploadFile(formData).unwrap();
+      await uploadFile({ projectId, data: formData }).unwrap();
       successToast("Success");
     } catch (err) {
       console.error("Upload failed:", err);
