@@ -2,7 +2,7 @@ import { boolean, text, uniqueIndex, varchar } from "drizzle-orm/pg-core";
 import { timestamps } from "@/db/schema/helpers/column.js";
 import { mySchema } from "@/db/schema/base.js";
 import { relations } from "drizzle-orm";
-import { project, projectMember } from "./project";
+import { project, projectMember } from "./project.js";
 
 // Define the users table for storing user details
 export const user = mySchema.table(

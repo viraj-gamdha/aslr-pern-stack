@@ -1,5 +1,5 @@
-import { enhanceText } from "@/controllers/aiAssist";
-import { verifyAuth } from "@/middlewares/verifyAuth";
+import { enhanceText } from "@/controllers/aiAssist.js";
+import { verifyAuth } from "@/middlewares/verifyAuth.js";
 import { Router } from "express";
 
 const aiAssistRoutes = Router();

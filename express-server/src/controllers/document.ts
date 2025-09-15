@@ -1,12 +1,11 @@
-import { db } from "@/db/dbInit";
-import { document, DocumentType, NewDocument } from "@/db/schema/document";
+import { db } from "@/db/dbInit.js";
+import { document, DocumentType, NewDocument } from "@/db/schema/document.js";
 import { TryCatch } from "@/utils/asyncHandler.js";
-import ErrorHandler from "@/utils/errorHandler";
+import ErrorHandler from "@/utils/errorHandler.js";
 import { and, eq, inArray } from "drizzle-orm";
-import { extractImageKeys, verifyProjectOwnerShip } from "@/utils/project";
+import { extractImageKeys, verifyProjectOwnerShip } from "@/utils/project.js";
 import { JSONContent } from "@/types/document";
-import { deleteFromS3 } from "@/utils/s3Client";
-import { s3UnusedKey } from "@/db/schema";
+import { s3UnusedKey } from "@/db/schema/index.js";
 
 export const getDocumentByProjectId = TryCatch<
   {},

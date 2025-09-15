@@ -2,7 +2,7 @@ import { db } from "@/db/dbInit.js";
 import { NewUser, user } from "@/db/schema/index.js";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";
-import { hashPassword } from "@/utils/helpers";
+import { hashPassword } from "@/utils/helpers.js";
 import { and, eq } from "drizzle-orm";
 
 // Update user details

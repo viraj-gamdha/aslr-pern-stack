@@ -1,7 +1,7 @@
 import { text } from "drizzle-orm/pg-core";
-import { mySchema } from "./base";
-import { timestamps } from "./helpers/column";
-import { document } from "./document";
+import { mySchema } from "./base.js";
+import { timestamps } from "./helpers/column.js";
+import { document } from "./document.js";
 import { relations } from "drizzle-orm";
 
 export const s3UnusedKey = mySchema.table("s3_unused_key", {

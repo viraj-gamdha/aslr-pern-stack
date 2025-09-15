@@ -1,5 +1,5 @@
-import { db } from "@/db/dbInit";
-import { user } from "@/db/schema";
+import { db } from "@/db/dbInit.js";
+import { user } from "@/db/schema/index.js";
 import { AuthJwtPayload } from "@/types/user";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";

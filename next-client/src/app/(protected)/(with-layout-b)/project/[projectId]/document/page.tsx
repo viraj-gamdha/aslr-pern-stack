@@ -1,12 +1,16 @@
 "use client";
 
-import { useGetUserProjectByIdQuery } from "@/redux/apis/projectApiSlice";
+import {
+  useGetUserProjectByIdQuery,
+  useUpdateProjectMutation,
+} from "@/redux/apis/projectApiSlice";
 import s from "./document.module.scss";
 import { useParams } from "next/navigation";
 import Tooltip from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 import {
   DownloadIcon,
+  Edit,
   File,
   FileCode2,
   FileTextIcon,
@@ -28,8 +32,6 @@ import { errorToast, successToast } from "@/components/ui/toast";
 import { parseError } from "@/utils/helpers";
 import { useAppSelector } from "@/hooks/storeHooks";
 import { printTiptapContent } from "@/utils/handlePrint";
-import { PageOptions } from "@/components/page/document/extensions/pageOptions";
-import { useEffect, useState } from "react";
 import {
   DropDown,
   DropDownMenu,
@@ -40,7 +42,15 @@ import PageOptionsButton from "@/components/page/document/page-options-button";
 import { references } from "@/assets/test-data";
 import { exportTiptapToDocx } from "@/utils/handleDocx";
 import { downloadTiptapHtmlContent } from "@/utils/handleHtml";
-// import { printTiptapContent } from "@/utils/handleExport";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  UpdateProjectFormInputs,
+  updateProjectFormSchema,
+} from "@/types/project";
+import { Modal, ModalContent, ModalHeader } from "@/components/ui/modal";
+import { FormInput } from "@/components/ui/form-input";
 
 const Document = () => {
   // tiptap provided state
@@ -65,7 +75,7 @@ const Document = () => {
   // zustand store
   const { showToC, setShowToC, pageOptions } = useEditorStore();
 
-  // rtk relates states
+  // rtk related states
   const isEditorDirty = useAppSelector((state) => state.editor.isEditorDirty);
   const [updateDocument, { isLoading: loadingSave }] =
     useUpdateDocumentMutation();
@@ -85,7 +95,39 @@ const Document = () => {
     }
   };
 
-  // export
+  // editable project ifo
+  const [projectEditable, setProjectEditable] = useState(false);
+  const [updateProject, { isLoading: loadingUpdateProject }] =
+    useUpdateProjectMutation();
+
+  const editProjectForm = useForm<UpdateProjectFormInputs>({
+    resolver: zodResolver(updateProjectFormSchema),
+    defaultValues: {
+      title: projectData?.data.title,
+      description: projectData?.data.description,
+    },
+  });
+
+  useEffect(() => {
+    if (projectData?.data && !loadingProjectData) {
+      editProjectForm.reset({
+        title: projectData.data.title,
+        description: projectData.data.description,
+      });
+    }
+  }, [projectData, loadingProjectData]);
+
+  const handleProjectEditSave = async (data: UpdateProjectFormInputs) => {
+    try {
+      const res = await updateProject({ id: projectId, data }).unwrap();
+      if (res.success) {
+        successToast(res.message);
+        setProjectEditable(false);
+      }
+    } catch (error) {
+      errorToast(parseError(error));
+    }
+  };
 
   return (
     <div className="layout-a">
@@ -99,6 +141,16 @@ const Document = () => {
         </h4>
 
         <div className={s.header_wrapper}>
+          <Tooltip tooltip="Edit">
+            <Button
+              variant="icon"
+              onClick={() => setProjectEditable(!projectEditable)}
+              isActive={projectEditable}
+            >
+              <Edit size={18} />
+            </Button>
+          </Tooltip>
+
           <Tooltip tooltip="Table of Contents" position="bottom">
             <Button
               variant="icon"
@@ -110,25 +162,6 @@ const Document = () => {
               </span>
             </Button>
           </Tooltip>
-
-          {/* <Tooltip tooltip="View history" position="bottom">
-            <Button variant="icon">
-              <span>
-                <History size={18} />
-              </span>
-            </Button>
-          </Tooltip> */}
-
-          {/* <Tooltip tooltip="View abstract" position="bottom">
-            <Button
-              variant="icon"
-              onClick={() => {}}
-            >
-              <span>
-                <File size={18} />
-              </span>
-            </Button>
-          </Tooltip> */}
 
           <Tooltip tooltip="Undo" position="bottom">
             <Button
@@ -247,6 +280,40 @@ const Document = () => {
           <Editor />
         </section>
       </div>
+
+      {/* Project detail edit */}
+      <Modal isOpen={projectEditable} onClose={() => setProjectEditable(false)}>
+        <ModalHeader>
+          <span>Edit Project Detail</span>
+        </ModalHeader>
+        <ModalContent>
+          <form onSubmit={editProjectForm.handleSubmit(handleProjectEditSave)}>
+            <FormInput
+              form={editProjectForm}
+              id="title"
+              label="Project title"
+              placeholder="Enter project title"
+              variant="input"
+              type="text"
+            />
+
+            <FormInput
+              form={editProjectForm}
+              id="description"
+              label="Project description"
+              placeholder="Enter project description"
+              variant="input"
+              type="text"
+            />
+
+            <div className="modal-action-btns">
+              <Button variant="primary" disabled={loadingUpdateProject}>
+                {loadingUpdateProject ? "Updating..." : "Update"}
+              </Button>
+            </div>
+          </form>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

@@ -50,15 +50,6 @@ export type AssignedTo = {
   name: string;
 };
 
-// Full Project for getUserProjects
-export type UserProject = {
-  id: string;
-  title: string;
-  createdAt: Date;
-  assignedBy: AssignedBy;
-  assignedTo: AssignedTo[];
-};
-
 // Full Project for getUserProjectById
 export type ProjectMemberWithUser = ProjectMember & {
   user: {

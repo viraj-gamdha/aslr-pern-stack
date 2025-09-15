@@ -17,9 +17,12 @@ const ConfirmationModal = ({
   onConfirm: () => void;
   loadingConfirm: boolean;
 }) => {
+  if (!isOpen) return null;
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
-      <ModalHeader><span>Confirmation</span></ModalHeader>
+      <ModalHeader>
+        <span>Confirmation</span>
+      </ModalHeader>
       <ModalContent>
         {title && <h5 style={{ width: "100%" }}>{title}</h5>}
         <p>{message}</p>

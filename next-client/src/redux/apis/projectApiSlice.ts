@@ -6,14 +6,13 @@ import {
   Project,
   ProjectMember,
   UpdateProjectFormInputs,
-  UserProject,
 } from "@/types/project";
 
 export const projectApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Create a new project
     createProject: builder.mutation<
-      ApiResult<UserProject>,
+      ApiResult<Project>,
       CreateProjectFormInputs
     >({
       query: (data) => ({
@@ -53,12 +52,13 @@ export const projectApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
       // invalidating single project
-      invalidatesTags: (result, error, { id }) =>
-        result?.success ? [{ type: "Project", id }] : [],
+      // invalidatesTags: (result, error, { id }) =>
+      //   result?.success ? [{ type: "Project", id }] : [],
       async onQueryStarted({ id, data }, { dispatch, queryFulfilled }) {
         try {
           const { data: result } = await queryFulfilled;
           if (result.success) {
+            // All projects list update
             dispatch(
               projectApiSlice.util.updateQueryData(
                 "getUserProjects",
@@ -66,8 +66,21 @@ export const projectApiSlice = apiSlice.injectEndpoints({
                 (draft) => {
                   const project = draft.data.find((p) => p.id === id);
                   if (project) {
-                    Object.assign(project, result.data);
+                    project.title = result.data.title;
+                    project.description = result.data.description;
                   }
+                }
+              )
+            );
+
+            // single project data update
+             dispatch(
+              projectApiSlice.util.updateQueryData(
+                "getUserProjectById",
+                id,
+                (draft) => {
+                  draft.data.title = result.data.title;
+                  draft.data.description = result.data.description
                 }
               )
             );
@@ -79,7 +92,7 @@ export const projectApiSlice = apiSlice.injectEndpoints({
     }),
 
     // Get all user projects
-    getUserProjects: builder.query<ApiResult<UserProject[]>, void>({
+    getUserProjects: builder.query<ApiResult<Project[]>, void>({
       query: () => ({
         url: "project/all",
         method: "GET",

@@ -9,7 +9,6 @@ import {
   VerifyEmailOTPInputs,
 } from "@/types/user";
 import { ApiResult } from "@/types/general";
-import { projectApiSlice } from "./projectApiSlice";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -114,7 +113,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
             // );
 
             // Or reset the entire API cache
-            dispatch(projectApiSlice.util.resetApiState());
+            dispatch(apiSlice.util.resetApiState());
           }
         } catch (error) {
           console.log("Error signing Out user", error);

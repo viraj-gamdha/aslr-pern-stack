@@ -1,7 +1,7 @@
-import { db } from "@/db/dbInit";
+import { db } from "@/db/dbInit.js";
 import { project, projectMember } from "@/db/schema/index.js";
 import { eq } from "drizzle-orm";
-import ErrorHandler from "./errorHandler";
+import ErrorHandler from "./errorHandler.js";
 import { JSONContent } from "@/types/document";
 
 // Fetch project to verify access

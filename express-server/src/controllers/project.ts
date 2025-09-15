@@ -12,7 +12,7 @@ import { eq, and } from "drizzle-orm";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";
 import { db } from "@/db/dbInit.js";
-import { verifyProjectOwnerShip } from "@/utils/project";
+import { verifyProjectOwnerShip } from "@/utils/project.js";
 
 // Create a new project with related data
 export const createProject = TryCatch<Partial<NewProject>, {}, {}, {}, Project>(

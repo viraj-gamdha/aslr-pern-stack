@@ -143,7 +143,6 @@ export const FormInput = <T extends FieldValues>({
         return (
           <Input
             label={label}
-            value={form.watch(id)}
             valueWatch={form.watch(id)} ///for internal use in input
             {...registeredProps}
             {...(props as InputProps)}

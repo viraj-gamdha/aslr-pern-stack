@@ -1,8 +1,8 @@
 import { jsonb, text } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { mySchema } from "./base";
-import { timestamps } from "./helpers/column";
-import { project } from "./project";
+import { mySchema } from "./base.js";
+import { timestamps } from "./helpers/column.js";
+import { project } from "./project.js";
 
 // Define the documents table with project relation
 export const document = mySchema.table("documents", {

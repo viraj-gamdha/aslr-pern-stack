@@ -3,7 +3,7 @@ import { relations } from "drizzle-orm";
 import { mySchema } from "@/db/schema/base.js";
 import { timestamps } from "@/db/schema/helpers/column.js";
 import { user } from "@/db/schema/user.js";
-import { document } from "./document";
+import { document } from "./document.js";
 
 // Define the projects table for storing project details
 export const project = mySchema.table("projects", {

@@ -1,13 +1,13 @@
-import { db } from "@/db/dbInit";
-import { project, projectMember } from "@/db/schema";
+import { db } from "@/db/dbInit.js";
+import { project, projectMember } from "@/db/schema/index.js";
 import { JSONContent } from "@/types/document";
 import {
   extractPlainTextFromTiptap,
   getAiEnhancerPrompt,
   validateEnhanceOptions,
-} from "@/utils/aiUtils";
-import { TryCatch } from "@/utils/asyncHandler";
-import ErrorHandler from "@/utils/errorHandler";
+} from "@/utils/aiUtils.js";
+import { TryCatch } from "@/utils/asyncHandler.js";
+import ErrorHandler from "@/utils/errorHandler.js";
 import { eq } from "drizzle-orm";
 import OpenAI from "openai";
 

@@ -3,14 +3,14 @@ import { NewUser, otp, User, user } from "@/db/schema/index.js";
 import { AuthJwtPayload } from "@/types/user";
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";
-import { generate4DigitOtp, hashPassword } from "@/utils/helpers";
+import { generate4DigitOtp, hashPassword } from "@/utils/helpers.js";
 import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { emailRegex, passwordRegex } from "@/utils/regex";
+import { emailRegex, passwordRegex } from "@/utils/regex.js";
 import { Resend } from "resend";
-import { otpEmail } from "@/email-templates/otpEmail";
-import { verifyEmailOTP } from "@/utils/auth";
+import { otpEmail } from "@/email-templates/otpEmail.js";
+import { verifyEmailOTP } from "@/utils/auth.js";
 
 // Constants
 const ACCESS_TOKEN_EXPIRY = 60 * 15; // 15 minutes
@@ -231,28 +231,28 @@ export const sendEmailOTP = TryCatch<
     .returning();
 
   // send email
-  // const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // const resEmail = await resend.emails.send({
-  //   from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
-  //   to: emailSentOTP.email,
-  //   subject: "Email verification",
-  //   replyTo: process.env.RESEND_REPLY_TO,
-  //   html: otpEmail(findInDb.name, generatedOtp),
-  // });
+  const resEmail = await resend.emails.send({
+    from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
+    to: emailSentOTP.email,
+    subject: "Email verification",
+    replyTo: process.env.RESEND_REPLY_TO,
+    html: otpEmail(findInDb.name, generatedOtp),
+  });
 
-  // if (resEmail.error) {
-  //   await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
+  if (resEmail.error) {
+    await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
 
-  //   return next(
-  //     new ErrorHandler(
-  //       400,
-  //       "Something went wrong! please try to reach us or try again later."
-  //     )
-  //   );
-  // }
+    return next(
+      new ErrorHandler(
+        400,
+        "Something went wrong! please try to reach us or try again later."
+      )
+    );
+  }
 
-  console.log("OTP is:", generatedOtp);
+  // console.log("OTP is:", generatedOtp);
 
   // for showing time
   const resendEmailAfter =

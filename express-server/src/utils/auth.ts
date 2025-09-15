@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import ErrorHandler from "./errorHandler";
-import { emailRegex } from "./regex";
-import { db } from "@/db/dbInit";
+import ErrorHandler from "./errorHandler.js";
+import { emailRegex } from "./regex.js";
+import { db } from "@/db/dbInit.js";
 import { eq } from "drizzle-orm";
 import { otp, user } from "@/db/schema/index.js";
 

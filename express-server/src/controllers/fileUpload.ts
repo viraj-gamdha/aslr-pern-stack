@@ -1,6 +1,6 @@
 import { TryCatch } from "@/utils/asyncHandler.js";
 import ErrorHandler from "@/utils/errorHandler.js";
-import { verifyProjectOwnerShip } from "@/utils/project";
+import { verifyProjectOwnerShip } from "@/utils/project.js";
 import {
   convertToWebP,
   getFileCategory,

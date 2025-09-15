@@ -88,7 +88,7 @@ export function validateEnhanceOptions(
         "language" in options &&
         [
           "Arabic",
-          // "Hindi",
+          "Hindi",
           "Malay",
           "Italian",
           "Spanish",
