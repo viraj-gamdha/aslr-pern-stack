@@ -4,6 +4,7 @@ import "@/styles/globals.scss";
 import { Toaster } from "react-hot-toast";
 import PersistAuth from "@/providers/PersistAuth";
 import StoreProvider from "@/providers/StoreProvider";
+import { ThemeProvider } from "@/providers/ThemeProvider";
 
 const inter = Inter({
   variable: "--font-1",
@@ -12,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DOSLR | Do systematic literature review",
-  description: "DOSLR | Do systematic literature review",
+  title: "SLRBOT | Systematic literature review Bot",
+  description: "SLRBOT | Systematic literature review Bot",
 };
 
 // Like main.tsx
@@ -24,12 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider>
-        <body className={`${inter.variable}`}>
-          <Toaster position="bottom-right" />
-          <PersistAuth>{children}</PersistAuth>
-        </body>
-      </StoreProvider>
+      <ThemeProvider>
+        <StoreProvider>
+          <body className={`${inter.variable}`}>
+            <Toaster position="bottom-right" />
+            <PersistAuth>{children}</PersistAuth>
+          </body>
+        </StoreProvider>
+      </ThemeProvider>
     </html>
   );
 }

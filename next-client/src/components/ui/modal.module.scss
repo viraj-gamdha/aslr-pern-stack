@@ -10,13 +10,22 @@
   justify-content: center;
   background-color: rgba(255, 255, 255, 0.8);
   transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+  // Applying component based dark theme
+  [data-theme="light"] & {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+
+  [data-theme="dark"] & {
+    background-color: rgba(20, 20, 20, 0.8);
+  }
 }
 
 .wrapper {
   width: 100%;
   max-width: 28rem;
   max-height: 90vh;
-  background-color: white;
+  background-color: var(--color-bg);
   border-radius: 10px;
   box-shadow: var(--shadow);
   overflow: hidden;

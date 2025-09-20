@@ -30,7 +30,7 @@ const ConfirmationModal = ({
         <div className="modal-action-btns">
           <Button
             variant="primary"
-            style={{ backgroundColor: "var(--color-red)" }}
+            style={{ backgroundColor: "var(--color-red)", color: "white" }}
             onClick={onConfirm}
             disabled={loadingConfirm}
           >

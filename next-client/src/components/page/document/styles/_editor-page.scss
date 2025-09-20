@@ -3,11 +3,13 @@
   width: var(--page-width, 210mm);
   min-height: var(--page-height, 297mm);
   margin: 0 auto;
-  background-color: white;
+  background-color: var(--color-bg);
   cursor: text;
   padding: var(--page-padding-top, 16mm) var(--page-padding-right, 16mm)
     var(--page-padding-bottom, 16mm) var(--page-padding-left, 16mm);
-  box-shadow: var(--shadow);
+  // box-shadow: var(--shadow);
+  background-color: white;
+  border: 1px dashed var(--color-border);
 
   &:focus {
     outline: none;

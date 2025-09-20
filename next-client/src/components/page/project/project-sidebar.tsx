@@ -3,6 +3,7 @@
 import s from "./project-sidebar.module.scss";
 import {
   Atom,
+  CogIcon,
   FilePenLine,
   FileSearch,
   Folder,
@@ -12,19 +13,22 @@ import {
   Lightbulb,
   ListCollapseIcon,
   LogOut,
+  Moon,
   NotebookPen,
+  Sun,
   TextSelect,
   User,
 } from "lucide-react";
 import { useParams, usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { Button, LinkButton } from "../ui/button";
+import { Button, LinkButton } from "../../ui/button";
 import Link from "next/link";
 import { useSignout } from "@/hooks/useSignout";
-import Tooltip from "../ui/tooltip";
+import Tooltip from "../../ui/tooltip";
 import classNames from "classnames";
 import { useDeviceSize } from "@/hooks/useDeviceSize";
 import { media } from "@/styles/media";
+import { useTheme } from "@/providers/ThemeProvider";
 
 const projectLinks = [
   { title: "Document", url: "document", icon: FilePenLine },
@@ -82,6 +86,8 @@ const ProjectSidebar = () => {
     }
   };
 
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <aside className={classNames(s.container, isCollapsed && s.collapsed)}>
       <div className={s.header}>
@@ -89,7 +95,7 @@ const ProjectSidebar = () => {
           <span>
             <Atom size={18} />
           </span>
-          {!isCollapsed && <h4>DOSLR</h4>}
+          {!isCollapsed && <h4>SLRBOT</h4>}
         </Link>
 
         <Button variant="icon" onClick={toggleCollapsed} className={s.toggle}>
@@ -151,6 +157,33 @@ const ProjectSidebar = () => {
             </LinkButton>
           );
         })}
+
+        <li>
+          {isCollapsed ? (
+            <Tooltip tooltip={`Theme`} position="right">
+              <Button
+                variant="icon"
+                onClick={toggleTheme}
+                style={{ width: "100%" }}
+              >
+                <span>
+                  {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+                </span>
+              </Button>
+            </Tooltip>
+          ) : (
+            <Button
+              variant="icon"
+              onClick={toggleTheme}
+              style={{ width: "100%" }}
+            >
+              <span>
+                {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+              </span>
+              Theme | {theme === "dark" ? "Light" : "Dark"}
+            </Button>
+          )}
+        </li>
 
         <li>
           {isCollapsed ? (

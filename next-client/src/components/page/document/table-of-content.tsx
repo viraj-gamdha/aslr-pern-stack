@@ -12,13 +12,7 @@ const ToCItem: React.FC<{
   onItemClick: (e: React.MouseEvent, id: string) => void;
 }> = ({ item, onItemClick }) => (
   <div
-    className={[
-      s.item,
-      item.isActive && !item.isScrolledOver ? s.item_isActive : "",
-      item.isScrolledOver ? s.item_isScrolledOver : "",
-    ]
-      .filter(Boolean)
-      .join(" ")}
+    className={[s.item].filter(Boolean).join(" ")}
     style={{ ["--level" as string]: item.level }}
   >
     <Button
@@ -26,6 +20,7 @@ const ToCItem: React.FC<{
       onClick={(e) => onItemClick(e, item.id)}
       data-item-index={item.itemIndex}
       className={s.item_link}
+      isActive={item.isActive}
     >
       {item.textContent}
     </Button>

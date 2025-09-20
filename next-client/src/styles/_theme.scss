@@ -19,14 +19,38 @@ Some Naming conventions for variables
   --color-text: #1e1e1e;
   --color-text-l: #4a4a4a;
 
-  --color-border: #ededed;
-  --color-border-d: #b4b4b4;
+  --color-border: #ebebee;
+  --color-border-d: #c4c4c9;
+
+  --color-gray-l: #fcfcfc;
 
   --color-blue: #14379e;
 
-  --color-red: #b60808;
+  --color-red: #c61212;
   --color-green: #0a730a;
+
+  --color-bg: #ffffff;
 
   // shadows
   --shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Theme Overrides */
+[data-theme="dark"] {
+  // colors
+  --color-primary: #f5f5f5;
+
+  --color-text: #b5b5b5;
+  --color-text-l: #5f5f5f;
+
+  --color-border: #303030;
+  --color-border-d: #848484;
+
+  --color-gray-l: #ffffff;
+  --color-bg: #0e0e0e;
+
+  --color-red: #ff3e3e;
+
+  // shadows
+  --shadow: 0 2px 6px rgba(220, 220, 220, 0.1);
 }

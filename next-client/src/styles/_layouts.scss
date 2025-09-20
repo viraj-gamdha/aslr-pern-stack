@@ -33,6 +33,7 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  background-color: var(--color-bg);
 
   // add height fit content content here -> will be overflowed to scroll...
   // or height 100% -> as wrapper and then again its child as height fit-content

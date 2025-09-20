@@ -1,4 +1,4 @@
-import ProjectSidebar from "@/components/layout/project-sidebar";
+import ProjectSidebar from "@/components/page/project/project-sidebar";
 import TipTapEditorProvider from "@/providers/EditorProvider";
 
 // project/:projectId/<tabs>

@@ -19,7 +19,7 @@ const BaseButton = ({
 }: ToolbarButtonProps) => (
   <Tooltip tooltip={label} position="bottom">
     <Button variant="icon_bordered" isActive={isActive} onClick={onClick}>
-      <Icon size={16} />
+      <Icon size={16}/>
     </Button>
   </Tooltip>
 );

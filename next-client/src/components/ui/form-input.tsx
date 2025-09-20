@@ -1,6 +1,6 @@
 import s from "./form-input.module.scss";
 import { CSSProperties } from "react";
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { Controller, FieldValues, Path, UseFormReturn } from "react-hook-form";
 import {
   Input,
   InputProps,
@@ -48,8 +48,6 @@ export const FormInput = <T extends FieldValues>({
   const {
     register,
     formState: { errors, isSubmitted },
-    setValue,
-    trigger,
   } = form;
   const errorMessage = errors[id]?.message as string;
 
@@ -96,48 +94,52 @@ export const FormInput = <T extends FieldValues>({
       case "custom-select": {
         const customSelectProps = props as CustomSelectProps;
         return (
-          <CustomSelect
-            label={label}
-            value={form.watch(id)}
-            onChange={(val: string | string[]) => {
-              setValue(id, val as T[Path<T>], {
-                shouldValidate: isSubmitted,
-                shouldDirty: true,
-                shouldTouch: true,
-              });
-              if (isSubmitted) trigger(id);
-              if (customSelectProps.onChange) {
-                customSelectProps.onChange(val);
-              }
-            }}
-            {...customSelectProps}
+          <Controller
+            name={id}
+            control={form.control}
+            render={({ field }) => (
+              <CustomSelect
+                label={label}
+                value={field.value}
+                onChange={(val: string | string[]) => {
+                  field.onChange(val);
+                  if (customSelectProps.onChange) {
+                    customSelectProps.onChange(val);
+                  }
+                }}
+                {...customSelectProps}
+              />
+            )}
           />
         );
       }
+
       case "otp-inputs": {
         const otpInputsProps = props as OTPInputsProps;
         const { onOTPChange, ...restProps } = otpInputsProps;
 
         return (
-          <OTPInputs
-            label={label}
-            value={form.watch(id) as string}
+          <Controller
             name={id}
-            onOTPChange={(val: string) => {
-              setValue(id, val as T[Path<T>], {
-                shouldValidate: isSubmitted,
-                shouldDirty: true,
-                shouldTouch: true,
-              });
-              if (isSubmitted) trigger(id);
-              if (onOTPChange) {
-                onOTPChange(val);
-              }
-            }}
-            {...restProps}
+            control={form.control}
+            render={({ field }) => (
+              <OTPInputs
+                label={label}
+                value={field.value}
+                name={id}
+                onOTPChange={(val: string) => {
+                  field.onChange(val);
+                  if (onOTPChange) {
+                    onOTPChange(val);
+                  }
+                }}
+                {...restProps}
+              />
+            )}
           />
         );
       }
+
       case "input":
       default:
         return (
@@ -163,3 +165,43 @@ export const FormInput = <T extends FieldValues>({
     </div>
   );
 };
+
+// Some understandable notes
+// Why we are using Controller for custom components
+/*
+-> Without controller -----
+<CustomSelect
+  value={form.watch("country")}
+  onChange={(val) => {
+    setValue("country", val, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    trigger("country");
+  }}
+/>
+
+Here we manually:
+-Watch the value
+-Set the value
+-Trigger validation
+
+-> With controller -----
+<Controller
+  name="country"
+  control={form.control}
+  render={({ field }) => (
+    <CustomSelect
+      value={field.value}
+      onChange={field.onChange}
+    />
+  )}
+/>
+RHF handles:
+-Value binding
+-Change updates
+-Validation triggering
+-Works seamlessly with defaultValues, reset, formState, and other RHF utilities.
+-You don’t have to remember to update dirty/touched state or trigger validation manually.
+*/

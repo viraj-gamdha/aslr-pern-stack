@@ -11,7 +11,12 @@ import ErrorHandler from "@/utils/errorHandler.js";
 import { eq } from "drizzle-orm";
 import OpenAI from "openai";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({
+  // baseURL: "http://localhost:3000/ollama/v1",
+  baseURL: "http://localhost:3000/api",
+  // apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdjMDEyZjI0LWEwNGQtNDIwNS05NDk3LWU0MzI4MzU0YmZjMyJ9.1jOfMH4jxU6YZvS447FztJQaNePlefsGJEl1FBYUfLA",
+});
 
 export const enhanceText = TryCatch<EnhanceTextRequest, { projectId: string }>(
   async (req, res, next) => {
@@ -82,10 +87,9 @@ ${getAiEnhancerPrompt(action, options, text)}
 `.trim();
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gemma3:1b",
+      // model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
-      temperature: 0.5,
-      max_tokens: 500,
     });
 
     const enhancedText = completion.choices[0].message.content?.trim() || "";

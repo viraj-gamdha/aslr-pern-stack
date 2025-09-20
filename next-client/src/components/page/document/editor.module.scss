@@ -5,7 +5,7 @@
   overflow-y: auto;
   scroll-behavior: smooth;
   padding-inline: 1rem;
-  background-color: #fafafa;
+  background-color: var(--color-bg);
   position: relative;
   // children inside it will be overflow scroll
   // not this one it self

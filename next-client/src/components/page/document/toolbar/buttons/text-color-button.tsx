@@ -41,6 +41,7 @@ const TextColorButton = () => {
         <div style={{ display: "flex", alignContent: "center" }}>
           <SketchPicker
             color={currentValue}
+            disableAlpha={true}
             onChange={(color: ColorResult) =>
               editor?.commands.setColor(color.hex)
             }

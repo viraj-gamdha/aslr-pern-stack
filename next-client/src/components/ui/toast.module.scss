@@ -2,4 +2,10 @@
   font-family: var(--font-1);
   font-size: 0.9rem;
   margin-top: -0.3rem;
+  background-color: var(--color-bg) !important;
+  color: var(--color-text) !important;
+  padding: 12px 16px;
+  border-radius: 6px;
+  border: 2px solid var(--color-border);
+  box-shadow: none !important;
 }

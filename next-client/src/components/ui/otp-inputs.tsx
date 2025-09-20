@@ -119,11 +119,7 @@ const OTPInputs: FC<OTPInputsProps> = ({
 
   return (
     <div className={classNames(sInput.container, className)} style={style}>
-      {label && (
-        <label className={sInput.label} htmlFor={name}>
-          {label}
-        </label>
-      )}
+      {label && <span className={sInput.label}>{label}</span>}
       <div className={s.wrapper}>
         {Array.from({ length: allowedOtpLength }).map((_, index) => (
           <input

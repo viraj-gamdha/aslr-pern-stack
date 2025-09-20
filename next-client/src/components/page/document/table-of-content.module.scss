@@ -10,7 +10,8 @@
   font-family: var(--font-1);
   color: var(--color-text);
   text-wrap: wrap;
-  box-shadow: var(--shadow);
+  border: 1px dotted var(--color-border);
+  background-color: var(--color-bg);
 }
 
 .sidebar_options {
@@ -52,24 +53,20 @@
   }
 }
 
-.item_isActive a {
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.item_isScrolledOver a {
-  color: var(--color-text-l);
-}
-
 .item_link {
   color: var(--color-text);
   text-wrap: wrap;
   text-align: start;
   padding-block: 0.5rem;
 
+  // default override
+  &:hover {
+    background-color: unset;
+  }
+
   &::before {
     content: attr(data-item-index) ".";
-    color: var(--color-text-l);
+    color: var(--color-text);
   }
 }
 
@@ -80,5 +77,5 @@
   font-style: italic;
   font-size: 0.85rem;
   padding: 1rem;
-  background-color: white;
+  background-color: var(--color-bg);
 }

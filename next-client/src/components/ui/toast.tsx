@@ -8,7 +8,7 @@ export const successToast = (data: string) => {
     className: s.style,
     iconTheme: {
       primary: "var(--color-primary)",
-      secondary: "#fff",
+      secondary: "var(--color-bg)",
     },
     ariaProps: {
       role: "status",
@@ -22,7 +22,7 @@ export const errorToast = (data: string) => {
     duration: 6000,
     className: s.style,
     iconTheme: {
-      primary: "#fff",
+      primary: "var(--color-bg)",
       secondary: "var(--color-red)",
     },
     ariaProps: {
@@ -60,30 +60,24 @@ export const loaderToast = (
     {
       duration: 4000,
       // Shared base styles
-      style: {
-        padding: "12px 16px",
-        fontSize: "14px",
-        borderRadius: "6px",
-        border: "1px solid #ccc",
-      },
       className: s.style,
       // Per-state styles
       success: {
         iconTheme: {
           primary: "var(--color-primary)",
-          secondary: "#fff",
+          secondary: "var(--color-bg)",
         },
       },
       error: {
         iconTheme: {
-          primary: "#fff",
+          primary: "var(--color-bg)",
           secondary: "var(--color-red)",
         },
       },
       loading: {
         iconTheme: {
           primary: "var(--color-primary)",
-          secondary: "#fff",
+          secondary: "var(--color-bg)",
         },
       },
       ariaProps: {

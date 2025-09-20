@@ -48,7 +48,9 @@ const LineHeightButton = () => {
           <span>
             <AlignVerticalSpaceAroundIcon size={16} />
           </span>
-          {lineHeights.find((i) => i.value === currentHeight)?.label}
+          <span>
+            {lineHeights.find((i) => i.value === currentHeight)?.label}
+          </span>
         </SelectButton>
       </DropDownTrigger>
 
