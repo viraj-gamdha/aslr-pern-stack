@@ -1,36 +1,33 @@
-import classNames from "classnames";
-import styles from "./dropdown.module.scss";
-import { usePathname } from "next/navigation";
 import {
-  ReactNode,
-  FC,
+  createContext,
+  useContext,
   useState,
   useRef,
   useEffect,
-  CSSProperties,
-  createContext,
-  useContext,
-  RefObject,
-  HTMLAttributes,
-  ButtonHTMLAttributes,
   useLayoutEffect,
   useCallback,
+  type CSSProperties,
+  type ReactNode,
+  type FC,
+  type RefObject,
+  type HTMLAttributes,
+  type ButtonHTMLAttributes,
 } from "react";
+import classNames from "classnames";
+import styles from "./dropdown.module.scss";
+import { usePathname } from "next/navigation";
 
-// dropdown context & hook
+// ─── Context ─────────────────────────────
 interface DropdownContextType {
   isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
-  toggleDropdown: () => void;
+  setIsOpen: (open: boolean) => void;
   dropdownRef: RefObject<HTMLDivElement | null>;
-  menuRef?: RefObject<HTMLDivElement | null>;
-  menuPosition: { top: number; left: number };
+  menuRef: RefObject<HTMLDivElement | null>;
+  coords: { top: number; left: number };
+  isMeasured: boolean;
+  shouldRender: boolean;
   animationDuration: number;
-  isAnimating: boolean;
-  shouldRenderMenu: boolean;
-  onClose?: () => void;
   triggerWidth: number;
-  isReadyForDisplay: boolean;
 }
 
 const DropdownContext = createContext<DropdownContextType | undefined>(
@@ -38,213 +35,186 @@ const DropdownContext = createContext<DropdownContextType | undefined>(
 );
 
 export const useDropdown = () => {
-  const context = useContext(DropdownContext);
-  if (!context) {
-    throw new Error(
-      "Dropdown components must be used within a DropDown provider"
-    );
-  }
-  return context;
+  const ctx = useContext(DropdownContext);
+  if (!ctx) throw new Error("useDropdown must be used within DropDown");
+  return ctx;
 };
 
-// Main dropdown container
-export interface DropDownProps {
-  style?: CSSProperties;
-  className?: string;
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
-  closeOnPathChange?: boolean;
-  closeOnClickOutside?: boolean;
-  animationDuration?: number;
+// ─── DropDown Component ─────────────────
+interface DropDownProps {
   children?: ReactNode;
-  onClose?: () => void;
+  className?: string;
+  style?: CSSProperties;
   position?: "top" | "bottom" | "left" | "right";
   align?: "start" | "center" | "end";
+  offset?: number;
+  animationDuration?: number;
+  isOpen?: boolean;
+  setIsOpen?: (open: boolean) => void;
+  closeOnClickOutside?: boolean;
+  closeOnPathChange?: boolean;
+  onClose?: () => void;
 }
 
 export const DropDown: FC<DropDownProps> = ({
-  isOpen: controlledIsOpen,
-  setIsOpen: controlledSetIsOpen,
-  closeOnPathChange = true,
-  closeOnClickOutside = true,
-  animationDuration = 100,
+  children,
   className,
   style,
-  children,
-  onClose,
   position = "bottom",
   align = "center",
+  offset = 8,
+  animationDuration = 200,
+  isOpen: controlledIsOpen,
+  setIsOpen: controlledSetIsOpen,
+  closeOnClickOutside = true,
+  closeOnPathChange = true,
+  onClose,
 }) => {
+  const path = usePathname();
   const isControlled =
     controlledIsOpen !== undefined && controlledSetIsOpen !== undefined;
-  const [internalIsOpen, internalSetIsOpen] = useState(false);
-  const [shouldRenderMenu, setShouldRenderMenu] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [isReadyForDisplay, setIsReadyForDisplay] = useState(false);
-
-  const isOpen = isControlled ? controlledIsOpen : internalIsOpen;
-  const setIsOpen = isControlled ? controlledSetIsOpen : internalSetIsOpen;
-
-  const [menuPosition, setMenuPosition] = useState<{
-    top: number;
-    left: number;
-  }>({ top: 0, left: 0 });
-  const [triggerWidth, setTriggerWidth] = useState(0);
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isOpen = isControlled ? controlledIsOpen! : internalIsOpen;
+  const setIsOpen = isControlled ? controlledSetIsOpen! : setInternalIsOpen;
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const path = usePathname();
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
+  const [shouldRender, setShouldRender] = useState(false);
+  const [isMeasured, setIsMeasured] = useState(false);
+  const [triggerWidth, setTriggerWidth] = useState(0);
 
+  // ─── Calculate Menu Position ─────────────
+  const calculatePosition = useCallback(() => {
+    if (!dropdownRef.current || !menuRef.current) return;
+
+    const triggerRect = dropdownRef.current.getBoundingClientRect();
+    const menuRect = menuRef.current.getBoundingClientRect();
+    const { innerWidth, innerHeight } = window;
+
+    let top = 0;
+    let left = 0;
+
+    // ─── Main axis positioning (offset applies here) ─────
+    switch (position) {
+      case "top":
+        top = triggerRect.top - menuRect.height - offset; // vertical gap above trigger
+        break;
+      case "bottom":
+        top = triggerRect.bottom + offset; // vertical gap below trigger
+        break;
+      case "left":
+        left = triggerRect.left - menuRect.width - offset; // horizontal gap to the left
+        break;
+      case "right":
+        left = triggerRect.right + offset; // horizontal gap to the right
+        break;
+    }
+
+    // ─── Cross axis positioning (align applies here) ─────
+    switch (position) {
+      case "top":
+      case "bottom":
+        // horizontal alignment
+        if (align === "start") left = triggerRect.left;
+        else if (align === "end") left = triggerRect.right - menuRect.width;
+        else left = triggerRect.left + (triggerRect.width - menuRect.width) / 2;
+        break;
+      case "left":
+      case "right":
+        // vertical alignment
+        if (align === "start") top = triggerRect.top;
+        else if (align === "end") top = triggerRect.bottom - menuRect.height;
+        else
+          top = triggerRect.top + triggerRect.height / 2 - menuRect.height / 2;
+        break;
+    }
+
+    // ─── Collision detection ──────────────
+    const PADDING = 8;
+    top = Math.max(
+      PADDING,
+      Math.min(top, innerHeight - menuRect.height - PADDING)
+    );
+    left = Math.max(
+      PADDING,
+      Math.min(left, innerWidth - menuRect.width - PADDING)
+    );
+
+    setCoords({ top, left });
+    setTriggerWidth(triggerRect.width);
+    setIsMeasured(true);
+  }, [position, align, offset]);
+
+  // ─── Open / Close Handling ─────────────
+  // This effect handles the rendering and unmounting of the dropdown menu
+  // whenever `isOpen` changes.
+  // - When opening: `shouldRender` is set to true so that the menu is added to the DOM.
+  // - When closing: we first mark it as not measured (so opacity/animation can reset),
+  //   then after `animationDuration` we remove it from DOM (`shouldRender = false`)
+  //   and call the optional `onClose` callback.
   useEffect(() => {
     if (isOpen) {
-      setShouldRenderMenu(true);
+      setShouldRender(true);
     } else {
-      setIsAnimating(false);
+      setIsMeasured(false);
       const timer = setTimeout(() => {
-        setShouldRenderMenu(false);
-        setIsReadyForDisplay(false);
+        setShouldRender(false);
         if (onClose) onClose();
       }, animationDuration);
       return () => clearTimeout(timer);
     }
   }, [isOpen, animationDuration, onClose]);
 
-  const calculatePosition = useCallback(() => {
-    if (dropdownRef.current && menuRef.current) {
-      const triggerRect = dropdownRef.current.getBoundingClientRect();
-      const menuRect = menuRef.current.getBoundingClientRect();
-      const { innerWidth, innerHeight } = window;
-
-      const GAP = 4;
-      const PADDING = 8;
-
-      const newPos = { top: 0, left: 0 };
-
-      // Vertical positioning
-      switch (position) {
-        case "top":
-          newPos.top = triggerRect.top - menuRect.height - GAP;
-          break;
-        case "left":
-        case "right":
-          if (align === "start") newPos.top = triggerRect.top;
-          else if (align === "end")
-            newPos.top = triggerRect.bottom - menuRect.height;
-          else
-            newPos.top =
-              triggerRect.top + triggerRect.height / 2 - menuRect.height / 2;
-          break;
-        default: // 'bottom'
-          newPos.top = triggerRect.bottom + GAP;
-          break;
-      }
-
-      // Horizontal positioning
-      switch (position) {
-        case "left":
-          newPos.left = triggerRect.left - menuRect.width - GAP;
-          break;
-        case "right":
-          newPos.left = triggerRect.right + GAP;
-          break;
-        default: // 'top' or 'bottom'
-          if (align === "start") newPos.left = triggerRect.left;
-          else if (align === "end")
-            newPos.left = triggerRect.right - menuRect.width;
-          else
-            newPos.left =
-              triggerRect.left + triggerRect.width / 2 - menuRect.width / 2;
-          break;
-      }
-
-      // Viewport Collision Detection & Adjustment
-      const topSpace = triggerRect.top;
-      const bottomSpace = innerHeight - triggerRect.bottom;
-      const prefersBottom = bottomSpace > topSpace;
-
-      if (
-        position === "bottom" &&
-        newPos.top + menuRect.height > innerHeight - PADDING &&
-        topSpace > bottomSpace
-      ) {
-        newPos.top = triggerRect.top - menuRect.height - GAP;
-      }
-      if (position === "top" && newPos.top < PADDING && prefersBottom) {
-        newPos.top = triggerRect.bottom + GAP;
-      }
-
-      // Corrected horizontal collision logic
-      if (newPos.left + menuRect.width > innerWidth - PADDING) {
-        newPos.left = innerWidth - menuRect.width - PADDING;
-      }
-      if (newPos.left < PADDING) {
-        newPos.left = PADDING;
-      }
-      if (newPos.top + menuRect.height > innerHeight - PADDING) {
-        newPos.top = innerHeight - menuRect.height - PADDING;
-      }
-      if (newPos.top < PADDING) {
-        newPos.top = PADDING;
-      }
-
-      setMenuPosition({ top: newPos.top, left: newPos.left });
-      setTriggerWidth(triggerRect.width);
-
-      setIsReadyForDisplay(true);
-      setTimeout(() => setIsAnimating(true), 10);
-    }
-  }, [position, align]);
-
+  // ─── Measure after menu is rendered ─────
+  // This layout effect runs after the menu has been rendered to the DOM.
+  // - Ensures we can measure its size (`menuRef.current.getBoundingClientRect()`)
+  //   and calculate the correct top/left coordinates.
+  // - We also attach a `ResizeObserver` to the menu so that if its size changes
+  //   (dynamic content, list items added, etc.), we recalculate the position.
+  // - Clean up observer on unmount or re-render.
   useLayoutEffect(() => {
-    if (shouldRenderMenu && menuRef.current) {
+    if (shouldRender && menuRef.current) {
       calculatePosition();
-
-      const observer = new ResizeObserver(() => {
-        calculatePosition();
-      });
-
+      const observer = new ResizeObserver(() => calculatePosition());
       observer.observe(menuRef.current);
-
-      return () => {
-        observer.disconnect();
-      };
+      return () => observer.disconnect();
     }
-  }, [shouldRenderMenu, calculatePosition]);
+  }, [shouldRender, calculatePosition]);
 
+  // ─── Recalculate on scroll / resize ─────
   useEffect(() => {
-    if (isOpen) {
-      const handleEvents = () => {
-        calculatePosition();
-      };
-      window.addEventListener("scroll", handleEvents, true);
-      window.addEventListener("resize", handleEvents);
-      return () => {
-        window.removeEventListener("scroll", handleEvents, true);
-        window.removeEventListener("resize", handleEvents);
-      };
-    }
-  }, [isOpen, calculatePosition]);
+    if (!isOpen) return;
+    const handler = () => {
+      if (isMeasured) calculatePosition();
+    };
+    window.addEventListener("scroll", handler, true);
+    window.addEventListener("resize", handler);
+    return () => {
+      window.removeEventListener("scroll", handler, true);
+      window.removeEventListener("resize", handler);
+    };
+  }, [isOpen, isMeasured, calculatePosition]);
 
+  // ─── Close on path change ──────────────
   useEffect(() => {
     if (closeOnPathChange) setIsOpen(false);
   }, [path, closeOnPathChange, setIsOpen]);
 
+  // ─── Close on outside click ────────────
   useEffect(() => {
     if (!closeOnClickOutside) return;
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleOutside = (e: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(e.target as Node)
       ) {
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    document.addEventListener("mousedown", handleOutside);
+    return () => document.removeEventListener("mousedown", handleOutside);
   }, [closeOnClickOutside, setIsOpen]);
 
   return (
@@ -252,21 +222,18 @@ export const DropDown: FC<DropDownProps> = ({
       value={{
         isOpen,
         setIsOpen,
-        toggleDropdown,
         dropdownRef,
         menuRef,
-        menuPosition,
+        coords,
+        isMeasured,
+        shouldRender,
         animationDuration,
-        isAnimating,
-        shouldRenderMenu,
-        onClose,
         triggerWidth,
-        isReadyForDisplay,
       }}
     >
       <div
-        className={classNames(styles.container, className)}
         ref={dropdownRef}
+        className={classNames(styles.container, className)}
         style={style}
       >
         {children}
@@ -275,33 +242,27 @@ export const DropDown: FC<DropDownProps> = ({
   );
 };
 
-// Dropdown trigger (button)
-export interface DropDownTriggerCommonProps {
+// ─── Trigger ─────────────────────────────
+interface DropDownTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
   asChild?: boolean;
 }
-
-type ButtonProps = DropDownTriggerCommonProps &
-  ButtonHTMLAttributes<HTMLButtonElement>;
-type DivProps = DropDownTriggerCommonProps & HTMLAttributes<HTMLDivElement>;
-
-export const DropDownTrigger: FC<ButtonProps | DivProps> = ({
+export const DropDownTrigger: FC<DropDownTriggerProps> = ({
   children,
   className,
   style,
   asChild = false,
   ...rest
 }) => {
-  const { isOpen, toggleDropdown } = useDropdown();
-
+  const { setIsOpen, isOpen } = useDropdown();
   if (asChild) {
     return (
       <div
-        className={classNames(styles.button, className)}
+        className={classNames(styles.trigger, className)}
         style={style}
-        onClick={toggleDropdown}
+        onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
         {...(rest as HTMLAttributes<HTMLDivElement>)}
       >
@@ -309,13 +270,12 @@ export const DropDownTrigger: FC<ButtonProps | DivProps> = ({
       </div>
     );
   }
-
   return (
     <button
       type="button"
-      className={classNames(styles.button, className)}
+      className={classNames(styles.trigger, className)}
       style={style}
-      onClick={toggleDropdown}
+      onClick={() => setIsOpen(!isOpen)}
       aria-expanded={isOpen}
       {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
     >
@@ -324,42 +284,38 @@ export const DropDownTrigger: FC<ButtonProps | DivProps> = ({
   );
 };
 
-// Dropdown menu
-export interface DropDownMenuProps {
+// ─── Menu ───────────────────────────────
+interface DropDownMenuProps {
   children?: ReactNode;
   className?: string;
   style?: CSSProperties;
 }
-
 export const DropDownMenu: FC<DropDownMenuProps> = ({
   children,
   className,
   style,
 }) => {
   const {
-    shouldRenderMenu,
-    isAnimating,
-    animationDuration,
-    menuPosition,
+    shouldRender,
+    isMeasured,
+    coords,
     menuRef,
     triggerWidth,
-    isReadyForDisplay,
+    animationDuration,
   } = useDropdown();
-
-  if (!shouldRenderMenu) return null;
-
+  if (!shouldRender) return null;
   return (
     <div
       ref={menuRef}
       className={classNames(styles.menu_wrapper, className)}
       style={{
-        top: menuPosition.top,
-        left: menuPosition.left,
-        minWidth: triggerWidth,
-        opacity: isAnimating ? 1 : 0,
-        transition: `opacity ${animationDuration}ms ease-in-out`,
-        visibility: isReadyForDisplay ? "visible" : "hidden",
         position: "fixed",
+        top: coords.top,
+        left: coords.left,
+        minWidth: triggerWidth,
+        opacity: isMeasured ? 1 : 0,
+        transition: `opacity ${animationDuration}ms ease-in-out`,
+        zIndex: 9999,
         ...style,
       }}
     >

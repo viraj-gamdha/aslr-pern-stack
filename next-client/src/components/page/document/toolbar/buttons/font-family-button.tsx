@@ -42,6 +42,8 @@ const FontFamilyButton = () => {
       showClearIcon={false}
       buttonVariant="icon_bordered"
       tooltip="Font Family"
+      position="bottom"
+      align="start"
       buttonStyle={{ width: "6rem", fontFamily: currentValue || "Arial" }}
       onChange={(value) =>
         editor

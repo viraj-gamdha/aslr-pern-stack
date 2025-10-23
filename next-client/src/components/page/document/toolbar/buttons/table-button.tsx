@@ -162,7 +162,7 @@ const TableButton = () => {
           Manage Table
         </span>
         {/* Column Operations */}
-        <DropDown position="right" align="start" style={{ width: "100%" }}>
+        <DropDown position="right" align="end" style={{ width: "100%" }} offset={14}>
           <DropDownTrigger asChild>
             <SelectButton buttonVariant="icon" isSubmenu={true}>
               <span>

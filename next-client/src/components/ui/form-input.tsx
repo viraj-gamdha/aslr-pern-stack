@@ -103,6 +103,7 @@ export const FormInput = <T extends FieldValues>({
                 value={field.value}
                 onChange={(val: string | string[]) => {
                   field.onChange(val);
+                  // if on change is passed through props
                   if (customSelectProps.onChange) {
                     customSelectProps.onChange(val);
                   }

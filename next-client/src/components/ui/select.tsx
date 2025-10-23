@@ -43,13 +43,13 @@ export type CustomSelectProps = BaseComponentProps & {
   buttonClassName?: string;
   buttonStyle?: CSSProperties;
   tooltip?: string;
+  // in case of using select button
   tooltipPosition?: "top" | "bottom" | "left" | "right";
 
   // Dropdown props passed through
   closeOnPathChange?: boolean;
   closeOnClickOutside?: boolean;
   animationDuration?: number;
-  onDropdownClose?: () => void;
   position?: "top" | "bottom" | "left" | "right";
   align?: "start" | "center" | "end";
 
@@ -100,7 +100,6 @@ export const CustomSelect = ({
   closeOnPathChange = true,
   closeOnClickOutside = true,
   animationDuration = 100,
-  onDropdownClose,
   position = "bottom",
   align = "center",
 
@@ -189,7 +188,6 @@ export const CustomSelect = ({
         closeOnPathChange={closeOnPathChange}
         closeOnClickOutside={closeOnClickOutside}
         animationDuration={animationDuration}
-        onClose={onDropdownClose}
         style={dropdownStyle}
         className={dropdownClassName}
         setIsOpen={setIsOpen}

@@ -13,9 +13,9 @@ import OpenAI from "openai";
 
 const openai = new OpenAI({
   // baseURL: "http://localhost:3000/ollama/v1",
-  baseURL: "http://localhost:3000/api",
-  // apiKey: process.env.OPENAI_API_KEY,
-  apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdjMDEyZjI0LWEwNGQtNDIwNS05NDk3LWU0MzI4MzU0YmZjMyJ9.1jOfMH4jxU6YZvS447FztJQaNePlefsGJEl1FBYUfLA",
+  // baseURL: "http://localhost:3002/api",
+  apiKey: process.env.OPENAI_API_KEY,
+  // apiKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdjMDEyZjI0LWEwNGQtNDIwNS05NDk3LWU0MzI4MzU0YmZjMyJ9.1jOfMH4jxU6YZvS447FztJQaNePlefsGJEl1FBYUfLA",
 });
 
 export const enhanceText = TryCatch<EnhanceTextRequest, { projectId: string }>(
@@ -87,8 +87,8 @@ ${getAiEnhancerPrompt(action, options, text)}
 `.trim();
 
     const completion = await openai.chat.completions.create({
-      model: "gemma3:1b",
-      // model: "gpt-4o-mini",
+      // model: "gemma3:1b",
+      model: "gpt-4o-mini",
       messages: [{ role: "user", content: prompt }],
     });
 

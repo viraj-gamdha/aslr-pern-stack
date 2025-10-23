@@ -8,26 +8,45 @@ import {
 import s from "./tooltip.module.scss";
 import classNames from "classnames";
 
+interface TooltipProps {
+  children: ReactNode;
+  tooltip: ReactNode;
+  position?: "top" | "bottom" | "left" | "right";
+  align?: "start" | "center" | "end";
+  offset?: number;
+  style?: CSSProperties;
+  animationDuration?: number;
+  isOpen?: boolean;
+  setIsOpen?: (isOpen: boolean) => void;
+}
+
 const Tooltip = ({
   children,
   tooltip,
   position = "bottom",
+  align = "center",
   offset = 8,
   style = {},
-}: {
-  children: ReactNode;
-  tooltip: string;
-  position?: "top" | "bottom" | "left" | "right";
-  offset?: number;
-  style?: CSSProperties;
-}) => {
+  animationDuration = 200,
+  isOpen: controlledIsOpen,
+  setIsOpen: controlledSetIsOpen,
+}: TooltipProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
+
+  // Determine if the tooltip is controlled externally
+  const isControlled =
+    controlledIsOpen !== undefined && controlledSetIsOpen !== undefined;
+  const [internalIsOpen, setInternalIsOpen] = useState(false);
+  const isVisible = isControlled ? controlledIsOpen! : internalIsOpen;
+  const setIsVisible = isControlled ? controlledSetIsOpen! : setInternalIsOpen;
+
+  // Position and rendering state
   const [coords, setCoords] = useState({ top: 0, left: 0 });
-  const [isVisible, setIsVisible] = useState(false);
   const [isMeasured, setIsMeasured] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
 
+  // ─── Calculate tooltip position ─────────
   const calculatePosition = () => {
     if (!wrapperRef.current || !tooltipRef.current) return;
 
@@ -36,57 +55,79 @@ const Tooltip = ({
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    let topPos = 0;
-    let leftPos = 0;
+    let top = 0;
+    let left = 0;
 
+    // Main axis placement (offset applied here)
     switch (position) {
       case "top":
-        topPos = targetRect.top - tooltipRect.height - offset;
-        leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+        top = targetRect.top - tooltipRect.height - offset;
+        break;
+      case "bottom":
+        top = targetRect.bottom + offset;
         break;
       case "left":
-        topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
-        leftPos = targetRect.left - tooltipRect.width - offset;
+        left = targetRect.left - tooltipRect.width - offset;
         break;
       case "right":
-        topPos = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
-        leftPos = targetRect.right + offset;
-        break;
-      default:
-        topPos = targetRect.bottom + offset;
-        leftPos = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+        left = targetRect.right + offset;
         break;
     }
 
-    topPos = Math.max(
-      4,
-      Math.min(topPos, viewportHeight - tooltipRect.height - 4)
+    // Cross-axis alignment
+    switch (position) {
+      case "top":
+      case "bottom":
+        // Horizontal alignment
+        if (align === "start") left = targetRect.left;
+        else if (align === "end") left = targetRect.right - tooltipRect.width;
+        else
+          left = targetRect.left + (targetRect.width - tooltipRect.width) / 2;
+        break;
+      case "left":
+      case "right":
+        // Vertical alignment
+        if (align === "start") top = targetRect.top;
+        else if (align === "end")
+          top = targetRect.top + targetRect.height - tooltipRect.height;
+        else
+          top = targetRect.top + (targetRect.height - tooltipRect.height) / 2;
+        break;
+    }
+
+    // Collision detection to stay within viewport
+    const PADDING = 4;
+    top = Math.max(
+      PADDING,
+      Math.min(top, viewportHeight - tooltipRect.height - PADDING)
     );
-    leftPos = Math.max(
-      4,
-      Math.min(leftPos, viewportWidth - tooltipRect.width - 4)
+    left = Math.max(
+      PADDING,
+      Math.min(left, viewportWidth - tooltipRect.width - PADDING)
     );
 
-    setCoords({ top: topPos, left: leftPos });
+    setCoords({ top, left });
     setIsMeasured(true);
   };
 
+  // ─── Handle tooltip show/hide ─────────
   useEffect(() => {
     if (isVisible) {
+      // Show tooltip and calculate its position on next animation frame
       setShouldRender(true);
-      const frame = requestAnimationFrame(() => {
-        calculatePosition();
-      });
+      const frame = requestAnimationFrame(() => calculatePosition());
       return () => cancelAnimationFrame(frame);
     } else {
+      // Hide tooltip with fade out animation
       setIsMeasured(false);
       const timeout = setTimeout(() => {
         setShouldRender(false);
-      }, 200); // match CSS transition duration
+      }, animationDuration);
       return () => clearTimeout(timeout);
     }
-  }, [isVisible, position, offset]);
+  }, [isVisible, position, align, offset, animationDuration]);
 
+  // ─── Update position on scroll or resize ─
   useEffect(() => {
     if (!isVisible) return;
     const handleUpdate = () => {
@@ -98,10 +139,11 @@ const Tooltip = ({
       window.removeEventListener("scroll", handleUpdate, true);
       window.removeEventListener("resize", handleUpdate);
     };
-  }, [isVisible, isMeasured, position, offset]);
+  }, [isVisible, isMeasured, position, align, offset]);
 
   return (
     <>
+      {/* Wrapper for the element that triggers the tooltip */}
       <div
         ref={wrapperRef}
         className={s.container}
@@ -111,6 +153,7 @@ const Tooltip = ({
         {children}
       </div>
 
+      {/* Tooltip element */}
       {shouldRender && (
         <div
           ref={tooltipRef}
@@ -120,10 +163,11 @@ const Tooltip = ({
           )}
           style={{
             position: "fixed",
-            top: `${coords.top}px`,
-            left: `${coords.left}px`,
+            top: coords.top,
+            left: coords.left,
             opacity: isMeasured ? 1 : 0,
             pointerEvents: "none",
+            transition: `opacity ${animationDuration}ms ease-in-out`,
             zIndex: 9999,
             ...style,
           }}

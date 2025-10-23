@@ -13,8 +13,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "SLRBOT | Systematic literature review Bot",
-  description: "SLRBOT | Systematic literature review Bot",
+  title: "aSLR | Systematic literature review Bot",
+  description: "aSLR | Systematic literature review Bot",
 };
 
 // Like main.tsx

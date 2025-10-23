@@ -34,6 +34,7 @@ app.use(cookieParser());
 // CORS
 export const allowedOrigins: string[] =
   process.env.ALLOWED_ORIGINS?.split(",").map((o) => o.trim()) || [];
+
 const corsOptions: CorsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {

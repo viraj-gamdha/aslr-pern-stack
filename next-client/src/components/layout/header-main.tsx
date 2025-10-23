@@ -21,7 +21,7 @@ const HeaderMain = () => {
         <span>
           <Atom size={18} />
         </span>
-        <h4>SLRBOT</h4>
+        <h4>aSLR</h4>
       </Link>
 
       <div className={s.action_btns}>

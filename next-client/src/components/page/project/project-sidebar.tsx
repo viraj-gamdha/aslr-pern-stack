@@ -95,7 +95,7 @@ const ProjectSidebar = () => {
           <span>
             <Atom size={18} />
           </span>
-          {!isCollapsed && <h4>SLRBOT</h4>}
+          {!isCollapsed && <h4>aSLR</h4>}
         </Link>
 
         <Button variant="icon" onClick={toggleCollapsed} className={s.toggle}>

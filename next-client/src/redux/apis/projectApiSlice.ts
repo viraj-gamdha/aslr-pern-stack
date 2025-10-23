@@ -4,7 +4,6 @@ import {
   CreateProjectFormInputs,
   FullProject,
   Project,
-  ProjectMember,
   UpdateProjectFormInputs,
 } from "@/types/project";
 

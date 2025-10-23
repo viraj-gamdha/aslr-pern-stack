@@ -20,6 +20,8 @@ const Accordion: React.FC<AccordionProps> = ({
   const [height, setHeight] = useState<number | undefined>(defaultOpen ? undefined : 0)
   const contentRef = useRef<HTMLDivElement>(null)
 
+  // doing this for animation of height
+  // nothing else
   useEffect(() => {
     if (contentRef.current) {
       if (isOpen) {
