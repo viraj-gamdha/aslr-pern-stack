@@ -13,7 +13,7 @@ import { otpEmail } from "@/email-templates/otpEmail.js";
 import { verifyEmailOTP } from "@/utils/auth.js";
 
 // Constants
-const ACCESS_TOKEN_EXPIRY = 60 * 15; // 15 minutes
+const ACCESS_TOKEN_EXPIRY = 60 * 1; // 15 minutes
 const REFRESH_TOKEN_EXPIRY = 60 * 60 * 24 * 7; // 7 days
 
 // Register user
@@ -106,7 +106,7 @@ export const signinUser = TryCatch<
     .where(eq(user.email, email))
     .limit(1);
   if (!foundUser) {
-    return next(new ErrorHandler(401, "Invalid credentials"));
+    return next(new ErrorHandler(403, "Invalid credentials"));
   }
 
   // Validate password
@@ -345,6 +345,7 @@ export const verifyAndResetPassword = TryCatch<{
 });
 
 // Refresh access token
+// All 403 in case of errors
 export const refreshToken = TryCatch<
   {}, // ReqBody
   {}, // ReqParams
@@ -355,7 +356,7 @@ export const refreshToken = TryCatch<
   const refreshToken = req.cookies?.refresh_token;
 
   if (!refreshToken) {
-    return next(new ErrorHandler(401, "Unauthorized!"));
+    return next(new ErrorHandler(403, "Forbidden!"));
   }
 
   let payload: AuthJwtPayload;
@@ -365,11 +366,11 @@ export const refreshToken = TryCatch<
       process.env.JWT_SECRET!
     ) as AuthJwtPayload;
   } catch (err) {
-    return next(new ErrorHandler(403, "Forbidden"));
+    return next(new ErrorHandler(403, "Forbidden!"));
   }
 
   if (!payload || !payload.userId) {
-    return next(new ErrorHandler(401, "Unauthorized!"));
+    return next(new ErrorHandler(403, "Forbidden!"));
   }
 
   // Find user
@@ -379,7 +380,7 @@ export const refreshToken = TryCatch<
     .where(eq(user.id, payload.userId))
     .limit(1);
   if (!user) {
-    return next(new ErrorHandler(401, "Unauthorized!"));
+    return next(new ErrorHandler(403, "Forbidden!"));
   }
 
   // Generate new access token

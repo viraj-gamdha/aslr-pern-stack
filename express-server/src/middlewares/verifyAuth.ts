@@ -16,7 +16,7 @@ export const verifyAuth = TryCatch(async (req, res, next) => {
 
     //token is after the space second item of the string
     jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-      if (err) return next(new ErrorHandler(403, "Forbidden"));
+      if (err) return next(new ErrorHandler(401, "Unauthorized!"));
 
       // This data will passed to next
       const { userId } = decoded as AuthJwtPayload;
@@ -34,6 +34,6 @@ export const verifyAuth = TryCatch(async (req, res, next) => {
       next();
     });
   } else {
-    return next(new ErrorHandler(403, "Unauthorized. Bearer token required."));
+    return next(new ErrorHandler(401, "Unauthorized. Token required."));
   }
 });

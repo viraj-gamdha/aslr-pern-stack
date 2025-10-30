@@ -29,10 +29,11 @@ const baseQuery = fetchBaseQuery({
 
 // Reauth for some cases
 const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
+  // Temp storing original request
   let result = await baseQuery(args, api, extraOptions);
 
   // If access token is invalid or expired
-  if (result?.error?.status === 403) {
+  if (result?.error?.status === 401) {
     // Attempt to refresh the token
     const refreshResult = await baseQuery(
       "auth/refresh_token",
@@ -47,7 +48,7 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
       api.dispatch(setUserInfo(refreshedUser.data));
       result = await baseQuery(args, api, extraOptions);
     } else {
-      // Refresh failed — logout if token is invalid or expired
+      // Refresh failed — logout if token is invalid or expired or just errors
       const status = refreshResult?.error?.status;
       if (status === 401 || status === 403) {
         api.dispatch(signout({}));
@@ -56,8 +57,8 @@ const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
     }
   }
 
-  // If access token is missing or unauthorized (or no refresh token)
-  if (result?.error?.status === 401) {
+  // If access token / refresh token is missing or unauthorized (or no refresh token)
+  if (result?.error?.status === 403) {
     api.dispatch(signout({}));
   }
 
