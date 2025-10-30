@@ -5,7 +5,7 @@ import {
   DropDownTrigger,
 } from "@/components/ui/dropdown";
 import { SelectButton } from "@/components/ui/select";
-import { useCurrentEditor, useEditorState } from "@tiptap/react";
+import { useCurrentEditor } from "@tiptap/react";
 import {
   ArrowDown,
   ArrowLeft,
@@ -162,7 +162,7 @@ const TableButton = () => {
           Manage Table
         </span>
         {/* Column Operations */}
-        <DropDown position="right" align="end" style={{ width: "100%" }} offset={14}>
+        <DropDown position="right" align="end" style={{ width: "100%" }}>
           <DropDownTrigger asChild>
             <SelectButton buttonVariant="icon" isSubmenu={true}>
               <span>
