@@ -13,7 +13,7 @@ import { otpEmail } from "@/email-templates/otpEmail.js";
 import { verifyEmailOTP } from "@/utils/auth.js";
 
 // Constants
-const ACCESS_TOKEN_EXPIRY = 60 * 1; // 15 minutes
+const ACCESS_TOKEN_EXPIRY = 60 * 15; // 15 minutes
 const REFRESH_TOKEN_EXPIRY = 60 * 60 * 24 * 7; // 7 days
 
 // Register user
