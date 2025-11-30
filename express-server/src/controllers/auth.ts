@@ -231,26 +231,26 @@ export const sendEmailOTP = TryCatch<
     .returning();
 
   // send email
-  // const resend = new Resend(process.env.RESEND_API_KEY);
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // const resEmail = await resend.emails.send({
-  //   from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
-  //   to: emailSentOTP.email,
-  //   subject: "Email verification",
-  //   replyTo: process.env.RESEND_REPLY_TO,
-  //   html: otpEmail(findInDb.name, generatedOtp),
-  // });
+  const resEmail = await resend.emails.send({
+    from: `DOSLR <${process.env.RESEND_FROM_EMAIL}>`,
+    to: emailSentOTP.email,
+    subject: "Email verification",
+    replyTo: process.env.RESEND_REPLY_TO,
+    html: otpEmail(findInDb.name, generatedOtp),
+  });
 
-  // if (resEmail.error) {
-  //   await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
+  if (resEmail.error) {
+    await db.delete(otp).where(eq(otp.email, emailSentOTP.email));
 
-  //   return next(
-  //     new ErrorHandler(
-  //       400,
-  //       "Something went wrong! please try to reach us or try again later."
-  //     )
-  //   );
-  // }
+    return next(
+      new ErrorHandler(
+        400,
+        "Something went wrong! please try to reach us or try again later."
+      )
+    );
+  }
 
   console.log("OTP is:", generatedOtp);
 
