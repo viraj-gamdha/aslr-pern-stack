@@ -32,7 +32,7 @@ const HeaderMain = () => {
                 <span>
                   <Folder size={18} />
                 </span>
-                My Projects
+                <p>My Projects</p>
               </LinkButton>
             )}
             {!pathname.endsWith("/account") && (
@@ -40,7 +40,7 @@ const HeaderMain = () => {
                 <span>
                   <User2 size={18} />
                 </span>
-                My Account
+                <p>My Account</p>
               </LinkButton>
             )}
             <Button
@@ -51,7 +51,7 @@ const HeaderMain = () => {
               <span>
                 <LogOutIcon size={18} />
               </span>
-              Signout
+              <p>Signout</p>
             </Button>
           </>
         )}
