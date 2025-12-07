@@ -29,7 +29,7 @@ const AuthInitializerContent = ({ children }: { children: React.ReactNode }) => 
         try {
           const res = await login({
             email: "test@email.com",
-            password: "11111111",
+            password: "#Test1234",
           }).unwrap();
           if (!res.success) {
             errorToast(res.message);
