@@ -5,11 +5,15 @@ import { errorToast } from "@/components/ui/toast";
 import { useAppSelector } from "@/hooks/storeHooks";
 import { useRefreshMutation } from "@/redux/apis/authApiSlice";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useSigninMutation } from "@/redux/apis/authApiSlice";
 
 const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   const [refresh, { isLoading }] = useRefreshMutation();
+  const [login, { isLoading: isLoginLoading }] = useSigninMutation();
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
   const userInfo = useAppSelector((state) => state.auth.userInfo);
+  const searchParams = useSearchParams();
 
   // Determine if initialization is needed
   const persist =
@@ -18,7 +22,21 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const verifyAuth = async () => {
-      if (!userInfo?.accessToken && persist) {
+      const skipAuth = searchParams.get("skip-auth") === "true";
+
+      if (skipAuth && !userInfo?.accessToken) {
+        try {
+          const res = await login({
+            email: "test@email.com",
+            password: "#Test1234",
+          }).unwrap();
+          if (!res.success) {
+            errorToast(res.message);
+          }
+        } catch (err) {
+          console.log("Error during auto login:", err);
+        }
+      } else if (!userInfo?.accessToken && persist) {
         try {
           const res = await refresh({}).unwrap();
           if (!res.success) {
@@ -35,7 +53,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   // loading or a blank screen until refresh is done
-  if (!isAuthInitialized || isLoading) {
+  if (!isAuthInitialized || isLoading || isLoginLoading) {
     return <PageLoader />;
   }
 
