@@ -4,11 +4,12 @@ import { PageLoader } from "@/components/ui/loader";
 import { errorToast } from "@/components/ui/toast";
 import { useAppSelector } from "@/hooks/storeHooks";
 import { useRefreshMutation } from "@/redux/apis/authApiSlice";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useSigninMutation } from "@/redux/apis/authApiSlice";
 
-const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+// ADDED: Separate component for logic that uses useSearchParams
+const AuthInitializerContent = ({ children }: { children: React.ReactNode }) => {
   const [refresh, { isLoading }] = useRefreshMutation();
   const [login, { isLoading: isLoginLoading }] = useSigninMutation();
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
@@ -28,7 +29,7 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
         try {
           const res = await login({
             email: "test@email.com",
-            password: "#Test1234",
+            password: "11111111",
           }).unwrap();
           if (!res.success) {
             errorToast(res.message);
@@ -58,6 +59,15 @@ const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
   }
 
   return <>{children}</>;
+};
+
+// MODIFIED: Wrap with Suspense boundary
+const AuthInitializer = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <AuthInitializerContent>{children}</AuthInitializerContent>
+    </Suspense>
+  );
 };
 
 export default AuthInitializer;
